@@ -1,0 +1,12 @@
+#!/bin/csh
+
+addMassVariables addMassVariables_emu_gen_cfg.py
+addMassVariables addMassVariables_emu_smeared_cfg.py
+
+addMassVariables addMassVariables_muhad_gen_cfg.py
+addMassVariables addMassVariables_muhad_smeared_cfg.py
+
+addMassVariables addMassVariables_hadhad_gen_cfg.py
+addMassVariables addMassVariables_hadhad_smeared_cfg.py
+
+hadd svFitStudyNtuple_all.root svFitStudyNtuple_emu_gen.root svFitStudyNtuple_emu_smeared.root svFitStudyNtuple_muhad_gen.root svFitStudyNtuple_muhad_smeared.root svFitStudyNtuple_hadhad_gen.root svFitStudyNtuple_hadhad_smeared.root 
