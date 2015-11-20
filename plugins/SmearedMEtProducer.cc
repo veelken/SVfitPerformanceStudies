@@ -25,7 +25,9 @@ SmearedMEtProducer::~SmearedMEtProducer()
 
 void SmearedMEtProducer::produce(edm::Event& evt, const edm::EventSetup& es)
 {
-  //std::cout << "<SmearedMEtProducer::produce>:" << std::endl;
+  if ( verbosity_ >= 1 ) {
+    std::cout << "<SmearedMEtProducer::produce>:" << std::endl;
+  }
 
   edm::Handle<reco::GenMETCollection> genMETs;
   evt.getByLabel(src_, genMETs);
@@ -40,6 +42,11 @@ void SmearedMEtProducer::produce(edm::Event& evt, const edm::EventSetup& es)
     double mey_smeared = rnd_.Gaus(genMET->py(), sigmaY_);
     reco::Candidate::LorentzVector p4_smeared(mex_smeared, mey_smeared, 0., TMath::Sqrt(mex_smeared*mex_smeared + mey_smeared*mey_smeared));
     genMET_smeared.setP4(p4_smeared);
+
+    if ( verbosity_ >= 1 ) {
+      std::cout << "genMEt: Pt = " << genMET->pt() << " (Px = " << genMET->px() << ", Py = " << genMET->py() << "), phi = " << genMET->phi() << std::endl;
+      std::cout << "genMEt(smeared): Pt = " << genMET_smeared.pt() << " (Px = " << genMET_smeared.px() << ", Py = " << genMET_smeared.py() << "), phi = " << genMET_smeared.phi() << std::endl;
+    }
 
     reco::METCovMatrix cov;
     cov[0][0] = sigmaX_*sigmaX_;

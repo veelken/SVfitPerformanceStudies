@@ -34,6 +34,8 @@ class SmearedMEtProducer : public edm::EDProducer
   double sigmaX_;
   double sigmaY_;
 
+  int verbosity_;
+
   TRandom3 rnd_;
 };
 

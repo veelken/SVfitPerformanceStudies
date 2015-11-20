@@ -4,7 +4,7 @@ process = cms.Process("produceSVfitStudyNtuple")
 
 process.load('Configuration/StandardSequences/Services_cff')
 process.load('FWCore/MessageService/MessageLogger_cfi')
-process.MessageLogger.cerr.FwkReport.reportEvery = 100
+process.MessageLogger.cerr.FwkReport.reportEvery = 1
 process.load("Configuration.StandardSequences.Reconstruction_cff")
 process.load("Configuration.Geometry.GeometryDB_cff")
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
@@ -19,7 +19,10 @@ process.maxEvents = cms.untracked.PSet(
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(                                
         '/store/user/veelken/CMSSW_7_4_x/skims/mssmHtautau3200_RECO_1_1_ONE.root'
-    )
+    ),
+    ##eventsToProcess = cms.untracked.VEventRange(
+    ##    '1:8:1309'
+    ##)      
 )
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(-1)
@@ -34,7 +37,13 @@ process.printGenParticleList = cms.EDAnalyzer("ParticleListDrawer",
     src = cms.InputTag('genParticles'),
     maxEventsToPrint = cms.untracked.int32(10)
 )
-##process.ntupleProductionSequence += process.printGenParticleList
+process.ntupleProductionSequence += process.printGenParticleList
+
+process.dumpGenTaus = cms.EDAnalyzer("DumpGenTaus",
+    src = cms.InputTag('genParticles'),
+    maxEventsToPrint = cms.untracked.int32(10)
+)
+process.ntupleProductionSequence += process.dumpGenTaus
 #--------------------------------------------------------------------------------
 
 #--------------------------------------------------------------------------------
@@ -102,7 +111,8 @@ process.ntupleProductionSequence += process.tauGenJetsSelectorMuonWithNu
 #--------------------------------------------------------------------------------
 # produce genMET collection 
 process.genMEtFromTauDecays = cms.EDProducer("GenMEtFromTauDecaysProducer",
-    src = cms.InputTag('tauGenJetsWithNu')
+    src = cms.InputTag('tauGenJetsWithNu'),
+    verbosity = cms.int32(2)
 )
 process.ntupleProductionSequence += process.genMEtFromTauDecays
 #--------------------------------------------------------------------------------
@@ -119,7 +129,8 @@ process.ntupleProductionSequence += process.smearedHadTaus
 process.smearedMEt = cms.EDProducer("SmearedMEtProducer",
     src = cms.InputTag('genMEtFromTauDecays'),
     sigmaX = cms.double(10.),
-    sigmaY = cms.double(10.)
+    sigmaY = cms.double(10.),
+    verbosity = cms.int32(2)
 )
 process.ntupleProductionSequence += process.smearedMEt
 #--------------------------------------------------------------------------------
@@ -138,7 +149,7 @@ process.ntupleProducer = cms.EDAnalyzer("SVfitStudyNtupleProducer",
 
     evtWeights = cms.PSet(),
 
-    verbosity = cms.int32(0)
+    verbosity = cms.int32(2)
 )
 process.ntupleProductionSequence += process.ntupleProducer
 

@@ -28,6 +28,8 @@ class GenMEtFromTauDecaysProducer : public edm::EDProducer
 
  private:
   edm::InputTag src_;
+
+  int verbosity_;
 };
 
 #endif

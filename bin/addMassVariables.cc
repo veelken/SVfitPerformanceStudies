@@ -131,13 +131,14 @@ namespace
   void compSVfitMass(svFitStandalone::kDecayType leg1Type, reco::Candidate::PolarLorentzVector& leg1P4, 
 		     svFitStandalone::kDecayType leg2Type, reco::Candidate::PolarLorentzVector& leg2P4, 
 		     double mex, double mey, const TMatrixD& metCov, 
-		     Float_t& svfitMass, Float_t& svfitMassErr, Int_t& svfitMass_isValid)
+		     Float_t& svfitMass, Float_t& svfitMassErr, Int_t& svfitMass_isValid, 
+		     int verbosity)
   {
     std::vector<svFitStandalone::MeasuredTauLepton> measuredTauLeptons;
     measuredTauLeptons.push_back(svFitStandalone::MeasuredTauLepton(leg1Type, leg1P4.pt(), leg1P4.eta(), leg1P4.phi(), leg1P4.mass()));
     measuredTauLeptons.push_back(svFitStandalone::MeasuredTauLepton(leg2Type, leg2P4.pt(), leg2P4.eta(), leg2P4.phi(), leg2P4.mass()));
 
-    SVfitStandaloneAlgorithm svFitAlgo(measuredTauLeptons, mex, mey, metCov);
+    SVfitStandaloneAlgorithm svFitAlgo(measuredTauLeptons, mex, mey, metCov, verbosity);
     svFitAlgo.addLogM(false);
     svFitAlgo.integrateVEGAS();
     if ( svFitAlgo.isValidSolution() ) {
@@ -165,6 +166,12 @@ namespace
 			double mex, double mey, const TMatrixD& metCov, 
 			Float_t& svfitMass, Float_t& svfitMassErr, Int_t& svfitMass_isValid)
   {
+    //std::cout << "<compSVfitMassMEM>:" << std::endl;	
+    //std::cout << "leg1: Pt = " << leg1P4.pt() << ", eta = " << leg1P4.eta() << ", phi = " << leg1P4.phi() << ", mass = " << leg1P4.mass() << " (type = " << leg1Type << ")" << std::endl;
+    //std::cout << "leg2: Pt = " << leg2P4.pt() << ", eta = " << leg2P4.eta() << ", phi = " << leg2P4.phi() << ", mass = " << leg2P4.mass() << " (type = " << leg2Type << ")" << std::endl;     
+    //std::cout << "met: Px = " << mex << ", Py = " << mey << std::endl; 
+    //std::cout << "metCov:" << std::endl;
+    //metCov.Print();    
     std::vector<svFitMEM::MeasuredTauLepton> measuredTauLeptons;
     measuredTauLeptons.push_back(svFitMEM::MeasuredTauLepton(leg1Type, leg1P4.pt(), leg1P4.eta(), leg1P4.phi(), leg1P4.mass()));
     measuredTauLeptons.push_back(svFitMEM::MeasuredTauLepton(leg2Type, leg2P4.pt(), leg2P4.eta(), leg2P4.phi(), leg2P4.mass()));
@@ -272,6 +279,7 @@ int main(int argc, char* argv[])
   else throw cms::Exception("addMassVariables") 
     << "Invalid Configuration parameter 'intMode' = " << svFitMEM_intMode_string << " !!\n";
   unsigned svFitMEM_maxObjFunctionCalls = cfgSVfitMEM.getParameter<unsigned>("maxObjFunctionCalls");
+  int svFitMEM_verbosity = cfgSVfitMEM.getParameter<int>("verbosity");
 
   bool keepAllBranches = cfgAddMassVariables.getParameter<bool>("keepAllBranches");
 
@@ -413,6 +421,7 @@ int main(int argc, char* argv[])
 	svFitMEM_addLogM_power != svFitMEM_addLogM_powers.end(); ++svFitMEM_addLogM_power ) {
     enum { kEnableHadTauTF, kDisableHadTauTF };
     for ( int optHadTauTF = kEnableHadTauTF; optHadTauTF <= kDisableHadTauTF; ++optHadTauTF ) {
+    //for ( int optHadTauTF = kDisableHadTauTF; optHadTauTF <= kDisableHadTauTF; ++optHadTauTF ) { // ONLY FOR TESTING !!!
       svFitMEM_logM_EntryType* svFitMEM_logM_entry = new svFitMEM_logM_EntryType();
       svFitMEM_logM_entry->addLogM_power_ = (*svFitMEM_addLogM_power);
       std::string optHadTauTF_string;
@@ -487,7 +496,7 @@ int main(int argc, char* argv[])
   //std::string svFitMEM_pdfName = "cteq66";
   std::string svFitMEM_pdfName = "MSTW2008lo68cl";
   
-  SVfitMEM svFitAlgoMEM(svFitMEM_sqrtS, svFitMEM_pdfName.data(), svFitMEM::SVfitIntegrand::kLiterature);
+  SVfitMEM svFitAlgoMEM(svFitMEM_sqrtS, svFitMEM_pdfName.data(), svFitMEM::SVfitIntegrand::kLiterature, "", svFitMEM_verbosity);
   svFitAlgoMEM.setCrossSection_and_Acc(svFitMEM_graph_xSection, svFitMEM_graph_Acc, svFitMEM_minAcc);
   HadTauTFfromTGraph hadTauTF(svFitMEM_graph_hadTauTF);
   svFitAlgoMEM.setHadTauTF(&hadTauTF);
@@ -547,7 +556,7 @@ int main(int argc, char* argv[])
         leg1Type, leg1P4, 
         leg2Type, leg2P4, 
         mex, mey, metCov, 
-        svfitMass, svfitMassErr, svfitMass_isValid);
+        svfitMass, svfitMassErr, svfitMass_isValid, verbosity - 1);
       for ( std::vector<svFitMEM_logM_EntryType*>::iterator svFitMEM_logM_entry = svFitMEM_logM_entries.begin();
 	    svFitMEM_logM_entry != svFitMEM_logM_entries.end(); ++svFitMEM_logM_entry ) {
         if ( (*svFitMEM_logM_entry)->addLogM_power_ > 0. ) svFitAlgoMEM.addLogM(true, (*svFitMEM_logM_entry)->addLogM_power_);
@@ -576,7 +585,7 @@ int main(int argc, char* argv[])
       }
     }
 
-    if ( verbosity >= 2 ) {
+    if ( verbosity >= 1 ) {
       std::cout << "RUN: " << run << " LUMI: " << lumi << " EVENT: " << event << std::endl;
       std::cout << " leg1 (branch = " << leg1BranchName << "): Pt = " << leg1Pt << ", eta = " << leg1Eta << ", phi = " << leg1Phi << ", mass = " << leg1Mass << std::endl;
       std::cout << " leg2 (branch = " << leg2BranchName << "): Pt = " << leg2Pt << ", eta = " << leg2Eta << ", phi = " << leg2Phi << ", mass = " << leg2Mass << std::endl;
@@ -588,8 +597,11 @@ int main(int argc, char* argv[])
       std::cout << " svFitMassMEM:" << std::endl;
       for ( std::vector<svFitMEM_logM_EntryType*>::const_iterator svFitMEM_logM_entry = svFitMEM_logM_entries.begin();
 	    svFitMEM_logM_entry != svFitMEM_logM_entries.end(); ++svFitMEM_logM_entry ) {
-	std::cout << "  logM = " << (*svFitMEM_logM_entry)->addLogM_power_ << ":" 
-		  << " mass = " << (*svFitMEM_logM_entry)->svfitMass_ << " +/- " << (*svFitMEM_logM_entry)->svfitMassErr_ << " (isValid = " << (*svFitMEM_logM_entry)->svfitMass_isValid_ << ")" << std::endl;
+	std::cout << "  logM = " << (*svFitMEM_logM_entry)->addLogM_power_ << ", hadTauTF = ";
+	if ( (*svFitMEM_logM_entry)->useHadTauTF_ ) std::cout << "enabled";
+	else std::cout << "disabled";
+	std::cout << ":";
+	std::cout << " mass = " << (*svFitMEM_logM_entry)->svfitMass_ << " +/- " << (*svFitMEM_logM_entry)->svfitMassErr_ << " (isValid = " << (*svFitMEM_logM_entry)->svfitMass_isValid_ << ")" << std::endl;
       }
     }
 

@@ -14,6 +14,8 @@ GenMEtFromTauDecaysProducer::GenMEtFromTauDecaysProducer(const edm::ParameterSet
 { 
   src_ = cfg.getParameter<edm::InputTag>("src");
 
+  verbosity_ = cfg.getParameter<int>("verbosity");
+
   produces<reco::GenMETCollection>("");
 }
 
@@ -24,7 +26,9 @@ GenMEtFromTauDecaysProducer::~GenMEtFromTauDecaysProducer()
 
 void GenMEtFromTauDecaysProducer::produce(edm::Event& evt, const edm::EventSetup& es)
 {
-  //std::cout << "<GenMEtFromTauDecaysProducer::produce>:" << std::endl;
+  if ( verbosity_ >= 1 ) {
+    std::cout << "<GenMEtFromTauDecaysProducer::produce>:" << std::endl;
+  }
 
   edm::Handle<reco::GenJetCollection> genTaus;
   evt.getByLabel(src_, genTaus);
@@ -41,9 +45,16 @@ void GenMEtFromTauDecaysProducer::produce(edm::Event& evt, const edm::EventSetup
       if ( !((*daughter)->status() == 1) ) continue; // is stable
       int absPdgId = TMath::Abs((*daughter)->pdgId());
       if ( absPdgId == 12 || absPdgId == 14 || absPdgId == 16 ) { // is neutrino
+        if ( verbosity_ >= 2 ) {
+          std::cout << "adding genParticle: Pt = " << (*daughter)->pt() << " (Px = " << (*daughter)->px() << ", Py = " << (*daughter)->py() << ")" << ","	
+                    << " eta = " << (*daughter)->eta() << ", phi = " << (*daughter)->phi() << " (pdgId = " << (*daughter)->pdgId() << ")" << std::endl;   
+        }
 	genMEtP4 += (*daughter)->p4();
       }
     }
+  }
+  if ( verbosity_ >= 1 ) {
+    std::cout << "genMEt: Pt = " << genMEtP4.pt() << " (Px = " << genMEtP4.px() << ", Py = " << genMEtP4.py() << "), phi = " << genMEtP4.phi() << std::endl;  
   }
 
   reco::GenMET genMET;
