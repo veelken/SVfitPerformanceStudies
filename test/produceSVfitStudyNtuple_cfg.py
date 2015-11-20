@@ -39,11 +39,11 @@ process.printGenParticleList = cms.EDAnalyzer("ParticleListDrawer",
 )
 process.ntupleProductionSequence += process.printGenParticleList
 
-process.dumpGenTaus = cms.EDAnalyzer("DumpGenTaus",
-    src = cms.InputTag('genParticles'),
-    maxEventsToPrint = cms.untracked.int32(10)
-)
-process.ntupleProductionSequence += process.dumpGenTaus
+##process.dumpGenTaus = cms.EDAnalyzer("DumpGenTaus",
+##    src = cms.InputTag('genParticles'),
+##    maxEventsToPrint = cms.untracked.int32(10)
+##)
+##process.ntupleProductionSequence += process.dumpGenTaus
 #--------------------------------------------------------------------------------
 
 #--------------------------------------------------------------------------------
