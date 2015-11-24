@@ -1,0 +1,3 @@
+# Create the crab config files.
+# run with:
+./makeCrab datasets
