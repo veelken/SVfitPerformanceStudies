@@ -13,7 +13,7 @@ done
 
 for sample in ${dir[*]}; do 
   for option in ${genOpt[*]}; do 
-    for i in {1..1000}; do 
+    for i in {0..200}; do 
       sed "s+JOB_ID+$i+g" template_addMassVariables_${sample}_${option}_cfg.py> ${sample}/${option}/addMassVariables_${sample}_${option}_${i}_cfg.py 
     done
   done  

@@ -7,9 +7,9 @@ process = cms.PSet()
 process.fwliteInput = cms.PSet(
     fileNames = cms.vstring('/hdfs/cms/store/user/calpas/SVfitPerformanceStudies/v1/DYJetsToLLM50/svFitStudyNtuple_111_1_Gvn.root'),
     
-    maxEvents = cms.int32(200),
+    maxEvents = cms.int32(1000),
 
-    skipEvents = cms.uint32(200*JOB_ID),
+    skipEvents = cms.uint32(1000*JOB_ID),
     
     outputEvery = cms.uint32(1)
 )

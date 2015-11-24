@@ -7,9 +7,9 @@ process = cms.PSet()
 process.fwliteInput = cms.PSet(
     fileNames = cms.vstring('/afs/cern.ch/user/v/veelken/scratch0/SVfitMEM_with_vamp/CMSSW_7_4_6/src/TauAnalysis/SVfitPerformanceStudies/test/svFitStudyNtuple.root'),
     
-    maxEvents = cms.int32(200),
+    maxEvents = cms.int32(1000),
 
-    skipEvents = cms.uint32(200*JOB_ID),
+    skipEvents = cms.uint32(1000*JOB_ID),
     
     outputEvery = cms.uint32(1)
 )
