@@ -5,12 +5,9 @@ import os
 process = cms.PSet()
 
 process.fwliteInput = cms.PSet(
-    fileNames = cms.vstring('/afs/cern.ch/user/v/veelken/scratch0/SVfitMEM_with_vamp/CMSSW_7_4_6/src/TauAnalysis/SVfitPerformanceStudies/test/svFitStudyNtuple.root'),
-    
-    maxEvents = cms.int32(1000),
-
-    skipEvents = cms.uint32(1000*JOB_ID),
-    
+    fileNames = cms.vstring('PATH_TO_FILE/FILE.root'),
+    maxEvents = cms.int32(MAX_EVENTS),
+    skipEvents = cms.uint32(MAX_EVENTS*JOB_ID),
     outputEvery = cms.uint32(1)
 )
 
@@ -48,5 +45,5 @@ process.addMassVariables = cms.PSet(
 
     verbosity = cms.int32(1),
     
-    outputFileName = cms.string('svFitStudyNtuple_muhad_smeared_jobIdJOB_ID.root')
+    outputFileName = cms.string('svFitStudyNtuple_muhad_smeared_JOB_ID.root')
 )

@@ -5,12 +5,9 @@ import os
 process = cms.PSet()
 
 process.fwliteInput = cms.PSet(
-    fileNames = cms.vstring('/hdfs/cms/store/user/calpas/SVfitPerformanceStudies/v1/DYJetsToLLM50/svFitStudyNtuple_111_1_Gvn.root'),
-    
-    maxEvents = cms.int32(1000),
-
-    skipEvents = cms.uint32(1000*JOB_ID),
-    
+    fileNames = cms.vstring('PATH_TO_FILE/FILE.root'),
+    maxEvents = cms.int32(MAX_EVENTS),
+    skipEvents = cms.uint32(MAX_EVENTS*JOB_ID),
     outputEvery = cms.uint32(1)
 )
 
@@ -48,5 +45,5 @@ process.addMassVariables = cms.PSet(
 
     verbosity = cms.int32(1),
     
-    outputFileName = cms.string('svFitStudyNtuple_hadhad_gen_jobIdJOB_ID.root')
+    outputFileName = cms.string('svFitStudyNtuple_hadhad_gen_JOB_ID.root')
 )
