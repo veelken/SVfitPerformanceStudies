@@ -1,0 +1,7 @@
+# to create histogram
+make
+./do.exe
+
+# to plot the histogram
+root -l plot.cc
+
