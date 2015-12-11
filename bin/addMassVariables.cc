@@ -177,9 +177,15 @@ namespace
     measuredTauLeptons.push_back(svFitMEM::MeasuredTauLepton(leg2Type, leg2P4.pt(), leg2P4.eta(), leg2P4.phi(), leg2P4.mass()));
 
     svFitAlgo.integrate(measuredTauLeptons, mex, mey, metCov);
-    svfitMass = svFitAlgo.mass();
-    svfitMassErr = svFitAlgo.massErr();
-    svfitMass_isValid = 1;    
+    if ( svFitAlgo.isValidSolution() ) {
+      svfitMass = svFitAlgo.mass();
+      svfitMassErr = svFitAlgo.massErr();
+      svfitMass_isValid = 1;
+    } else {
+      svfitMass = -1.;
+      svfitMassErr = -1.;
+      svfitMass_isValid = 0;
+    }
   }
 
   struct svFitMEM_logM_EntryType
