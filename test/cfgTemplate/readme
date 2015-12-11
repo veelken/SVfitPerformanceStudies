@@ -1,0 +1,4 @@
+# create cfg file for different samples and buch of jobs.
+#run with:
+./makeCfg 
+
