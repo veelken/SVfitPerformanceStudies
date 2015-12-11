@@ -181,7 +181,13 @@ void SVfitStudyNtupleProducer::analyze(const edm::Event& evt, const edm::EventSe
   setValue_genMET("smearedMEt", smearedMEt);
 
   reco::GenMET genMEt_with_Cov(genMEt);
-  genMEt_with_Cov.setSignificanceMatrix(smearedMEt.getSignificanceMatrix());
+  reco::METCovMatrix genMEtCov;
+  genMEtCov[0][0] = 1.;
+  genMEtCov[0][1] = 0.;
+  genMEtCov[1][0] = 0.;
+  genMEtCov[1][1] = 1.;
+  //genMEt_with_Cov.setSignificanceMatrix(smearedMEt.getSignificanceMatrix());
+  genMEt_with_Cov.setSignificanceMatrix(genMEtCov);
   setValue_genMET("genMEt", genMEt_with_Cov);
 
   for ( std::vector<InputTagEntryType>::const_iterator evtWeight = evtWeightsToStore_.begin();
