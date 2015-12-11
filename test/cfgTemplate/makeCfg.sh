@@ -3,7 +3,8 @@
 maxEvents=4
 directories=(hadhad muhad emu)
 genOptions=(gen smeared)
-pathToFiles=(/home/calpas/svfitMEM/CMSSW_7_4_15_patch1/src/TauAnalysis/SVfitPerformanceStudies/test/files)
+##pathToFiles=(/home/calpas/svfitMEM/CMSSW_7_4_15_patch1/src/TauAnalysis/SVfitPerformanceStudies/test/files)
+pathToFiles=($CMSSW_BASE/src/TauAnalysis/SVfitPerformanceStudies/test/files)
 files=(SUSYGluGluToHToTauTauM300
 )
 #files=(SUSYGluGluToHToTauTauM200

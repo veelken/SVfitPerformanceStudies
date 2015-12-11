@@ -2,7 +2,8 @@
 
 directories=(hadhad muhad emu)
 genOptions=(gen smeared)
-pathToCfg=(/home/calpas/svfitMEM/CMSSW_7_4_15_patch1/src/TauAnalysis/SVfitPerformanceStudies/test/cfgTemplate)
+##pathToCfg=(/home/calpas/svfitMEM/CMSSW_7_4_15_patch1/src/TauAnalysis/SVfitPerformanceStudies/test/cfgTemplate)
+pathToCfg=($CMSSW_BASE/src/TauAnalysis/SVfitPerformanceStudies/test/cfgTemplate)
 files=(SUSYGluGluToHToTauTauM300)
 #files=(SUSYGluGluToHToTauTauM200
 #       SUSYGluGluToHToTauTauM300

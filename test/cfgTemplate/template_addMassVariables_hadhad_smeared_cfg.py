@@ -27,7 +27,7 @@ process.addMassVariables = cms.PSet(
     metBranchName = cms.string("smearedMEt"),
   
     svFitMEM = cms.PSet(
-        sqrtS = cms.double(8.e+3), # 8 TeV
+        sqrtS = cms.double(13.e+3), # 13 TeV
         apply_xSection_times_AccCorr = cms.string("xSection"), # "none", "xSection" or "xSection_times_Acc"
         inputFileName_xSection_times_AccCorr = cms.string('TauAnalysis/SVfitMEM/data/svFitMEM_xSection_and_AccCorr_13TeV_fitted.root'),
         graphName_xSection = cms.string('graph_Xsection_woAcc_13TeV_hadhad_vamp_fitted'),
