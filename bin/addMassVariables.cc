@@ -427,7 +427,6 @@ int main(int argc, char* argv[])
 	svFitMEM_addLogM_power != svFitMEM_addLogM_powers.end(); ++svFitMEM_addLogM_power ) {
     enum { kEnableHadTauTF, kDisableHadTauTF };
     for ( int optHadTauTF = kEnableHadTauTF; optHadTauTF <= kDisableHadTauTF; ++optHadTauTF ) {
-    //for ( int optHadTauTF = kDisableHadTauTF; optHadTauTF <= kDisableHadTauTF; ++optHadTauTF ) { // ONLY FOR TESTING !!!
       svFitMEM_logM_EntryType* svFitMEM_logM_entry = new svFitMEM_logM_EntryType();
       svFitMEM_logM_entry->addLogM_power_ = (*svFitMEM_addLogM_power);
       std::string optHadTauTF_string;
