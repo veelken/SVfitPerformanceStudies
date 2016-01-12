@@ -30,13 +30,13 @@ process.addMassVariables = cms.PSet(
     metBranchName = cms.string("smearedMEt"),
   
     svFitMEM = cms.PSet(
-        sqrtS = cms.double(8.e+3), # 8 TeV
+        sqrtS = cms.double(1.3e+4), # 13 TeV
         apply_xSection_times_AccCorr = cms.string("xSection"), # "none", "xSection" or "xSection_times_Acc"
         inputFileName_xSection_times_AccCorr = cms.string('TauAnalysis/SVfitMEM/data/svFitMEM_xSection_and_AccCorr_13TeV_fitted.root'),
         graphName_xSection = cms.string('graph_Xsection_woAcc_13TeV_hadhad_vamp_fitted'),
         graphName_Acc = cms.string('graph_Acc_13TeV_hadhad_vamp'),
         minAcc = cms.double(1.e-2),
-        addLogM_powers = cms.vdouble(0., 5.),
+        addLogM_powers = cms.vdouble(0., 1., 2., 3., 4., 5.),
         inputFileName_hadTauTF = cms.string('TauAnalysis/SVfitMEM/data/hadTauTF_toyMC.root'),
         graphName_hadTauTF = cms.string('fit'),
         intMode = cms.string('vamp'),
