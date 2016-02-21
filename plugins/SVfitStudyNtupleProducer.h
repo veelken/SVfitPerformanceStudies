@@ -18,6 +18,7 @@
 
 #include "DataFormats/JetReco/interface/GenJet.h"
 #include "DataFormats/METReco/interface/GenMET.h"
+#include "DataFormats/SVfitPerformanceStudies/interface/GenHadRecoil.h"
 
 #include <TTree.h>
 
@@ -47,12 +48,14 @@ class SVfitStudyNtupleProducer : public edm::EDAnalyzer
   void addBranch_genMuon(const std::string&);
   void addBranch_genHadTau(const std::string&);
   void addBranch_genMET(const std::string&);
+  void addBranch_genHadRecoil(const std::string&);
   
   void addBranch_EnPxPyPz(const std::string&);
   void addBranch_PxPyPz(const std::string&);
   void addBranch_PtEtaPhiMass(const std::string&);
   void addBranch_PtEtaPhi(const std::string&);
   void addBranch_Cov2d(const std::string&);
+  void addBranch_Cov4d(const std::string&);
     
   void resetBranches();
 
@@ -67,6 +70,7 @@ class SVfitStudyNtupleProducer : public edm::EDAnalyzer
   void setValue_genMuon(const std::string&, const reco::GenJet&);
   void setValue_genHadTau(const std::string&, const reco::GenJet&);
   void setValue_genMET(const std::string&, const reco::GenMET&);
+  void setValue_genHadRecoil(const std::string&, const svFitMEM::GenHadRecoil&);
 
   template <typename T>
   void setValue_EnPxPyPz(const std::string&, const T&);
@@ -76,6 +80,8 @@ class SVfitStudyNtupleProducer : public edm::EDAnalyzer
   void setValue_PtEtaPhi(const std::string&, double, double, double);
   template <typename T>
   void setValue_Cov2d(const std::string&, const T&);
+  template <typename T>
+  void setValue_Cov4d(const std::string&, const T&);
 
   std::string moduleLabel_;
 
@@ -84,9 +90,11 @@ class SVfitStudyNtupleProducer : public edm::EDAnalyzer
   edm::InputTag srcGenMuons_;
   edm::InputTag srcGenHadTaus_;
   edm::InputTag srcGenMET_;
+  edm::InputTag srcGenHadRecoil_;
 
   edm::InputTag srcSmearedHadTaus_;
   edm::InputTag srcSmearedMET_;
+  edm::InputTag srcSmearedHadRecoil_;
 
   struct InputTagEntryType
   {

@@ -28,15 +28,19 @@ process.addMassVariables = cms.PSet(
     leg2maxAbsEta = cms.double(2.5),
 
     metBranchName = cms.string("genMEt"),
+    hadRecoilBranchName = cms.string("genHadRecoil"),
   
     svFitMEM = cms.PSet(
         sqrtS = cms.double(1.3e+4), # 13 TeV
         apply_xSection_times_AccCorr = cms.string("xSection"), # "none", "xSection" or "xSection_times_Acc"
-        inputFileName_xSection_times_AccCorr = cms.string('TauAnalysis/SVfitMEM/data/svFitMEM_xSection_and_AccCorr_13TeV_fitted.root'),
-        graphName_xSection = cms.string('graph_Xsection_woAcc_13TeV_lephad_vamp_fitted'),
-        graphName_Acc = cms.string('graph_Acc_13TeV_lephad_vamp'),
+        inputFileName_xSection_times_AccCorr_lo = cms.string('TauAnalysis/SVfitMEM/data/svFitMEM_xSection_and_AccCorr_lo_13TeV_fitted.root'),
+        graphName_xSection_lo = cms.string('graph_Xsection_woAcc_lo_13TeV_lephad_vamp_fitted'),
+        graphName_Acc_lo = cms.string('graph_Acc_lo_13TeV_lephad_vamp'),
+        inputFileName_xSection_times_AccCorr_nlo = cms.string('TauAnalysis/SVfitMEM/data/svFitMEM_xSection_and_AccCorr_nlo_13TeV_fitted.root'),
+        graphName_xSection_nlo = cms.string('graph_Xsection_woAcc_nlo_13TeV_lephad_vamp_fitted'),
+        graphName_Acc_nlo = cms.string('graph_Acc_nlo_13TeV_lephad_vamp'),
         minAcc = cms.double(1.e-2),
-        addLogM_powers = cms.vdouble(0., 1., 2., 3., 4., 5.),
+        addLogM_powers = cms.vdouble(0., 1., 2., 3., 4., 5., 6., 7., 8.),
         inputFileName_hadTauTF = cms.string('TauAnalysis/SVfitMEM/data/hadTauTF_toyMC.root'),
         graphName_hadTauTF = cms.string('fit'),
         intMode = cms.string('vamp'),

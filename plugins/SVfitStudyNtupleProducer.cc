@@ -13,6 +13,8 @@
 #include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
 #include "DataFormats/METReco/interface/GenMET.h"
 #include "DataFormats/METReco/interface/GenMETCollection.h"
+#include "DataFormats/SVfitPerformanceStudies/interface/GenHadRecoil.h"
+#include "DataFormats/SVfitPerformanceStudies/interface/GenHadRecoilFwd.h"
 #include "DataFormats/Candidate/interface/Candidate.h"
 #include "DataFormats/TauReco/interface/PFTau.h"
 
@@ -32,9 +34,11 @@ SVfitStudyNtupleProducer::SVfitStudyNtupleProducer(const edm::ParameterSet& cfg)
   srcGenMuons_ = cfg.getParameter<edm::InputTag>("srcGenMuons");
   srcGenHadTaus_ = cfg.getParameter<edm::InputTag>("srcGenHadTaus");
   srcGenMET_ = cfg.getParameter<edm::InputTag>("srcGenMET");
+  srcGenHadRecoil_ = cfg.getParameter<edm::InputTag>("srcGenHadRecoil");
 
   srcSmearedHadTaus_ = cfg.getParameter<edm::InputTag>("srcSmearedHadTaus");
   srcSmearedMET_ = cfg.getParameter<edm::InputTag>("srcSmearedMET");
+  srcSmearedHadRecoil_ = cfg.getParameter<edm::InputTag>("srcSmearedHadRecoil");
 
   edm::ParameterSet evtWeights = cfg.getParameter<edm::ParameterSet>("evtWeights");
   typedef std::vector<std::string> vstring;
@@ -97,6 +101,12 @@ void SVfitStudyNtupleProducer::beginJob()
   // variables for missing Et (smeared)
   addBranch_genMET("smearedMEt");
 
+  // variables for hadronic recoil (generator level)
+  addBranch_genHadRecoil("genHadRecoil");
+
+  // variables for hadronic recoil (smeared)
+  addBranch_genHadRecoil("smearedHadRecoil");
+
   // event weights/efficiencies
   for ( std::vector<InputTagEntryType>::const_iterator evtWeight = evtWeightsToStore_.begin();
 	evtWeight != evtWeightsToStore_.end(); ++evtWeight ) {
@@ -116,6 +126,24 @@ namespace
       genTauLeptonP4 += (*daughter)->p4();
     }
     return genTauLeptonP4;
+  }
+
+  reco::Candidate::LorentzVector sumP4(const reco::GenJetCollection& genVisTaus)
+  {
+    reco::Candidate::LorentzVector retVal;
+    for ( reco::GenJetCollection::const_iterator genVisTau = genVisTaus.begin();
+	  genVisTau != genVisTaus.end(); ++genVisTau ) {
+      std::vector<const reco::GenParticle*> genDaughters = genVisTau->getGenConstituents();
+      for ( std::vector<const reco::GenParticle*>::const_iterator genDaughter = genDaughters.begin();
+	    genDaughter != genDaughters.end(); ++genDaughter ) {
+	int status = (*genDaughter)->status();
+	if ( status != 1 ) continue; 
+	int absPdgId = TMath::Abs((*genDaughter)->pdgId());
+	if ( absPdgId == 12 || absPdgId == 14 || absPdgId == 16 ) continue;
+	retVal += (*genDaughter)->p4();
+      }
+    }
+    return retVal;
   }
 }
 
@@ -170,7 +198,6 @@ void SVfitStudyNtupleProducer::analyze(const edm::Event& evt, const edm::EventSe
     throw cms::Exception("SVfitStudyNtupleProducer") 
       << " Collection = '" << srcGenMET_.label() << "' does not contain exactly one reco::GenMET object !!\n";
   const reco::GenMET genMEt = genMETs->front();
-  //setValue_genMET("genMEt", genMEt);
 
   edm::Handle<reco::GenMETCollection> smearedMETs;
   evt.getByLabel(srcSmearedMET_, smearedMETs);
@@ -190,11 +217,47 @@ void SVfitStudyNtupleProducer::analyze(const edm::Event& evt, const edm::EventSe
   genMEt_with_Cov.setSignificanceMatrix(genMEtCov);
   setValue_genMET("genMEt", genMEt_with_Cov);
 
+  edm::Handle<svFitMEM::GenHadRecoilCollection> genHadRecoils;
+  evt.getByLabel(srcGenHadRecoil_, genHadRecoils);
+  if ( !(genHadRecoils->size() == 1) ) 
+    throw cms::Exception("SVfitStudyNtupleProducer") 
+      << " Collection = '" << srcGenHadRecoil_.label() << "' does not contain exactly one svFitMEM::GenHadRecoil object !!\n";
+  const svFitMEM::GenHadRecoil genHadRecoil = genHadRecoils->front();
+
+  edm::Handle<svFitMEM::GenHadRecoilCollection> smearedHadRecoils;
+  evt.getByLabel(srcSmearedHadRecoil_, smearedHadRecoils);
+  if ( !(smearedHadRecoils->size() == 1) ) 
+    throw cms::Exception("SVfitStudyNtupleProducer") 
+      << " Collection = '" << srcSmearedHadRecoil_.label() << "' does not contain exactly one svFitMEM::GenHadRecoil object !!\n";
+  const svFitMEM::GenHadRecoil smearedHadRecoil = smearedHadRecoils->front();
+  setValue_genHadRecoil("smearedHadRecoil", smearedHadRecoil);
+
+  svFitMEM::GenHadRecoil genHadRecoil_with_Cov(genHadRecoil);
+  svFitMEM::GenHadRecoil::CovMatrix genHadRecoilCov;
+  for ( int idxRow = 0; idxRow < 4; ++idxRow ) {
+    for ( int idxColumn = 0; idxColumn < 4; ++idxColumn ) {
+      if ( idxRow == idxColumn ) genHadRecoilCov[idxRow][idxColumn] = 1.;
+      else                       genHadRecoilCov[idxRow][idxColumn] = 0.;  
+    }
+  }
+  //genHadRecoil_with_Cov.setSignificanceMatrix(smearedHadRecoil.getSignificanceMatrix());
+  genHadRecoil_with_Cov.setSignificanceMatrix(genHadRecoilCov);
+  setValue_genHadRecoil("genHadRecoil", genHadRecoil_with_Cov);
+
   for ( std::vector<InputTagEntryType>::const_iterator evtWeight = evtWeightsToStore_.begin();
 	evtWeight != evtWeightsToStore_.end(); ++evtWeight ) {
     edm::Handle<double> evtWeightValue;
     evt.getByLabel(evtWeight->src_, evtWeightValue);
     setValueF(evtWeight->branchName_, *evtWeightValue);
+  }
+  
+  if ( verbosity_ >= 1 ) {
+    std::cout << "genMEt: Px = " << genMEt.px() << ", Py = " << genMEt.py() << std::endl;
+    std::cout << "smearedMEt: Px = " << smearedMEt.px() << ", Py = " << smearedMEt.py() << std::endl;
+    reco::Candidate::LorentzVector genAllP4 = sumP4(*genElectrons) + sumP4(*genMuons) + sumP4(*genHadTaus) + genHadRecoil.p4();
+    std::cout << "-(genElectrons + genMuons + genHadTaus + genHadRecoil): Px = " << -genAllP4.px() << ", Py = " << -genAllP4.py() << std::endl;
+    reco::Candidate::LorentzVector smearedAllP4 = sumP4(*genElectrons) + sumP4(*genMuons) + sumP4(*smearedHadTaus) + smearedHadRecoil.p4();
+    std::cout << "-(smearedElectrons + smearedMuons + smearedHadTaus + smearedHadRecoil): Px = " << -smearedAllP4.px() << ", Py = " << -smearedAllP4.py() << std::endl;
   }
 
   if ( verbosity_ >= 2 ) {
@@ -331,6 +394,14 @@ void SVfitStudyNtupleProducer::addBranch_genMET(const std::string& name)
   addBranch_Cov2d(name);
 }
 
+void SVfitStudyNtupleProducer::addBranch_genHadRecoil(const std::string& name) 
+{
+  addBranch_EnPxPyPz(name);
+  addBranch_PtEtaPhiMass(name);
+  addBranchF(name + "Charge");
+  addBranch_Cov4d(name);
+}
+
 void SVfitStudyNtupleProducer::addBranch_EnPxPyPz(const std::string& name) 
 {
   addBranchF(name + "E");
@@ -363,6 +434,16 @@ void SVfitStudyNtupleProducer::addBranch_Cov2d(const std::string& name)
   addBranchF(name + "Cov01");
   addBranchF(name + "Cov10");
   addBranchF(name + "Cov11");
+}
+
+void SVfitStudyNtupleProducer::addBranch_Cov4d(const std::string& name)
+{
+  for ( int idxRow = 0; idxRow < 4; ++idxRow ) {
+    for ( int idxColumn = 0; idxColumn < 4; ++idxColumn ) {
+      std::string branchName = Form("%sCov%i%i", name.data(), idxRow, idxColumn);
+      addBranchF(branchName);
+    }
+  }
 }
 
 //
@@ -416,6 +497,14 @@ void SVfitStudyNtupleProducer::setValue_genMET(const std::string& name, const re
   setValue_Cov2d(name, genMET.getSignificanceMatrix());
 }
 
+void SVfitStudyNtupleProducer::setValue_genHadRecoil(const std::string& name, const svFitMEM::GenHadRecoil& genHadRecoil) 
+{
+  setValue_EnPxPyPz(name, genHadRecoil.p4());
+  setValue_PtEtaPhiMass(name, genHadRecoil.p4());
+  setValueF(name + "Charge", genHadRecoil.charge());
+  setValue_Cov4d(name, genHadRecoil.getSignificanceMatrix());
+}
+
 template <typename T>
 void SVfitStudyNtupleProducer::setValue_EnPxPyPz(const std::string& name, const T& p4)
 {
@@ -451,6 +540,17 @@ void SVfitStudyNtupleProducer::setValue_Cov2d(const std::string& name, const T& 
   setValueF(name + "Cov01", cov[0][1]);
   setValueF(name + "Cov10", cov[1][0]);
   setValueF(name + "Cov11", cov[1][1]);
+}
+
+template <typename T>
+void SVfitStudyNtupleProducer::setValue_Cov4d(const std::string& name, const T& cov)
+{
+  for ( int idxRow = 0; idxRow < 4; ++idxRow ) {
+    for ( int idxColumn = 0; idxColumn < 4; ++idxColumn ) {
+      std::string branchName = Form("%sCov%i%i", name.data(), idxRow, idxColumn);
+      setValueF(branchName.data(), cov[idxRow][idxColumn]);
+    }
+  }
 }
 
 #include "FWCore/Framework/interface/MakerMacros.h"

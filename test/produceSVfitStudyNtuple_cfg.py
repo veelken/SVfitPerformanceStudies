@@ -4,7 +4,7 @@ process = cms.Process("produceSVfitStudyNtuple")
 
 process.load('Configuration/StandardSequences/Services_cff')
 process.load('FWCore/MessageService/MessageLogger_cfi')
-process.MessageLogger.cerr.FwkReport.reportEvery = 1
+process.MessageLogger.cerr.FwkReport.reportEvery = 100
 process.load("Configuration.StandardSequences.Reconstruction_cff")
 process.load("Configuration.Geometry.GeometryDB_cff")
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
@@ -37,7 +37,7 @@ process.printGenParticleList = cms.EDAnalyzer("ParticleListDrawer",
     src = cms.InputTag('genParticles'),
     maxEventsToPrint = cms.untracked.int32(10)
 )
-process.ntupleProductionSequence += process.printGenParticleList
+##process.ntupleProductionSequence += process.printGenParticleList
 
 ##process.dumpGenTaus = cms.EDAnalyzer("DumpGenTaus",
 ##    src = cms.InputTag('genParticles'),
@@ -109,16 +109,25 @@ process.ntupleProductionSequence += process.tauGenJetsSelectorMuonWithNu
 #--------------------------------------------------------------------------------
 
 #--------------------------------------------------------------------------------
-# produce genMET collection 
+# produce genMET and genHadronicRecoil collections
 process.genMEtFromTauDecays = cms.EDProducer("GenMEtFromTauDecaysProducer",
     src = cms.InputTag('tauGenJetsWithNu'),
-    verbosity = cms.int32(2)
+    verbosity = cms.int32(0)
 )
 process.ntupleProductionSequence += process.genMEtFromTauDecays
+
+process.genHadRecoil = cms.EDProducer("GenHadRecoilProducer",
+    srcGenParticles = cms.InputTag('genParticles'),
+    srcGenElectrons = cms.InputTag('tauGenJetsSelectorElectron'),
+    srcGenMuons = cms.InputTag('tauGenJetsSelectorMuon'),
+    srcGenHadTaus = cms.InputTag('tauGenJetsSelectorAllHadrons'), 
+    verbosity = cms.int32(0)
+)
+process.ntupleProductionSequence += process.genHadRecoil
 #--------------------------------------------------------------------------------
 
 #--------------------------------------------------------------------------------
-# produce collections of smeared hadronic taus and smeared MET
+# produce collections of smeared hadronic taus, smeared MET and smeared hadronic recoil
 process.smearedHadTaus = cms.EDProducer("SmearedGenHadTauProducer",
     src = cms.InputTag('tauGenJetsSelectorAllHadrons'),
     inputFileName = cms.string("TauAnalysis/SVfitPerformanceStudies/data/hadTauSmearingCDF_toyMC.root"),
@@ -130,9 +139,19 @@ process.smearedMEt = cms.EDProducer("SmearedMEtProducer",
     src = cms.InputTag('genMEtFromTauDecays'),
     sigmaX = cms.double(10.),
     sigmaY = cms.double(10.),
-    verbosity = cms.int32(2)
+    verbosity = cms.int32(0)
 )
 process.ntupleProductionSequence += process.smearedMEt
+
+process.smearedHadRecoil = cms.EDProducer("SmearedHadRecoilProducer",
+    src = cms.InputTag('genHadRecoil'),
+    sigmaPx = cms.double(10.),
+    sigmaPy = cms.double(10.),
+    sigmaPz = cms.double(-1.),
+    sigmaMass = cms.double(-1.),                                      
+    verbosity = cms.int32(0)
+)
+process.ntupleProductionSequence += process.smearedHadRecoil
 #--------------------------------------------------------------------------------
 
 #--------------------------------------------------------------------------------
@@ -143,13 +162,15 @@ process.ntupleProducer = cms.EDAnalyzer("SVfitStudyNtupleProducer",
     srcGenMuons = cms.InputTag('tauGenJetsSelectorMuon'),
     srcGenHadTaus = cms.InputTag('tauGenJetsSelectorAllHadrons'),
     srcGenMET = cms.InputTag('genMEtFromTauDecays'),
+    srcGenHadRecoil = cms.InputTag('genHadRecoil'),     
 
     srcSmearedHadTaus = cms.InputTag('smearedHadTaus'),
     srcSmearedMET = cms.InputTag('smearedMEt'),
+    srcSmearedHadRecoil = cms.InputTag('smearedHadRecoil'),                                    
 
     evtWeights = cms.PSet(),
 
-    verbosity = cms.int32(2)
+    verbosity = cms.int32(0)
 )
 process.ntupleProductionSequence += process.ntupleProducer
 

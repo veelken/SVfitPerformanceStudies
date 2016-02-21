@@ -20,7 +20,8 @@
 #include "DataFormats/Candidate/interface/Candidate.h"
 #include "DataFormats/Math/interface/deltaR.h"
 
-#include "TauAnalysis/SVfitMEM/interface/SVfitMEM.h"
+#include "TauAnalysis/SVfitMEM/interface/SVfitMEM_lo.h"
+#include "TauAnalysis/SVfitMEM/interface/SVfitMEM_nlo.h"
 #include "TauAnalysis/SVfitMEM/interface/MeasuredTauLepton.h"
 #include "TauAnalysis/SVfitStandalone/interface/SVfitStandaloneAlgorithm.h"
 #include "TauAnalysis/SVfitStandalone/interface/SVfitStandaloneLikelihood.h"
@@ -160,13 +161,13 @@ namespace
     else assert(0);
   }
 
-  void compSVfitMassMEM(SVfitMEM& svFitAlgo, 
-			svFitMEM::MeasuredTauLepton::kDecayType leg1Type, reco::Candidate::PolarLorentzVector& leg1P4, 
-			svFitMEM::MeasuredTauLepton::kDecayType leg2Type, reco::Candidate::PolarLorentzVector& leg2P4, 
-			double mex, double mey, const TMatrixD& metCov, 
-			Float_t& svfitMass, Float_t& svfitMassErr, Int_t& svfitMass_isValid)
+  void compSVfitMassMEM_lo(SVfitMEM_lo& svFitAlgo, 
+			   svFitMEM::MeasuredTauLepton::kDecayType leg1Type, reco::Candidate::PolarLorentzVector& leg1P4, 
+			   svFitMEM::MeasuredTauLepton::kDecayType leg2Type, reco::Candidate::PolarLorentzVector& leg2P4, 
+			   double mex, double mey, const TMatrixD& metCov, 
+			   Float_t& svfitMass, Float_t& svfitMassErr, Int_t& svfitMass_isValid)
   {
-    //std::cout << "<compSVfitMassMEM>:" << std::endl;	
+    //std::cout << "<compSVfitMassMEM_lo>:" << std::endl;	
     //std::cout << "leg1: Pt = " << leg1P4.pt() << ", eta = " << leg1P4.eta() << ", phi = " << leg1P4.phi() << ", mass = " << leg1P4.mass() << " (type = " << leg1Type << ")" << std::endl;
     //std::cout << "leg2: Pt = " << leg2P4.pt() << ", eta = " << leg2P4.eta() << ", phi = " << leg2P4.phi() << ", mass = " << leg2P4.mass() << " (type = " << leg2Type << ")" << std::endl;     
     //std::cout << "met: Px = " << mex << ", Py = " << mey << std::endl; 
@@ -187,9 +188,39 @@ namespace
       svfitMass_isValid = 0;
     }
   }
+/*
+  void compSVfitMassMEM_nlo(SVfitMEM_nlo& svFitAlgo, 
+			    svFitMEM::MeasuredTauLepton::kDecayType leg1Type, reco::Candidate::PolarLorentzVector& leg1P4, 
+			    svFitMEM::MeasuredTauLepton::kDecayType leg2Type, reco::Candidate::PolarLorentzVector& leg2P4, 
+			    double hadRecoilPx, double hadRecoilPy, double hadRecoilPz, const TMatrixD& hadRecoilCov, 
+			    Float_t& svfitMass, Float_t& svfitMassErr, Int_t& svfitMass_isValid)
+  {
+    //std::cout << "<compSVfitMassMEM_nlo>:" << std::endl;	
+    //std::cout << "leg1: Pt = " << leg1P4.pt() << ", eta = " << leg1P4.eta() << ", phi = " << leg1P4.phi() << ", mass = " << leg1P4.mass() << " (type = " << leg1Type << ")" << std::endl;
+    //std::cout << "leg2: Pt = " << leg2P4.pt() << ", eta = " << leg2P4.eta() << ", phi = " << leg2P4.phi() << ", mass = " << leg2P4.mass() << " (type = " << leg2Type << ")" << std::endl;     
+    //std::cout << "met: Px = " << mex << ", Py = " << mey << std::endl; 
+    //std::cout << "metCov:" << std::endl;
+    //metCov.Print();    
+    std::vector<svFitMEM::MeasuredTauLepton> measuredTauLeptons;
+    measuredTauLeptons.push_back(svFitMEM::MeasuredTauLepton(leg1Type, leg1P4.pt(), leg1P4.eta(), leg1P4.phi(), leg1P4.mass()));
+    measuredTauLeptons.push_back(svFitMEM::MeasuredTauLepton(leg2Type, leg2P4.pt(), leg2P4.eta(), leg2P4.phi(), leg2P4.mass()));
 
+    svFitAlgo.integrate(measuredTauLeptons, hadRecoilPx, hadRecoilPy, hadRecoilPz, hadRecoilCov);
+    if ( svFitAlgo.isValidSolution() ) {
+      svfitMass = svFitAlgo.mass();
+      svfitMassErr = svFitAlgo.massErr();
+      svfitMass_isValid = 1;
+    } else {
+      svfitMass = -1.;
+      svfitMassErr = -1.;
+      svfitMass_isValid = 0;
+    }
+  }
+ */
   struct svFitMEM_logM_EntryType
   {
+    enum { kLO, kNLO };
+    int lo_or_nlo_;
     double addLogM_power_;
     bool useHadTauTF_;
     Float_t svfitMass_;
@@ -247,6 +278,7 @@ int main(int argc, char* argv[])
   double leg2maxAbsEta = cfgAddMassVariables.getParameter<double>("leg2maxAbsEta");
 
   std::string metBranchName = cfgAddMassVariables.getParameter<std::string>("metBranchName");
+  std::string hadRecoilBranchName = cfgAddMassVariables.getParameter<std::string>("hadRecoilBranchName");
 
   edm::ParameterSet cfgSVfitMEM = cfgAddMassVariables.getParameter<edm::ParameterSet>("svFitMEM");
   double svFitMEM_sqrtS = cfgSVfitMEM.getParameter<double>("sqrtS");
@@ -258,20 +290,33 @@ int main(int argc, char* argv[])
   else if ( svFitMEM_apply_xSection_times_AccCorr_string == "xSection_times_Acc" ) svFitMEM_apply_xSection_times_AccCorr = kXS_times_Acc;
   else throw cms::Exception("addMassVariables") 
     << "Invalid Configuration parameter 'apply_xSection_times_AccCorr' = " << svFitMEM_apply_xSection_times_AccCorr_string << " !!\n";
-  const TGraphErrors* svFitMEM_graph_xSection = 0;
-  const TGraphErrors* svFitMEM_graph_Acc = 0;
+  const TGraphErrors* svFitMEM_graph_xSection_lo = 0;
+  const TGraphErrors* svFitMEM_graph_Acc_lo = 0;
+  const TGraphErrors* svFitMEM_graph_xSection_nlo = 0;
+  const TGraphErrors* svFitMEM_graph_Acc_nlo = 0;
   if ( svFitMEM_apply_xSection_times_AccCorr == kXS || svFitMEM_apply_xSection_times_AccCorr == kXS_times_Acc ) {
-    std::string inputFileName_xSection_times_AccCorr = cfgSVfitMEM.getParameter<std::string>("inputFileName_xSection_times_AccCorr");
-    TFile* inputFile_xSection_times_AccCorr = new TFile(findFile(inputFileName_xSection_times_AccCorr).data());
-    std::string graphName_xSection = cfgSVfitMEM.getParameter<std::string>("graphName_xSection");
-    svFitMEM_graph_xSection = readGraph<TGraphErrors>(inputFile_xSection_times_AccCorr, graphName_xSection);
-    std::string graphName_Acc = cfgSVfitMEM.getParameter<std::string>("graphName_Acc");
+    std::string inputFileName_xSection_times_AccCorr_lo = cfgSVfitMEM.getParameter<std::string>("inputFileName_xSection_times_AccCorr_lo");
+    TFile* inputFile_xSection_times_AccCorr_lo = new TFile(findFile(inputFileName_xSection_times_AccCorr_lo).data());
+    std::string graphName_xSection_lo = cfgSVfitMEM.getParameter<std::string>("graphName_xSection_lo");
+    svFitMEM_graph_xSection_lo = readGraph<TGraphErrors>(inputFile_xSection_times_AccCorr_lo, graphName_xSection_lo);
+    std::string graphName_Acc_lo = cfgSVfitMEM.getParameter<std::string>("graphName_Acc_lo");
     if ( svFitMEM_apply_xSection_times_AccCorr == kXS_times_Acc ) {
-      svFitMEM_graph_Acc = readGraph<TGraphErrors>(inputFile_xSection_times_AccCorr, graphName_Acc);
+      svFitMEM_graph_Acc_lo = readGraph<TGraphErrors>(inputFile_xSection_times_AccCorr_lo, graphName_Acc_lo);
     }
-    delete inputFile_xSection_times_AccCorr;
+    delete inputFile_xSection_times_AccCorr_lo;
+/*
+    std::string inputFileName_xSection_times_AccCorr_nlo = cfgSVfitMEM.getParameter<std::string>("inputFileName_xSection_times_AccCorr_nlo");
+    TFile* inputFile_xSection_times_AccCorr_nlo = new TFile(findFile(inputFileName_xSection_times_AccCorr_nlo).data());
+    std::string graphName_xSection_nlo = cfgSVfitMEM.getParameter<std::string>("graphName_xSection_nlo");
+    svFitMEM_graph_xSection_nlo = readGraph<TGraphErrors>(inputFile_xSection_times_AccCorr_nlo, graphName_xSection_nlo);
+    std::string graphName_Acc_nlo = cfgSVfitMEM.getParameter<std::string>("graphName_Acc_nlo");
+    if ( svFitMEM_apply_xSection_times_AccCorr == kXS_times_Acc ) {
+      svFitMEM_graph_Acc_nlo = readGraph<TGraphErrors>(inputFile_xSection_times_AccCorr_nlo, graphName_Acc_nlo);
+    }
+    delete inputFile_xSection_times_AccCorr_nlo;
+ */
   }
-  double svFitMEM_minAcc = cfgSVfitMEM.getParameter<double>("minAcc");
+  //double svFitMEM_minAcc = cfgSVfitMEM.getParameter<double>("minAcc");
   vdouble svFitMEM_addLogM_powers = cfgSVfitMEM.getParameter<vdouble>("addLogM_powers");
   std::string inputFileName_hadTauTF = cfgSVfitMEM.getParameter<std::string>("inputFileName_hadTauTF");
   TFile* inputFile_hadTauTF = new TFile(findFile(inputFileName_hadTauTF).data());
@@ -280,8 +325,8 @@ int main(int argc, char* argv[])
   delete inputFile_hadTauTF;
   std::string svFitMEM_intMode_string = cfgSVfitMEM.getParameter<std::string>("intMode");
   int svFitMEM_intMode = 1;
-  if      ( svFitMEM_intMode_string == "vamp"  ) svFitMEM_intMode = SVfitMEM::kVAMP;
-  else if ( svFitMEM_intMode_string == "vegas" ) svFitMEM_intMode = SVfitMEM::kVEGAS;
+  if      ( svFitMEM_intMode_string == "vamp"  ) svFitMEM_intMode = SVfitMEM_lo::kVAMP;
+  else if ( svFitMEM_intMode_string == "vegas" ) svFitMEM_intMode = SVfitMEM_lo::kVEGAS;
   else throw cms::Exception("addMassVariables") 
     << "Invalid Configuration parameter 'intMode' = " << svFitMEM_intMode_string << " !!\n";
   unsigned svFitMEM_maxObjFunctionCalls = cfgSVfitMEM.getParameter<unsigned>("maxObjFunctionCalls");
@@ -309,7 +354,7 @@ int main(int argc, char* argv[])
   }
   
   if ( !(inputTree->GetListOfFiles()->GetEntries() >= 1) ) {
-    throw cms::Exception("addSVfitMEM") 
+    throw cms::Exception("addMassVariables") 
       << "Failed to identify input Tree !!\n";
   }
 
@@ -423,31 +468,41 @@ int main(int argc, char* argv[])
 
   // mTauTau reconstructed by SVfitMEM
   std::vector<svFitMEM_logM_EntryType*> svFitMEM_logM_entries;
-  for ( vdouble::const_iterator svFitMEM_addLogM_power = svFitMEM_addLogM_powers.begin();
-	svFitMEM_addLogM_power != svFitMEM_addLogM_powers.end(); ++svFitMEM_addLogM_power ) {
-    enum { kEnableHadTauTF, kDisableHadTauTF };
-    for ( int optHadTauTF = kEnableHadTauTF; optHadTauTF <= kDisableHadTauTF; ++optHadTauTF ) {
-      svFitMEM_logM_EntryType* svFitMEM_logM_entry = new svFitMEM_logM_EntryType();
-      svFitMEM_logM_entry->addLogM_power_ = (*svFitMEM_addLogM_power);
-      std::string optHadTauTF_string;
-      if ( optHadTauTF == kEnableHadTauTF ) {
-	svFitMEM_logM_entry->useHadTauTF_ = true;
-	optHadTauTF_string = "wHadTauTF";
-      } else {
-	svFitMEM_logM_entry->useHadTauTF_ = false;
-	optHadTauTF_string = "woHadTauTF";
+  //for ( int lo_or_nlo = svFitMEM_logM_EntryType::kLO; lo_or_nlo <= svFitMEM_logM_EntryType::kNLO; ++lo_or_nlo ) {
+  for ( int lo_or_nlo = svFitMEM_logM_EntryType::kLO; lo_or_nlo <= svFitMEM_logM_EntryType::kLO; ++lo_or_nlo ) {
+    for ( vdouble::const_iterator svFitMEM_addLogM_power = svFitMEM_addLogM_powers.begin();
+	  svFitMEM_addLogM_power != svFitMEM_addLogM_powers.end(); ++svFitMEM_addLogM_power ) {
+      enum { kEnableHadTauTF, kDisableHadTauTF };
+      for ( int optHadTauTF = kEnableHadTauTF; optHadTauTF <= kDisableHadTauTF; ++optHadTauTF ) {
+	svFitMEM_logM_EntryType* svFitMEM_logM_entry = new svFitMEM_logM_EntryType();
+	svFitMEM_logM_entry->lo_or_nlo_ = lo_or_nlo;
+	std::string optLO_or_NLO_string;
+        if ( lo_or_nlo == svFitMEM_logM_EntryType::kLO ) {
+  	  optLO_or_NLO_string = "lo";
+	//} else if ( lo_or_nlo == svFitMEM_logM_EntryType::kNLO ) {
+	//  optLO_or_NLO_string = "nlo";
+	} else assert(0);
+	svFitMEM_logM_entry->addLogM_power_ = (*svFitMEM_addLogM_power);
+        std::string optHadTauTF_string;
+        if ( optHadTauTF == kEnableHadTauTF ) {
+	  svFitMEM_logM_entry->useHadTauTF_ = true;
+  	  optHadTauTF_string = "wHadTauTF";
+        } else {
+	  svFitMEM_logM_entry->useHadTauTF_ = false;
+	  optHadTauTF_string = "woHadTauTF";
+        }
+	int addLogM_power_int = TMath::Nint(*svFitMEM_addLogM_power);
+	std::string branchName_svfitMass = Form("svfitMassMEM%s%ilogM%s", optLO_or_NLO_string.data(), addLogM_power_int, optHadTauTF_string.data());
+	std::cout << " " << branchName_svfitMass << " (type = F)" << std::endl;
+	outputTree->Branch(branchName_svfitMass.data(), &svFitMEM_logM_entry->svfitMass_, Form("%s/F", branchName_svfitMass.data()));
+	std::string branchName_svfitMassErr = Form("svfitMassErrMEM%s%ilogM%s", optLO_or_NLO_string.data(), addLogM_power_int, optHadTauTF_string.data());
+	std::cout << " " << branchName_svfitMassErr << " (type = F)" << std::endl;
+	outputTree->Branch(branchName_svfitMassErr.data(), &svFitMEM_logM_entry->svfitMassErr_, Form("%s/F", branchName_svfitMassErr.data()));
+	std::string branchName_svfitMass_isValid = Form("svfitMass_isValidMEM%s%ilogM%s", optLO_or_NLO_string.data(), addLogM_power_int, optHadTauTF_string.data());
+	std::cout << " " << branchName_svfitMass_isValid << " (type = I)" << std::endl;
+	outputTree->Branch(branchName_svfitMass_isValid.data(), &svFitMEM_logM_entry->svfitMass_isValid_, Form("%s/I", branchName_svfitMass_isValid.data()));
+	svFitMEM_logM_entries.push_back(svFitMEM_logM_entry);
       }
-      int addLogM_power_int = TMath::Nint(*svFitMEM_addLogM_power);
-      std::string branchName_svfitMass = Form("svfitMassMEM%ilogM%s", addLogM_power_int, optHadTauTF_string.data());
-      std::cout << " " << branchName_svfitMass << " (type = F)" << std::endl;
-      outputTree->Branch(branchName_svfitMass.data(), &svFitMEM_logM_entry->svfitMass_, Form("%s/F", branchName_svfitMass.data()));
-      std::string branchName_svfitMassErr = Form("svfitMassErrMEM%ilogM%s", addLogM_power_int, optHadTauTF_string.data());
-      std::cout << " " << branchName_svfitMassErr << " (type = F)" << std::endl;
-      outputTree->Branch(branchName_svfitMassErr.data(), &svFitMEM_logM_entry->svfitMassErr_, Form("%s/F", branchName_svfitMassErr.data()));
-      std::string branchName_svfitMass_isValid = Form("svfitMass_isValidMEM%ilogM%s", addLogM_power_int, optHadTauTF_string.data());
-      std::cout << " " << branchName_svfitMass_isValid << " (type = I)" << std::endl;
-      outputTree->Branch(branchName_svfitMass_isValid.data(), &svFitMEM_logM_entry->svfitMass_isValid_, Form("%s/I", branchName_svfitMass_isValid.data()));
-      svFitMEM_logM_entries.push_back(svFitMEM_logM_entry);
     }
   }
 
@@ -468,25 +523,43 @@ int main(int argc, char* argv[])
   const branchEntryType* branchEntryMEtCov01       = 0;
   const branchEntryType* branchEntryMEtCov10       = 0;
   const branchEntryType* branchEntryMEtCov11       = 0;
+/*
+  const branchEntryType* branchEntryHadRecoilPx    = 0;
+  const branchEntryType* branchEntryHadRecoilPy    = 0;
+  const branchEntryType* branchEntryHadRecoilPz    = 0;
+  const branchEntryType* branchEntryHadRecoilCov00 = 0;
+  const branchEntryType* branchEntryHadRecoilCov01 = 0;
+  const branchEntryType* branchEntryHadRecoilCov10 = 0;
+  const branchEntryType* branchEntryHadRecoilCov11 = 0;
+ */
   for ( std::vector<branchEntryType*>::const_iterator branchEntry = branchesToKeep.begin();
 	branchEntry != branchesToKeep.end(); ++branchEntry ) {
-    if      ( (*branchEntry)->branchName_ == "run"                                 ) branchEntryRun      = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == "event"                               ) branchEntryEvent    = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == "lumi"                                ) branchEntryLumi     = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sPt", leg1BranchName.data())   ) branchEntryLeg1Pt   = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sEta", leg1BranchName.data())  ) branchEntryLeg1Eta  = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sPhi", leg1BranchName.data())  ) branchEntryLeg1Phi  = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sMass", leg1BranchName.data()) ) branchEntryLeg1Mass = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sPt", leg2BranchName.data())   ) branchEntryLeg2Pt   = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sEta", leg2BranchName.data())  ) branchEntryLeg2Eta  = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sPhi", leg2BranchName.data())  ) branchEntryLeg2Phi  = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sMass", leg2BranchName.data()) ) branchEntryLeg2Mass = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sPx", metBranchName.data())    ) branchEntryMEx      = (*branchEntry);    
-    else if ( (*branchEntry)->branchName_ == Form("%sPy", metBranchName.data())    ) branchEntryMEy      = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sCov00", metBranchName.data()) ) branchEntryMEtCov00 = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sCov01", metBranchName.data()) ) branchEntryMEtCov01 = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sCov10", metBranchName.data()) ) branchEntryMEtCov10 = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sCov11", metBranchName.data()) ) branchEntryMEtCov11 = (*branchEntry);
+    if      ( (*branchEntry)->branchName_ == "run"                                       ) branchEntryRun            = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == "event"                                     ) branchEntryEvent          = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == "lumi"                                      ) branchEntryLumi           = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPt", leg1BranchName.data())         ) branchEntryLeg1Pt         = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sEta", leg1BranchName.data())        ) branchEntryLeg1Eta        = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPhi", leg1BranchName.data())        ) branchEntryLeg1Phi        = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sMass", leg1BranchName.data())       ) branchEntryLeg1Mass       = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPt", leg2BranchName.data())         ) branchEntryLeg2Pt         = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sEta", leg2BranchName.data())        ) branchEntryLeg2Eta        = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPhi", leg2BranchName.data())        ) branchEntryLeg2Phi        = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sMass", leg2BranchName.data())       ) branchEntryLeg2Mass       = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPx", metBranchName.data())          ) branchEntryMEx            = (*branchEntry);    
+    else if ( (*branchEntry)->branchName_ == Form("%sPy", metBranchName.data())          ) branchEntryMEy            = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sCov00", metBranchName.data())       ) branchEntryMEtCov00       = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sCov01", metBranchName.data())       ) branchEntryMEtCov01       = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sCov10", metBranchName.data())       ) branchEntryMEtCov10       = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sCov11", metBranchName.data())       ) branchEntryMEtCov11       = (*branchEntry);
+/*
+    else if ( (*branchEntry)->branchName_ == Form("%sPx", hadRecoilBranchName.data())    ) branchEntryHadRecoilPx    = (*branchEntry);    
+    else if ( (*branchEntry)->branchName_ == Form("%sPy", hadRecoilBranchName.data())    ) branchEntryHadRecoilPy    = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPz", hadRecoilBranchName.data())    ) branchEntryHadRecoilPz    = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sCov00", hadRecoilBranchName.data()) ) branchEntryHadRecoilCov00 = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sCov01", hadRecoilBranchName.data()) ) branchEntryHadRecoilCov01 = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sCov10", hadRecoilBranchName.data()) ) branchEntryHadRecoilCov10 = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sCov11", hadRecoilBranchName.data()) ) branchEntryHadRecoilCov11 = (*branchEntry);
+ */
   }
   if ( !(branchEntryLeg1Pt && branchEntryLeg1Eta && branchEntryLeg1Phi && branchEntryLeg1Mass) ) 
     throw cms::Exception("addMassVariables") 
@@ -497,17 +570,29 @@ int main(int argc, char* argv[])
   if ( !(branchEntryMEx && branchEntryMEy && branchEntryMEtCov00 && branchEntryMEtCov01 && branchEntryMEtCov10 && branchEntryMEtCov11) )     
     throw cms::Exception("addMassVariables") 
       << "Branches for met = '" << metBranchName << "*' do not exist !!\n";
+/*
+  if ( !(branchEntryHadRecoilPx && branchEntryHadRecoilPy && branchEntryHadRecoilPz && branchEntryHadRecoilCov00 && branchEntryHadRecoilCov01 && branchEntryHadRecoilCov10 && branchEntryHadRecoilCov11) )     
+    throw cms::Exception("addMassVariables") 
+      << "Branches for hadRecoil = '" << hadRecoilBranchName << "*' do not exist !!\n";
+ */
     
   //std::string svFitMEM_pdfName = "cteq66";
   std::string svFitMEM_pdfName = "MSTW2008lo68cl";
   
-  SVfitMEM svFitAlgoMEM(svFitMEM_sqrtS, svFitMEM_pdfName.data(), svFitMEM::SVfitIntegrand::kLiterature, "", svFitMEM_verbosity);
-  svFitAlgoMEM.setCrossSection_and_Acc(svFitMEM_graph_xSection, svFitMEM_graph_Acc, svFitMEM_minAcc);
+  SVfitMEM_lo svFitAlgoMEM_lo(svFitMEM_sqrtS, svFitMEM_pdfName.data(), svFitMEM::SVfitIntegrand_lo::kLiterature, "", svFitMEM_verbosity);
+  svFitAlgoMEM_lo.setCrossSection_and_Acc(svFitMEM_graph_xSection_lo, 0, 1.);
   HadTauTFfromTGraph hadTauTF(svFitMEM_graph_hadTauTF);
-  svFitAlgoMEM.setHadTauTF(&hadTauTF);
-  svFitAlgoMEM.setMaxObjFunctionCalls(svFitMEM_maxObjFunctionCalls);
-  svFitAlgoMEM.setIntMode(svFitMEM_intMode);
-
+  svFitAlgoMEM_lo.setHadTauTF(&hadTauTF);
+  svFitAlgoMEM_lo.setMaxObjFunctionCalls(svFitMEM_maxObjFunctionCalls);
+  svFitAlgoMEM_lo.setIntMode(svFitMEM_intMode);
+/*
+  SVfitMEM_nlo svFitAlgoMEM_nlo(svFitMEM_sqrtS, svFitMEM_pdfName.data(), svFitMEM_verbosity);
+  svFitAlgoMEM_nlo.setCrossSection_and_Acc(svFitMEM_graph_xSection_nlo, svFitMEM_graph_Acc_nlo, svFitMEM_minAcc);
+  svFitAlgoMEM_nlo.enableAcceptanceCuts(leg1minPt, leg1maxAbsEta, leg2minPt, leg2maxAbsEta);
+  svFitAlgoMEM_nlo.setHadTauTF(&hadTauTF);
+  svFitAlgoMEM_nlo.setMaxObjFunctionCalls(svFitMEM_maxObjFunctionCalls);
+  svFitAlgoMEM_nlo.setIntMode(svFitMEM_intMode);
+ */
   int numEntries = inputTree->GetEntries();
   int selectedEntries = 0;
   for ( int iEntry = 0; iEntry < numEntries && (maxEvents == -1 || selectedEntries < maxEvents); ++iEntry ) {
@@ -520,33 +605,49 @@ int main(int argc, char* argv[])
     inputTree->GetEntry(iEntry);
 
     // read momenta of visible tau decay products and of missing Et
-    ULong64_t run    = branchEntryRun->valueL_;
-    ULong64_t event  = branchEntryEvent->valueL_;
-    ULong64_t lumi   = branchEntryLumi->valueL_;
-    Float_t leg1Pt   = branchEntryLeg1Pt->valueF_;
-    Float_t leg1Eta  = branchEntryLeg1Eta->valueF_;
-    Float_t leg1Phi  = branchEntryLeg1Phi->valueF_;
-    Float_t leg1Mass = branchEntryLeg1Mass->valueF_;
-    Float_t leg2Pt   = branchEntryLeg2Pt->valueF_;
-    Float_t leg2Eta  = branchEntryLeg2Eta->valueF_;
-    Float_t leg2Phi  = branchEntryLeg2Phi->valueF_;
-    Float_t leg2Mass = branchEntryLeg2Mass->valueF_;
-    Float_t mex      = branchEntryMEx->valueF_;
-    Float_t mey      = branchEntryMEy->valueF_;
-    Float_t metCov00 = branchEntryMEtCov00->valueF_;
-    Float_t metCov01 = branchEntryMEtCov01->valueF_;
-    Float_t metCov10 = branchEntryMEtCov10->valueF_;
-    Float_t metCov11 = branchEntryMEtCov11->valueF_;
-
+    ULong64_t run          = branchEntryRun->valueL_;
+    ULong64_t event        = branchEntryEvent->valueL_;
+    ULong64_t lumi         = branchEntryLumi->valueL_;
+    Float_t leg1Pt         = branchEntryLeg1Pt->valueF_;
+    Float_t leg1Eta        = branchEntryLeg1Eta->valueF_;
+    Float_t leg1Phi        = branchEntryLeg1Phi->valueF_;
+    Float_t leg1Mass       = branchEntryLeg1Mass->valueF_;
     reco::Candidate::PolarLorentzVector leg1P4(leg1Pt, leg1Eta, leg1Phi, leg1Mass);
+    Float_t leg2Pt         = branchEntryLeg2Pt->valueF_;
+    Float_t leg2Eta        = branchEntryLeg2Eta->valueF_;
+    Float_t leg2Phi        = branchEntryLeg2Phi->valueF_;
+    Float_t leg2Mass       = branchEntryLeg2Mass->valueF_;
     reco::Candidate::PolarLorentzVector leg2P4(leg2Pt, leg2Eta, leg2Phi, leg2Mass);
-
+    Float_t mex            = branchEntryMEx->valueF_;
+    Float_t mey            = branchEntryMEy->valueF_;
+    Float_t metCov00       = branchEntryMEtCov00->valueF_;
+    Float_t metCov01       = branchEntryMEtCov01->valueF_;
+    Float_t metCov10       = branchEntryMEtCov10->valueF_;
+    Float_t metCov11       = branchEntryMEtCov11->valueF_;
     TMatrixD metCov(2,2);
     metCov[0][0] = metCov00;
     metCov[0][1] = metCov01;
     metCov[1][0] = metCov10;
     metCov[1][1] = metCov11;
-
+/*
+    //Float_t hadRecoilPx    = branchEntryHadRecoilPx->valueF_;
+    //Float_t hadRecoilPy    = branchEntryHadRecoilPy->valueF_;
+    Float_t hadRecoilPx    = -(leg1P4.px() + leg2P4.px() + mex);
+    //std::cout << "hadRecoilPx = " << branchEntryHadRecoilPx->valueF_ << ", -(leg1P4.px() + leg2P4.px() + mex) = " << -(leg1P4.px() + leg2P4.px() + mex) << std::endl;
+    Float_t hadRecoilPy    = -(leg1P4.py() + leg2P4.py() + mey);
+    //std::cout << "hadRecoilPy = " << branchEntryHadRecoilPy->valueF_ << ", -(leg1P4.py() + leg2P4.py() + mey) = " << -(leg1P4.py() + leg2P4.py() + mey) << std::endl;
+    Float_t hadRecoilPz    = branchEntryHadRecoilPz->valueF_;
+    Float_t hadRecoilCov00 = branchEntryHadRecoilCov00->valueF_;
+    Float_t hadRecoilCov01 = branchEntryHadRecoilCov01->valueF_;
+    Float_t hadRecoilCov10 = branchEntryHadRecoilCov10->valueF_;
+    Float_t hadRecoilCov11 = branchEntryHadRecoilCov11->valueF_;
+    TMatrixD hadRecoilCov(2,2);
+    hadRecoilCov[0][0] = hadRecoilCov00;
+    hadRecoilCov[0][1] = hadRecoilCov01;
+    hadRecoilCov[1][0] = hadRecoilCov10;
+    hadRecoilCov[1][1] = hadRecoilCov11;
+    TMatrixD hadRecoilCov = metCov;
+ */
     // compute mass variables
     if ( leg1P4.pt() > leg1minPt && TMath::Abs(leg1P4.eta()) < leg1maxAbsEta && leg2P4.pt() > leg2minPt && TMath::Abs(leg2P4.eta()) < leg2maxAbsEta ) {
       visMass = compVisMass(
@@ -564,16 +665,31 @@ int main(int argc, char* argv[])
         svfitMass, svfitMassErr, svfitMass_isValid, verbosity - 1);
       for ( std::vector<svFitMEM_logM_EntryType*>::iterator svFitMEM_logM_entry = svFitMEM_logM_entries.begin();
 	    svFitMEM_logM_entry != svFitMEM_logM_entries.end(); ++svFitMEM_logM_entry ) {
-        if ( (*svFitMEM_logM_entry)->addLogM_power_ > 0. ) svFitAlgoMEM.addLogM(true, (*svFitMEM_logM_entry)->addLogM_power_);
-        else svFitAlgoMEM.addLogM(false, (*svFitMEM_logM_entry)->addLogM_power_);
-	if ( (*svFitMEM_logM_entry)->useHadTauTF_ ) svFitAlgoMEM.enableHadTauTF();
-	else svFitAlgoMEM.disableHadTauTF();
-        compSVfitMassMEM(
-          svFitAlgoMEM, 
-	  leg1TypeMEM, leg1P4, 
-  	  leg2TypeMEM, leg2P4, 
-	  mex, mey, metCov, 
-	  (*svFitMEM_logM_entry)->svfitMass_, (*svFitMEM_logM_entry)->svfitMassErr_, (*svFitMEM_logM_entry)->svfitMass_isValid_);
+	if ( (*svFitMEM_logM_entry)->lo_or_nlo_ == svFitMEM_logM_EntryType::kLO ) {
+          if ( (*svFitMEM_logM_entry)->addLogM_power_ > 0. ) svFitAlgoMEM_lo.addLogM(true, (*svFitMEM_logM_entry)->addLogM_power_);
+          else svFitAlgoMEM_lo.addLogM(false, (*svFitMEM_logM_entry)->addLogM_power_);
+	  if ( (*svFitMEM_logM_entry)->useHadTauTF_ ) svFitAlgoMEM_lo.enableHadTauTF();
+  	  else svFitAlgoMEM_lo.disableHadTauTF();
+          compSVfitMassMEM_lo(
+            svFitAlgoMEM_lo, 
+	    leg1TypeMEM, leg1P4, 
+  	    leg2TypeMEM, leg2P4, 
+	    mex, mey, metCov, 
+	    (*svFitMEM_logM_entry)->svfitMass_, (*svFitMEM_logM_entry)->svfitMassErr_, (*svFitMEM_logM_entry)->svfitMass_isValid_);
+/*
+	} else if ( (*svFitMEM_logM_entry)->lo_or_nlo_ == svFitMEM_logM_EntryType::kNLO ) {
+	  if ( (*svFitMEM_logM_entry)->addLogM_power_ > 0. ) svFitAlgoMEM_nlo.addLogM(true, (*svFitMEM_logM_entry)->addLogM_power_);
+          else svFitAlgoMEM_nlo.addLogM(false, (*svFitMEM_logM_entry)->addLogM_power_);
+	  if ( (*svFitMEM_logM_entry)->useHadTauTF_ ) svFitAlgoMEM_nlo.enableHadTauTF();
+  	  else svFitAlgoMEM_nlo.disableHadTauTF();
+          compSVfitMassMEM_nlo(
+            svFitAlgoMEM_nlo, 
+	    leg1TypeMEM, leg1P4, 
+  	    leg2TypeMEM, leg2P4, 
+	    hadRecoilPx, hadRecoilPy, hadRecoilPz, hadRecoilCov, 
+	    (*svFitMEM_logM_entry)->svfitMass_, (*svFitMEM_logM_entry)->svfitMassErr_, (*svFitMEM_logM_entry)->svfitMass_isValid_);
+ */
+	} else assert(0);
       }
     } else {
       visMass = -1.;
@@ -638,8 +754,10 @@ int main(int argc, char* argv[])
   outputTree->Write();
   delete outputFile;
 
-  delete svFitMEM_graph_xSection;
-  delete svFitMEM_graph_Acc;
+  delete svFitMEM_graph_xSection_lo;
+  delete svFitMEM_graph_Acc_lo;
+  delete svFitMEM_graph_xSection_nlo;
+  delete svFitMEM_graph_Acc_nlo;
   delete svFitMEM_graph_hadTauTF;
 
   delete inputTree;

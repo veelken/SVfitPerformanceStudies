@@ -10,8 +10,10 @@
 
 directories=(hadhad muhad emu)
 genOptions=(gen smeared)
-pathToOutput=(/home/calpas/svfitMEM/CMSSW_7_4_15_patch1/src/TauAnalysis/SVfitPerformanceStudies/test/batchJobs/output)
-pathToConfigFile=(/home/calpas/svfitMEM/CMSSW_7_4_15_patch1/src/TauAnalysis/SVfitPerformanceStudies/test/cfgTemplate)
+##pathToOutput=(/home/calpas/svfitMEM/CMSSW_7_4_15_patch1/src/TauAnalysis/SVfitPerformanceStudies/test/batchJobs/output)
+##pathToConfigFile=(/home/calpas/svfitMEM/CMSSW_7_4_15_patch1/src/TauAnalysis/SVfitPerformanceStudies/test/cfgTemplate)
+pathToOutput=(/tmp/veelken)
+pathToConfigFile=($CMSSW_BASE/src/TauAnalysis/SVfitPerformanceStudies/test/cfgTemplate)
 samples=(SUSYGluGluToHToTauTauM300
 )
 #samples=(SUSYGluGluToHToTauTauM200
@@ -38,7 +40,7 @@ for dir in ${directories[*]}; do
       mkdir $workDir 
       script="scriptTemplate/addMassVariables_${dir}_${opt}_${sample}"
 
-      sbatch --array=0-2 --workdir=$workDir ${script}.sh
+      ##sbatch --array=0-2 --workdir=$workDir ${script}.sh
 
     done
   done
