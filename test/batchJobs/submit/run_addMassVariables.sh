@@ -6,41 +6,46 @@
 
 #SBATCH --mem 4000 # Memory request
 
-#eval `scramv1 runtime -sh` 
-
 directories=(hadhad muhad emu)
 genOptions=(gen smeared)
-##pathToOutput=(/home/calpas/svfitMEM/CMSSW_7_4_15_patch1/src/TauAnalysis/SVfitPerformanceStudies/test/batchJobs/output)
-##pathToConfigFile=(/home/calpas/svfitMEM/CMSSW_7_4_15_patch1/src/TauAnalysis/SVfitPerformanceStudies/test/cfgTemplate)
-pathToOutput=(/tmp/veelken)
-pathToConfigFile=($CMSSW_BASE/src/TauAnalysis/SVfitPerformanceStudies/test/cfgTemplate)
-samples=(SUSYGluGluToHToTauTauM300
-)
-#samples=(SUSYGluGluToHToTauTauM200
-#       SUSYGluGluToHToTauTauM300
-#       SUSYGluGluToHToTauTauM500
-#       SUSYGluGluToHToTauTauM800
-#       SUSYGluGluToHToTauTauM1200
-#       SUSYGluGluToHToTauTauM1800
-#       SUSYGluGluToHToTauTauM2600
-#       GluGluHToTauTauM125
-#       DYJetsToLLM50
-#      ) 
+path=(/home/calpas/svfitMEM/CMSSW_8_0_0/src/TauAnalysis/SVfitPerformanceStudies/test/)
+pathToOutput=(${path}batchJobs/output)
+pathToConfigFile=(${path}cfgTemplate)
+
+#samples=(GluGluHToTauTauM125)
+
+samples=(SUSYGluGluToHToTauTauM200
+         SUSYGluGluToHToTauTauM300
+         SUSYGluGluToHToTauTauM500
+         SUSYGluGluToHToTauTauM800
+         SUSYGluGluToHToTauTauM1200
+         SUSYGluGluToHToTauTauM1800
+         SUSYGluGluToHToTauTauM2600
+         GluGluHToTauTauM125
+         DYJetsToLLM50
+        ) 
+
+#rm -rf $pathToOutput
+mkdir -p $pathToOutput/$dir
 
 # run addMassVariables for each config file in an array batch style
 for dir in ${directories[*]}; do
   rm -rf $pathToOutput/$dir
-  mkdir $pathToOutput/$dir
+  mkdir -p $pathToOutput/$dir
 
   for opt in ${genOptions[*]}; do
-    mkdir $pathToOutput/$dir/$opt
+    mkdir -p $pathToOutput/$dir/$opt
 
     for sample in ${samples[*]}; do
       workDir=$pathToOutput/$dir/$opt/$sample
-      mkdir $workDir 
+      mkdir -p $workDir 
       script="scriptTemplate/addMassVariables_${dir}_${opt}_${sample}"
 
-      ##sbatch --array=0-2 --workdir=$workDir ${script}.sh
+      if [ $sample = 'DYJetsToLLM50' ]; then
+        sbatch --array=0-1000 --workdir=$workDir --job-name=${dir}_${opt}_${sample} ${script}.sh
+      else
+        sbatch --array=0-500 --workdir=$workDir --job-name=${dir}_${opt}_${sample} ${script}.sh
+      fi
 
     done
   done

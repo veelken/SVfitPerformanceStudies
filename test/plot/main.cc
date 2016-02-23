@@ -13,47 +13,72 @@ using namespace std;
 int main ( int argc, char * argv[]) {
 
     // root file
-    string input {"svFitStudyNtuple_SUSYGluGluToHToTauTauM300_all.root"}; 
-    cout << "Processing file: " << input << endl;
-    string output {"Plot_svFitStudyNtuple_SUSYGluGluToHToTauTauM300_all.root"}; 
-
-    TFile* ifile = new TFile(input.c_str(),"READ");
-    if (!ifile->IsOpen()) { cout<<"Can't open "<<input<<endl; return 1; }
-
-    TFile* ofile = new TFile(output.c_str(),"RECREATE");
-    if (!ofile->IsOpen()) { cout<<"Can't create "<<output<<endl; return 1; }
+    vector<string> vinput {
+    "/afs/cern.ch/work/c/calpas/ntuples/svFitStudyNtuple_SUSYGluGluToHToTauTauM200_all.root",
+    "/afs/cern.ch/work/c/calpas/ntuples/svFitStudyNtuple_SUSYGluGluToHToTauTauM300_all.root",
+    "/afs/cern.ch/work/c/calpas/ntuples/svFitStudyNtuple_SUSYGluGluToHToTauTauM500_all.root",
+    "/afs/cern.ch/work/c/calpas/ntuples/svFitStudyNtuple_SUSYGluGluToHToTauTauM800_all.root",
+    "/afs/cern.ch/work/c/calpas/ntuples/svFitStudyNtuple_SUSYGluGluToHToTauTauM1200_all.root",
+    "/afs/cern.ch/work/c/calpas/ntuples/svFitStudyNtuple_SUSYGluGluToHToTauTauM1800_all.root",
+    "/afs/cern.ch/work/c/calpas/ntuples/svFitStudyNtuple_SUSYGluGluToHToTauTauM2600_all.root",
+    "/afs/cern.ch/work/c/calpas/ntuples/svFitStudyNtuple_GluGluHToTauTauM125_all.root",
+    "/afs/cern.ch/work/c/calpas/ntuples/svFitStudyNtuple_DYJetsToLLM50_all.root"
+    };  
 
     // directories
-    vector<string>samples{"emu_gen", "emu_smeared", "hadhad_gen", "hadhad_smeared" ,"muhad_gen", "muhad_smeared"};
-    double mass{300};
+    vector<string>vdir{"emu_gen", "emu_smeared", "muhad_gen", "muhad_smeared" ,"hadhad_gen", "hadhad_smeared"};
 
-    // fill histogram
-    cout<<"filling hist...\n";
-    for(auto &sample : samples ){
+    // loop over input files
+    for (auto &input : vinput){ 	
 
-     string treeName="ntupleProducer/"+sample+"/SVfitStudyNtupleProducer";
-     cout<<"tree name: "<<treeName<<endl;
+      cout << "Processing file: " << input << endl;
+      TFile* ifile = new TFile(input.c_str(),"READ");
+      if (!ifile->IsOpen()) { cout<<"Can't open "<<input<<endl; return 1; }
 
-     TTree *tree = (TTree*) ifile->GetObjectChecked(treeName.c_str(), "TTree");
-     //cout<<"tree class? "<<tree->ClassName()<<endl;
+      string output {input};
+      output.replace(0, output.find_first_of("_"), "hist");
+      cout << "output file: " << output << endl;
 
-      // analysis
-      SVfitMEM an(tree, sample, mass);
+      TFile* ofile = new TFile(output.c_str(),"RECREATE");
+      if (!ofile->IsOpen()) { cout<<"Can't create "<<output<<endl; return 1; }
 
-      an.Loop();
+      // fill histogram
+      cout<<"filling hist...\n";
+      for(auto &dir : vdir ){
 
-      cout<<"end loop!!"<<endl;
+        if(dir.find("gen")!=std::string::npos) continue;
 
-      delete tree;
+	string treeName="ntupleProducer/"+dir+"/SVfitStudyNtupleProducer";
+	//cout<<"tree name: "<<treeName<<endl;
 
-    }
- 
-    ifile->Close();
-    ofile->Close();
+	TTree *tree = (TTree*) ifile->GetObjectChecked(treeName.c_str(), "TTree");
 
+	// analysis
+	string sample{output};
+	sample.replace(0, sample.find_first_of("_")+1, "");
+	//cout<<"sample: "<<sample<<endl;
+
+	string smass{sample};
+	smass.replace(0, smass.find_first_of("M")+1, "");
+	smass.replace(smass.find_first_of("_"), smass.find_last_of("t"),"");
+	//cout<<"smass: "<<smass<<endl;
+
+	double mass{stod(smass)};
+	//cout<<"mass: "<<mass<<endl;
+
+	SVfitMEM an(tree, dir, sample, mass);
+
+	an.Loop();
+	//cout<<"end loop!!"<<endl;
+
+	delete tree;
+	
+      } // dir
+      ifile->Close();
+      ofile->Close();
+    } // input file
 
     return 0;
-
 }
 
 
