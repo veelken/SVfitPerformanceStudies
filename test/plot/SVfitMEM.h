@@ -15,7 +15,7 @@
 #include <TH1.h>
 #include <TLegend.h>
 #include <iostream>
-
+#include <TMath.h>
 
 
 // Header file for the classes stored in the TTree if any.
@@ -162,6 +162,35 @@ public :
    Float_t         svfitMassMEM0logMwoHadTauTF;
    Float_t         svfitMassErrMEM0logMwoHadTauTF;
    Int_t           svfitMass_isValidMEM0logMwoHadTauTF;
+   //
+   Float_t         svfitMassMEM1logMwHadTauTF;
+   Float_t         svfitMassErrMEM1logMwHadTauTF;
+   Int_t           svfitMass_isValidMEM1logMwHadTauTF;
+   Float_t         svfitMassMEM1logMwoHadTauTF;
+   Float_t         svfitMassErrMEM1logMwoHadTauTF;
+   Int_t           svfitMass_isValidMEM1logMwoHadTauTF;
+   //
+   Float_t         svfitMassMEM2logMwHadTauTF;
+   Float_t         svfitMassErrMEM2logMwHadTauTF;
+   Int_t           svfitMass_isValidMEM2logMwHadTauTF;
+   Float_t         svfitMassMEM2logMwoHadTauTF;
+   Float_t         svfitMassErrMEM2logMwoHadTauTF;
+   Int_t           svfitMass_isValidMEM2logMwoHadTauTF;
+   //
+   Float_t         svfitMassMEM3logMwHadTauTF;
+   Float_t         svfitMassErrMEM3logMwHadTauTF;
+   Int_t           svfitMass_isValidMEM3logMwHadTauTF;
+   Float_t         svfitMassMEM3logMwoHadTauTF;
+   Float_t         svfitMassErrMEM3logMwoHadTauTF;
+   Int_t           svfitMass_isValidMEM3logMwoHadTauTF;
+   //
+   Float_t         svfitMassMEM4logMwHadTauTF;
+   Float_t         svfitMassErrMEM4logMwHadTauTF;
+   Int_t           svfitMass_isValidMEM4logMwHadTauTF;
+   Float_t         svfitMassMEM4logMwoHadTauTF;
+   Float_t         svfitMassErrMEM4logMwoHadTauTF;
+   Int_t           svfitMass_isValidMEM4logMwoHadTauTF;
+   //
    Float_t         svfitMassMEM5logMwHadTauTF;
    Float_t         svfitMassErrMEM5logMwHadTauTF;
    Int_t           svfitMass_isValidMEM5logMwHadTauTF;
@@ -304,6 +333,35 @@ public :
    TBranch        *b_svfitMassMEM0logMwoHadTauTF;   //!
    TBranch        *b_svfitMassErrMEM0logMwoHadTauTF;   //!
    TBranch        *b_svfitMass_isValidMEM0logMwoHadTauTF;   //!
+   //
+   TBranch        *b_svfitMassMEM1logMwHadTauTF;   //!
+   TBranch        *b_svfitMassErrMEM1logMwHadTauTF;   //!
+   TBranch        *b_svfitMass_isValidMEM1logMwHadTauTF;   //!
+   TBranch        *b_svfitMassMEM1logMwoHadTauTF;   //!
+   TBranch        *b_svfitMassErrMEM1logMwoHadTauTF;   //!
+   TBranch        *b_svfitMass_isValidMEM1logMwoHadTauTF;   //!
+   //
+   TBranch        *b_svfitMassMEM2logMwHadTauTF;   //!
+   TBranch        *b_svfitMassErrMEM2logMwHadTauTF;   //!
+   TBranch        *b_svfitMass_isValidMEM2logMwHadTauTF;   //!
+   TBranch        *b_svfitMassMEM2logMwoHadTauTF;   //!
+   TBranch        *b_svfitMassErrMEM2logMwoHadTauTF;   //!
+   TBranch        *b_svfitMass_isValidMEM2logMwoHadTauTF;   //!
+   //
+   TBranch        *b_svfitMassMEM3logMwHadTauTF;   //!
+   TBranch        *b_svfitMassErrMEM3logMwHadTauTF;   //!
+   TBranch        *b_svfitMass_isValidMEM3logMwHadTauTF;   //!
+   TBranch        *b_svfitMassMEM3logMwoHadTauTF;   //!
+   TBranch        *b_svfitMassErrMEM3logMwoHadTauTF;   //!
+   TBranch        *b_svfitMass_isValidMEM3logMwoHadTauTF;   //!
+   //
+   TBranch        *b_svfitMassMEM4logMwHadTauTF;   //!
+   TBranch        *b_svfitMassErrMEM4logMwHadTauTF;   //!
+   TBranch        *b_svfitMass_isValidMEM4logMwHadTauTF;   //!
+   TBranch        *b_svfitMassMEM4logMwoHadTauTF;   //!
+   TBranch        *b_svfitMassErrMEM4logMwoHadTauTF;   //!
+   TBranch        *b_svfitMass_isValidMEM4logMwoHadTauTF;   //!
+   //
    TBranch        *b_svfitMassMEM5logMwHadTauTF;   //!
    TBranch        *b_svfitMassErrMEM5logMwHadTauTF;   //!
    TBranch        *b_svfitMass_isValidMEM5logMwHadTauTF;   //!
@@ -311,7 +369,7 @@ public :
    TBranch        *b_svfitMassErrMEM5logMwoHadTauTF;   //!
    TBranch        *b_svfitMass_isValidMEM5logMwoHadTauTF;   //!
 
-   SVfitMEM(TTree *tree=0, std::string sample=(""), int mass=0);
+   SVfitMEM(TTree *tree=0, std::string dir=(""), std::string sample=(""), double mass=0);
    virtual ~SVfitMEM();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
@@ -321,43 +379,88 @@ public :
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
 
+   std::string dir;
    std::string sample;
-   int mass;
-   int hmax;
+   double mass;
 
-   TH1D *h[10];
+   TH1D *hmasslin[9];
+   TH1D *hmasslog[9];
+   //TH1D *hmassdiv[4];
    TH1I *npassCuts;
+   //TH1I *nmu, *nel, *nha, *nem; 
+
 };
 
 #endif
 
 #ifdef SVfitMEM_cxx
-SVfitMEM::SVfitMEM(TTree *tree, std::string sample, int mass) : fChain(0), sample{sample}, mass{mass}
+
+#include "getLogBinning.C"
+SVfitMEM::SVfitMEM(TTree *tree, std::string dir, std::string sample, double mass) : fChain(0), dir{dir}, sample{sample}, mass{mass}
 {
 
-   TH1::SetDefaultSumw2();
+  Init(tree);
 
-   Init(tree);
+  TH1::SetDefaultSumw2();
 
-   hmax=4;
+  //nmu = new TH1I("nmu", "nmu", 1, 0, 1);
+  //nel = new TH1I("nel", "nel", 1, 0, 1);
+  //nha = new TH1I("nha", "nha", 1, 0, 1);
+  //nem = new TH1I("nem", "nem", 1, 0, 1);
 
-   npassCuts= new TH1I(sample.c_str(), sample.c_str(), 1, 0, 1);
+  npassCuts= new TH1I(dir.c_str(), dir.c_str(), 1, 0, 1);
 
-   std::vector<std::string> vsample {sample+"_tf_k0", sample+"_notf_k0", sample+"_tf_k5", sample+"_notf_k5"};
+  std::vector<std::string> vdirlin {dir+"_lin_vismass", dir+"_lin_ca", dir+"_lin_svFit", dir+"_lin_svfitmemtfk0", 
+    dir+"_lin_svfitmemtfk1",dir+"_lin_svfitmemtfk2",dir+"_lin_svfitmemtfk3",dir+"_lin_svfitmemtfk4",dir+"_lin_svfitmemtfk5"};
 
-   //
-   for(int i=0; i<hmax; i++) {
-       h[i] = new TH1D(vsample[i].c_str(), vsample[i].c_str(),   100, 0, 3000);
+  std::vector<std::string> vdirlog {dir+"_log_vismass", dir+"_log_ca", dir+"_log_svFit", dir+"_log_svfitmemtfk0", 
+    dir+"_log_svfitmemtfk1",dir+"_log_svfitmemtfk2",dir+"_log_svfitmemtfk3",dir+"_log_svfitmemtfk4",dir+"_log_svfitmemtfk5"};
 
-       h[i]->SetLineWidth(2);
 
-       if(vsample[i].find("gen")!=std::string::npos) h[i]->SetLineColor(kBlue);
-       else  h[i]->SetLineColor(kRed);
+  std::map<int, double> xMax;
+  xMax[50]   = 450;
+  xMax[125]  = 620;
+  xMax[200]  = 1000;
+  xMax[300]  = 1500;
+  xMax[500]  = 2500;
+  xMax[800]  = 4000;
+  xMax[1200] = 6000;
+  xMax[1800] = 9000;
+  xMax[2600] = 13000;
 
-       if(vsample[i].find("notf")!=std::string::npos) h[i]->SetLineStyle(2);
-       else h[i]->SetLineStyle(1);
+/*
+  // plot for paper
+  int numbin{35};
+  if(dir.find("emu")!=std::string::npos) 
+    for(int i=0; i<vdirlog.size(); i++) {
+      hmasslog[i] = new TH1D(vdirlog[i].c_str(), vdirlog[i].c_str(), numbin, getLogBinning(30, xMax[mass], numbin).GetArray());
+      hmasslin[i] = new TH1D(vdirlin[i].c_str(), vdirlin[i].c_str(), numbin, 30, xMax[mass]);
+    }
+  else {
+    for(int i=0; i<vdirlog.size(); i++){
+      hmasslog[i] = new TH1D(vdirlog[i].c_str(), vdirlog[i].c_str(), numbin, getLogBinning(50, xMax[mass], numbin).GetArray());
+      hmasslin[i] = new TH1D(vdirlin[i].c_str(), vdirlin[i].c_str(), numbin, 50, xMax[mass]);
+    }
+  }
+*/
 
-   }
+  // bin for paper table
+  int numbin{0};
+  if(dir.find("emu")!=std::string::npos){ 
+    numbin=xMax[mass]-30;
+    for(int i=0; i<vdirlog.size(); i++) {
+      hmasslog[i] = new TH1D(vdirlog[i].c_str(), vdirlog[i].c_str(), numbin, getLogBinning(30, xMax[mass], numbin).GetArray());
+      hmasslin[i] = new TH1D(vdirlin[i].c_str(), vdirlin[i].c_str(), numbin, 30, xMax[mass]);
+    }
+  }
+  else {
+    numbin=xMax[mass]-50;
+    for(int i=0; i<vdirlog.size(); i++){
+      hmasslog[i] = new TH1D(vdirlog[i].c_str(), vdirlog[i].c_str(), numbin, getLogBinning(50, xMax[mass], numbin).GetArray());
+      hmasslin[i] = new TH1D(vdirlin[i].c_str(), vdirlin[i].c_str(), numbin, 50, xMax[mass]);
+    }
+  }
+
 
 }
 
@@ -365,7 +468,8 @@ SVfitMEM::~SVfitMEM()
 {
   if (!fChain) return;
   delete fChain->GetCurrentFile();
-  for(int i=0; i<hmax; i++ ) delete h[i];
+  for(int i=0; i<9; i++ ) { delete hmasslin[i]; delete hmasslog[i]; }
+  //for(int i=0; i<4; i++ ) delete hmassdiv[i]; 
 }
 
 
@@ -436,140 +540,169 @@ void SVfitMEM::Init(TTree *tree)
   fChain->SetBranchAddress("genElectron1Pz", &genElectron1Pz, &b_genElectron1Pz);
   fChain->SetBranchAddress("genElectron1Pt", &genElectron1Pt, &b_genElectron1Pt);
   fChain->SetBranchAddress("genElectron1Eta", &genElectron1Eta, &b_genElectron1Eta);
-   fChain->SetBranchAddress("genElectron1Phi", &genElectron1Phi, &b_genElectron1Phi);
-   fChain->SetBranchAddress("genElectron1Mass", &genElectron1Mass, &b_genElectron1Mass);
-   fChain->SetBranchAddress("genElectron1Charge", &genElectron1Charge, &b_genElectron1Charge);
-   fChain->SetBranchAddress("genElectron2E", &genElectron2E, &b_genElectron2E);
-   fChain->SetBranchAddress("genElectron2Px", &genElectron2Px, &b_genElectron2Px);
-   fChain->SetBranchAddress("genElectron2Py", &genElectron2Py, &b_genElectron2Py);
-   fChain->SetBranchAddress("genElectron2Pz", &genElectron2Pz, &b_genElectron2Pz);
-   fChain->SetBranchAddress("genElectron2Pt", &genElectron2Pt, &b_genElectron2Pt);
-   fChain->SetBranchAddress("genElectron2Eta", &genElectron2Eta, &b_genElectron2Eta);
-   fChain->SetBranchAddress("genElectron2Phi", &genElectron2Phi, &b_genElectron2Phi);
-   fChain->SetBranchAddress("genElectron2Mass", &genElectron2Mass, &b_genElectron2Mass);
-   fChain->SetBranchAddress("genElectron2Charge", &genElectron2Charge, &b_genElectron2Charge);
-   fChain->SetBranchAddress("numGenElectrons", &numGenElectrons, &b_numGenElectrons);
-   fChain->SetBranchAddress("genMuon1E", &genMuon1E, &b_genMuon1E);
-   fChain->SetBranchAddress("genMuon1Px", &genMuon1Px, &b_genMuon1Px);
-   fChain->SetBranchAddress("genMuon1Py", &genMuon1Py, &b_genMuon1Py);
-   fChain->SetBranchAddress("genMuon1Pz", &genMuon1Pz, &b_genMuon1Pz);
-   fChain->SetBranchAddress("genMuon1Pt", &genMuon1Pt, &b_genMuon1Pt);
-   fChain->SetBranchAddress("genMuon1Eta", &genMuon1Eta, &b_genMuon1Eta);
-   fChain->SetBranchAddress("genMuon1Phi", &genMuon1Phi, &b_genMuon1Phi);
-   fChain->SetBranchAddress("genMuon1Mass", &genMuon1Mass, &b_genMuon1Mass);
-   fChain->SetBranchAddress("genMuon1Charge", &genMuon1Charge, &b_genMuon1Charge);
-   fChain->SetBranchAddress("genMuon2E", &genMuon2E, &b_genMuon2E);
-   fChain->SetBranchAddress("genMuon2Px", &genMuon2Px, &b_genMuon2Px);
-   fChain->SetBranchAddress("genMuon2Py", &genMuon2Py, &b_genMuon2Py);
-   fChain->SetBranchAddress("genMuon2Pz", &genMuon2Pz, &b_genMuon2Pz);
-   fChain->SetBranchAddress("genMuon2Pt", &genMuon2Pt, &b_genMuon2Pt);
-   fChain->SetBranchAddress("genMuon2Eta", &genMuon2Eta, &b_genMuon2Eta);
-   fChain->SetBranchAddress("genMuon2Phi", &genMuon2Phi, &b_genMuon2Phi);
-   fChain->SetBranchAddress("genMuon2Mass", &genMuon2Mass, &b_genMuon2Mass);
-   fChain->SetBranchAddress("genMuon2Charge", &genMuon2Charge, &b_genMuon2Charge);
-   fChain->SetBranchAddress("numGenMuons", &numGenMuons, &b_numGenMuons);
-   fChain->SetBranchAddress("genHadTau1E", &genHadTau1E, &b_genHadTau1E);
-   fChain->SetBranchAddress("genHadTau1Px", &genHadTau1Px, &b_genHadTau1Px);
-   fChain->SetBranchAddress("genHadTau1Py", &genHadTau1Py, &b_genHadTau1Py);
-   fChain->SetBranchAddress("genHadTau1Pz", &genHadTau1Pz, &b_genHadTau1Pz);
-   fChain->SetBranchAddress("genHadTau1Pt", &genHadTau1Pt, &b_genHadTau1Pt);
-   fChain->SetBranchAddress("genHadTau1Eta", &genHadTau1Eta, &b_genHadTau1Eta);
-   fChain->SetBranchAddress("genHadTau1Phi", &genHadTau1Phi, &b_genHadTau1Phi);
-   fChain->SetBranchAddress("genHadTau1Mass", &genHadTau1Mass, &b_genHadTau1Mass);
-   fChain->SetBranchAddress("genHadTau1Charge", &genHadTau1Charge, &b_genHadTau1Charge);
-   fChain->SetBranchAddress("genHadTau1DecayMode", &genHadTau1DecayMode, &b_genHadTau1DecayMode);
-   fChain->SetBranchAddress("genHadTau2E", &genHadTau2E, &b_genHadTau2E);
-   fChain->SetBranchAddress("genHadTau2Px", &genHadTau2Px, &b_genHadTau2Px);
-   fChain->SetBranchAddress("genHadTau2Py", &genHadTau2Py, &b_genHadTau2Py);
-   fChain->SetBranchAddress("genHadTau2Pz", &genHadTau2Pz, &b_genHadTau2Pz);
-   fChain->SetBranchAddress("genHadTau2Pt", &genHadTau2Pt, &b_genHadTau2Pt);
-   fChain->SetBranchAddress("genHadTau2Eta", &genHadTau2Eta, &b_genHadTau2Eta);
-   fChain->SetBranchAddress("genHadTau2Phi", &genHadTau2Phi, &b_genHadTau2Phi);
-   fChain->SetBranchAddress("genHadTau2Mass", &genHadTau2Mass, &b_genHadTau2Mass);
-   fChain->SetBranchAddress("genHadTau2Charge", &genHadTau2Charge, &b_genHadTau2Charge);
-   fChain->SetBranchAddress("genHadTau2DecayMode", &genHadTau2DecayMode, &b_genHadTau2DecayMode);
-   fChain->SetBranchAddress("numGenHadTaus", &numGenHadTaus, &b_numGenHadTaus);
-   fChain->SetBranchAddress("smearedHadTau1E", &smearedHadTau1E, &b_smearedHadTau1E);
-   fChain->SetBranchAddress("smearedHadTau1Px", &smearedHadTau1Px, &b_smearedHadTau1Px);
-   fChain->SetBranchAddress("smearedHadTau1Py", &smearedHadTau1Py, &b_smearedHadTau1Py);
-   fChain->SetBranchAddress("smearedHadTau1Pz", &smearedHadTau1Pz, &b_smearedHadTau1Pz);
-   fChain->SetBranchAddress("smearedHadTau1Pt", &smearedHadTau1Pt, &b_smearedHadTau1Pt);
-   fChain->SetBranchAddress("smearedHadTau1Eta", &smearedHadTau1Eta, &b_smearedHadTau1Eta);
-   fChain->SetBranchAddress("smearedHadTau1Phi", &smearedHadTau1Phi, &b_smearedHadTau1Phi);
-   fChain->SetBranchAddress("smearedHadTau1Mass", &smearedHadTau1Mass, &b_smearedHadTau1Mass);
-   fChain->SetBranchAddress("smearedHadTau1Charge", &smearedHadTau1Charge, &b_smearedHadTau1Charge);
-   fChain->SetBranchAddress("smearedHadTau1DecayMode", &smearedHadTau1DecayMode, &b_smearedHadTau1DecayMode);
-   fChain->SetBranchAddress("smearedHadTau2E", &smearedHadTau2E, &b_smearedHadTau2E);
-   fChain->SetBranchAddress("smearedHadTau2Px", &smearedHadTau2Px, &b_smearedHadTau2Px);
-   fChain->SetBranchAddress("smearedHadTau2Py", &smearedHadTau2Py, &b_smearedHadTau2Py);
-   fChain->SetBranchAddress("smearedHadTau2Pz", &smearedHadTau2Pz, &b_smearedHadTau2Pz);
-   fChain->SetBranchAddress("smearedHadTau2Pt", &smearedHadTau2Pt, &b_smearedHadTau2Pt);
-   fChain->SetBranchAddress("smearedHadTau2Eta", &smearedHadTau2Eta, &b_smearedHadTau2Eta);
-   fChain->SetBranchAddress("smearedHadTau2Phi", &smearedHadTau2Phi, &b_smearedHadTau2Phi);
-   fChain->SetBranchAddress("smearedHadTau2Mass", &smearedHadTau2Mass, &b_smearedHadTau2Mass);
-   fChain->SetBranchAddress("smearedHadTau2Charge", &smearedHadTau2Charge, &b_smearedHadTau2Charge);
-   fChain->SetBranchAddress("smearedHadTau2DecayMode", &smearedHadTau2DecayMode, &b_smearedHadTau2DecayMode);
-   fChain->SetBranchAddress("numSmearedHadTaus", &numSmearedHadTaus, &b_numSmearedHadTaus);
-   fChain->SetBranchAddress("genMEtPx", &genMEtPx, &b_genMEtPx);
-   fChain->SetBranchAddress("genMEtPy", &genMEtPy, &b_genMEtPy);
-   fChain->SetBranchAddress("genMEtPt", &genMEtPt, &b_genMEtPt);
-   fChain->SetBranchAddress("genMEtPhi", &genMEtPhi, &b_genMEtPhi);
-   fChain->SetBranchAddress("genMEtCov00", &genMEtCov00, &b_genMEtCov00);
-   fChain->SetBranchAddress("genMEtCov01", &genMEtCov01, &b_genMEtCov01);
-   fChain->SetBranchAddress("genMEtCov10", &genMEtCov10, &b_genMEtCov10);
-   fChain->SetBranchAddress("genMEtCov11", &genMEtCov11, &b_genMEtCov11);
-   fChain->SetBranchAddress("smearedMEtPx", &smearedMEtPx, &b_smearedMEtPx);
-   fChain->SetBranchAddress("smearedMEtPy", &smearedMEtPy, &b_smearedMEtPy);
-   fChain->SetBranchAddress("smearedMEtPt", &smearedMEtPt, &b_smearedMEtPt);
-   fChain->SetBranchAddress("smearedMEtPhi", &smearedMEtPhi, &b_smearedMEtPhi);
-   fChain->SetBranchAddress("smearedMEtCov00", &smearedMEtCov00, &b_smearedMEtCov00);
-   fChain->SetBranchAddress("smearedMEtCov01", &smearedMEtCov01, &b_smearedMEtCov01);
-   fChain->SetBranchAddress("smearedMEtCov10", &smearedMEtCov10, &b_smearedMEtCov10);
-   fChain->SetBranchAddress("smearedMEtCov11", &smearedMEtCov11, &b_smearedMEtCov11);
-   fChain->SetBranchAddress("visMass", &visMass, &b_visMass);
-   fChain->SetBranchAddress("caMass", &caMass, &b_caMass);
-   fChain->SetBranchAddress("caMass_isValid", &caMass_isValid, &b_caMass_isValid);
-   fChain->SetBranchAddress("svfitMass", &svfitMass, &b_svfitMass);
-   fChain->SetBranchAddress("svfitMassErr", &svfitMassErr, &b_svfitMassErr);
-   fChain->SetBranchAddress("svfitMass_isValid", &svfitMass_isValid, &b_svfitMass_isValid);
-   fChain->SetBranchAddress("svfitMassMEM0logMwHadTauTF", &svfitMassMEM0logMwHadTauTF, &b_svfitMassMEM0logMwHadTauTF);
-   fChain->SetBranchAddress("svfitMassErrMEM0logMwHadTauTF", &svfitMassErrMEM0logMwHadTauTF, &b_svfitMassErrMEM0logMwHadTauTF);
-   fChain->SetBranchAddress("svfitMass_isValidMEM0logMwHadTauTF", &svfitMass_isValidMEM0logMwHadTauTF, &b_svfitMass_isValidMEM0logMwHadTauTF);
-   fChain->SetBranchAddress("svfitMassMEM0logMwoHadTauTF", &svfitMassMEM0logMwoHadTauTF, &b_svfitMassMEM0logMwoHadTauTF);
-   fChain->SetBranchAddress("svfitMassErrMEM0logMwoHadTauTF", &svfitMassErrMEM0logMwoHadTauTF, &b_svfitMassErrMEM0logMwoHadTauTF);
-   fChain->SetBranchAddress("svfitMass_isValidMEM0logMwoHadTauTF", &svfitMass_isValidMEM0logMwoHadTauTF, &b_svfitMass_isValidMEM0logMwoHadTauTF);
-   fChain->SetBranchAddress("svfitMassMEM5logMwHadTauTF", &svfitMassMEM5logMwHadTauTF, &b_svfitMassMEM5logMwHadTauTF);
-   fChain->SetBranchAddress("svfitMassErrMEM5logMwHadTauTF", &svfitMassErrMEM5logMwHadTauTF, &b_svfitMassErrMEM5logMwHadTauTF);
-   fChain->SetBranchAddress("svfitMass_isValidMEM5logMwHadTauTF", &svfitMass_isValidMEM5logMwHadTauTF, &b_svfitMass_isValidMEM5logMwHadTauTF);
-   fChain->SetBranchAddress("svfitMassMEM5logMwoHadTauTF", &svfitMassMEM5logMwoHadTauTF, &b_svfitMassMEM5logMwoHadTauTF);
-   fChain->SetBranchAddress("svfitMassErrMEM5logMwoHadTauTF", &svfitMassErrMEM5logMwoHadTauTF, &b_svfitMassErrMEM5logMwoHadTauTF);
-   fChain->SetBranchAddress("svfitMass_isValidMEM5logMwoHadTauTF", &svfitMass_isValidMEM5logMwoHadTauTF, &b_svfitMass_isValidMEM5logMwoHadTauTF);
-   Notify();
+  fChain->SetBranchAddress("genElectron1Phi", &genElectron1Phi, &b_genElectron1Phi);
+  fChain->SetBranchAddress("genElectron1Mass", &genElectron1Mass, &b_genElectron1Mass);
+  fChain->SetBranchAddress("genElectron1Charge", &genElectron1Charge, &b_genElectron1Charge);
+  fChain->SetBranchAddress("genElectron2E", &genElectron2E, &b_genElectron2E);
+  fChain->SetBranchAddress("genElectron2Px", &genElectron2Px, &b_genElectron2Px);
+  fChain->SetBranchAddress("genElectron2Py", &genElectron2Py, &b_genElectron2Py);
+  fChain->SetBranchAddress("genElectron2Pz", &genElectron2Pz, &b_genElectron2Pz);
+  fChain->SetBranchAddress("genElectron2Pt", &genElectron2Pt, &b_genElectron2Pt);
+  fChain->SetBranchAddress("genElectron2Eta", &genElectron2Eta, &b_genElectron2Eta);
+  fChain->SetBranchAddress("genElectron2Phi", &genElectron2Phi, &b_genElectron2Phi);
+  fChain->SetBranchAddress("genElectron2Mass", &genElectron2Mass, &b_genElectron2Mass);
+  fChain->SetBranchAddress("genElectron2Charge", &genElectron2Charge, &b_genElectron2Charge);
+  fChain->SetBranchAddress("numGenElectrons", &numGenElectrons, &b_numGenElectrons);
+  fChain->SetBranchAddress("genMuon1E", &genMuon1E, &b_genMuon1E);
+  fChain->SetBranchAddress("genMuon1Px", &genMuon1Px, &b_genMuon1Px);
+  fChain->SetBranchAddress("genMuon1Py", &genMuon1Py, &b_genMuon1Py);
+  fChain->SetBranchAddress("genMuon1Pz", &genMuon1Pz, &b_genMuon1Pz);
+  fChain->SetBranchAddress("genMuon1Pt", &genMuon1Pt, &b_genMuon1Pt);
+  fChain->SetBranchAddress("genMuon1Eta", &genMuon1Eta, &b_genMuon1Eta);
+  fChain->SetBranchAddress("genMuon1Phi", &genMuon1Phi, &b_genMuon1Phi);
+  fChain->SetBranchAddress("genMuon1Mass", &genMuon1Mass, &b_genMuon1Mass);
+  fChain->SetBranchAddress("genMuon1Charge", &genMuon1Charge, &b_genMuon1Charge);
+  fChain->SetBranchAddress("genMuon2E", &genMuon2E, &b_genMuon2E);
+  fChain->SetBranchAddress("genMuon2Px", &genMuon2Px, &b_genMuon2Px);
+  fChain->SetBranchAddress("genMuon2Py", &genMuon2Py, &b_genMuon2Py);
+  fChain->SetBranchAddress("genMuon2Pz", &genMuon2Pz, &b_genMuon2Pz);
+  fChain->SetBranchAddress("genMuon2Pt", &genMuon2Pt, &b_genMuon2Pt);
+  fChain->SetBranchAddress("genMuon2Eta", &genMuon2Eta, &b_genMuon2Eta);
+  fChain->SetBranchAddress("genMuon2Phi", &genMuon2Phi, &b_genMuon2Phi);
+  fChain->SetBranchAddress("genMuon2Mass", &genMuon2Mass, &b_genMuon2Mass);
+  fChain->SetBranchAddress("genMuon2Charge", &genMuon2Charge, &b_genMuon2Charge);
+  fChain->SetBranchAddress("numGenMuons", &numGenMuons, &b_numGenMuons);
+  fChain->SetBranchAddress("genHadTau1E", &genHadTau1E, &b_genHadTau1E);
+  fChain->SetBranchAddress("genHadTau1Px", &genHadTau1Px, &b_genHadTau1Px);
+  fChain->SetBranchAddress("genHadTau1Py", &genHadTau1Py, &b_genHadTau1Py);
+  fChain->SetBranchAddress("genHadTau1Pz", &genHadTau1Pz, &b_genHadTau1Pz);
+  fChain->SetBranchAddress("genHadTau1Pt", &genHadTau1Pt, &b_genHadTau1Pt);
+  fChain->SetBranchAddress("genHadTau1Eta", &genHadTau1Eta, &b_genHadTau1Eta);
+  fChain->SetBranchAddress("genHadTau1Phi", &genHadTau1Phi, &b_genHadTau1Phi);
+  fChain->SetBranchAddress("genHadTau1Mass", &genHadTau1Mass, &b_genHadTau1Mass);
+  fChain->SetBranchAddress("genHadTau1Charge", &genHadTau1Charge, &b_genHadTau1Charge);
+  fChain->SetBranchAddress("genHadTau1DecayMode", &genHadTau1DecayMode, &b_genHadTau1DecayMode);
+  fChain->SetBranchAddress("genHadTau2E", &genHadTau2E, &b_genHadTau2E);
+  fChain->SetBranchAddress("genHadTau2Px", &genHadTau2Px, &b_genHadTau2Px);
+  fChain->SetBranchAddress("genHadTau2Py", &genHadTau2Py, &b_genHadTau2Py);
+  fChain->SetBranchAddress("genHadTau2Pz", &genHadTau2Pz, &b_genHadTau2Pz);
+  fChain->SetBranchAddress("genHadTau2Pt", &genHadTau2Pt, &b_genHadTau2Pt);
+  fChain->SetBranchAddress("genHadTau2Eta", &genHadTau2Eta, &b_genHadTau2Eta);
+  fChain->SetBranchAddress("genHadTau2Phi", &genHadTau2Phi, &b_genHadTau2Phi);
+  fChain->SetBranchAddress("genHadTau2Mass", &genHadTau2Mass, &b_genHadTau2Mass);
+  fChain->SetBranchAddress("genHadTau2Charge", &genHadTau2Charge, &b_genHadTau2Charge);
+  fChain->SetBranchAddress("genHadTau2DecayMode", &genHadTau2DecayMode, &b_genHadTau2DecayMode);
+  fChain->SetBranchAddress("numGenHadTaus", &numGenHadTaus, &b_numGenHadTaus);
+  fChain->SetBranchAddress("smearedHadTau1E", &smearedHadTau1E, &b_smearedHadTau1E);
+  fChain->SetBranchAddress("smearedHadTau1Px", &smearedHadTau1Px, &b_smearedHadTau1Px);
+  fChain->SetBranchAddress("smearedHadTau1Py", &smearedHadTau1Py, &b_smearedHadTau1Py);
+  fChain->SetBranchAddress("smearedHadTau1Pz", &smearedHadTau1Pz, &b_smearedHadTau1Pz);
+  fChain->SetBranchAddress("smearedHadTau1Pt", &smearedHadTau1Pt, &b_smearedHadTau1Pt);
+  fChain->SetBranchAddress("smearedHadTau1Eta", &smearedHadTau1Eta, &b_smearedHadTau1Eta);
+  fChain->SetBranchAddress("smearedHadTau1Phi", &smearedHadTau1Phi, &b_smearedHadTau1Phi);
+  fChain->SetBranchAddress("smearedHadTau1Mass", &smearedHadTau1Mass, &b_smearedHadTau1Mass);
+  fChain->SetBranchAddress("smearedHadTau1Charge", &smearedHadTau1Charge, &b_smearedHadTau1Charge);
+  fChain->SetBranchAddress("smearedHadTau1DecayMode", &smearedHadTau1DecayMode, &b_smearedHadTau1DecayMode);
+  fChain->SetBranchAddress("smearedHadTau2E", &smearedHadTau2E, &b_smearedHadTau2E);
+  fChain->SetBranchAddress("smearedHadTau2Px", &smearedHadTau2Px, &b_smearedHadTau2Px);
+  fChain->SetBranchAddress("smearedHadTau2Py", &smearedHadTau2Py, &b_smearedHadTau2Py);
+  fChain->SetBranchAddress("smearedHadTau2Pz", &smearedHadTau2Pz, &b_smearedHadTau2Pz);
+  fChain->SetBranchAddress("smearedHadTau2Pt", &smearedHadTau2Pt, &b_smearedHadTau2Pt);
+  fChain->SetBranchAddress("smearedHadTau2Eta", &smearedHadTau2Eta, &b_smearedHadTau2Eta);
+  fChain->SetBranchAddress("smearedHadTau2Phi", &smearedHadTau2Phi, &b_smearedHadTau2Phi);
+  fChain->SetBranchAddress("smearedHadTau2Mass", &smearedHadTau2Mass, &b_smearedHadTau2Mass);
+  fChain->SetBranchAddress("smearedHadTau2Charge", &smearedHadTau2Charge, &b_smearedHadTau2Charge);
+  fChain->SetBranchAddress("smearedHadTau2DecayMode", &smearedHadTau2DecayMode, &b_smearedHadTau2DecayMode);
+  fChain->SetBranchAddress("numSmearedHadTaus", &numSmearedHadTaus, &b_numSmearedHadTaus);
+  fChain->SetBranchAddress("genMEtPx", &genMEtPx, &b_genMEtPx);
+  fChain->SetBranchAddress("genMEtPy", &genMEtPy, &b_genMEtPy);
+  fChain->SetBranchAddress("genMEtPt", &genMEtPt, &b_genMEtPt);
+  fChain->SetBranchAddress("genMEtPhi", &genMEtPhi, &b_genMEtPhi);
+  fChain->SetBranchAddress("genMEtCov00", &genMEtCov00, &b_genMEtCov00);
+  fChain->SetBranchAddress("genMEtCov01", &genMEtCov01, &b_genMEtCov01);
+  fChain->SetBranchAddress("genMEtCov10", &genMEtCov10, &b_genMEtCov10);
+  fChain->SetBranchAddress("genMEtCov11", &genMEtCov11, &b_genMEtCov11);
+  fChain->SetBranchAddress("smearedMEtPx", &smearedMEtPx, &b_smearedMEtPx);
+  fChain->SetBranchAddress("smearedMEtPy", &smearedMEtPy, &b_smearedMEtPy);
+  fChain->SetBranchAddress("smearedMEtPt", &smearedMEtPt, &b_smearedMEtPt);
+  fChain->SetBranchAddress("smearedMEtPhi", &smearedMEtPhi, &b_smearedMEtPhi);
+  fChain->SetBranchAddress("smearedMEtCov00", &smearedMEtCov00, &b_smearedMEtCov00);
+  fChain->SetBranchAddress("smearedMEtCov01", &smearedMEtCov01, &b_smearedMEtCov01);
+  fChain->SetBranchAddress("smearedMEtCov10", &smearedMEtCov10, &b_smearedMEtCov10);
+  fChain->SetBranchAddress("smearedMEtCov11", &smearedMEtCov11, &b_smearedMEtCov11);
+  fChain->SetBranchAddress("visMass", &visMass, &b_visMass);
+  fChain->SetBranchAddress("caMass", &caMass, &b_caMass);
+  fChain->SetBranchAddress("caMass_isValid", &caMass_isValid, &b_caMass_isValid);
+  fChain->SetBranchAddress("svfitMass", &svfitMass, &b_svfitMass);
+  fChain->SetBranchAddress("svfitMassErr", &svfitMassErr, &b_svfitMassErr);
+  fChain->SetBranchAddress("svfitMass_isValid", &svfitMass_isValid, &b_svfitMass_isValid);
+  fChain->SetBranchAddress("svfitMassMEM0logMwHadTauTF", &svfitMassMEM0logMwHadTauTF, &b_svfitMassMEM0logMwHadTauTF);
+  fChain->SetBranchAddress("svfitMassErrMEM0logMwHadTauTF", &svfitMassErrMEM0logMwHadTauTF, &b_svfitMassErrMEM0logMwHadTauTF);
+  fChain->SetBranchAddress("svfitMass_isValidMEM0logMwHadTauTF", &svfitMass_isValidMEM0logMwHadTauTF, &b_svfitMass_isValidMEM0logMwHadTauTF);
+  fChain->SetBranchAddress("svfitMassMEM0logMwoHadTauTF", &svfitMassMEM0logMwoHadTauTF, &b_svfitMassMEM0logMwoHadTauTF);
+  fChain->SetBranchAddress("svfitMassErrMEM0logMwoHadTauTF", &svfitMassErrMEM0logMwoHadTauTF, &b_svfitMassErrMEM0logMwoHadTauTF);
+  fChain->SetBranchAddress("svfitMass_isValidMEM0logMwoHadTauTF", &svfitMass_isValidMEM0logMwoHadTauTF, &b_svfitMass_isValidMEM0logMwoHadTauTF);
+  //
+  fChain->SetBranchAddress("svfitMassMEM1logMwHadTauTF", &svfitMassMEM1logMwHadTauTF, &b_svfitMassMEM1logMwHadTauTF);
+  fChain->SetBranchAddress("svfitMassErrMEM1logMwHadTauTF", &svfitMassErrMEM1logMwHadTauTF, &b_svfitMassErrMEM1logMwHadTauTF);
+  fChain->SetBranchAddress("svfitMass_isValidMEM1logMwHadTauTF", &svfitMass_isValidMEM1logMwHadTauTF, &b_svfitMass_isValidMEM1logMwHadTauTF);
+  fChain->SetBranchAddress("svfitMassMEM1logMwoHadTauTF", &svfitMassMEM1logMwoHadTauTF, &b_svfitMassMEM1logMwoHadTauTF);
+  fChain->SetBranchAddress("svfitMassErrMEM1logMwoHadTauTF", &svfitMassErrMEM1logMwoHadTauTF, &b_svfitMassErrMEM1logMwoHadTauTF);
+  fChain->SetBranchAddress("svfitMass_isValidMEM1logMwoHadTauTF", &svfitMass_isValidMEM1logMwoHadTauTF, &b_svfitMass_isValidMEM1logMwoHadTauTF);
+  //
+  fChain->SetBranchAddress("svfitMassMEM2logMwHadTauTF", &svfitMassMEM2logMwHadTauTF, &b_svfitMassMEM2logMwHadTauTF);
+  fChain->SetBranchAddress("svfitMassErrMEM2logMwHadTauTF", &svfitMassErrMEM2logMwHadTauTF, &b_svfitMassErrMEM2logMwHadTauTF);
+  fChain->SetBranchAddress("svfitMass_isValidMEM2logMwHadTauTF", &svfitMass_isValidMEM2logMwHadTauTF, &b_svfitMass_isValidMEM2logMwHadTauTF);
+  fChain->SetBranchAddress("svfitMassMEM2logMwoHadTauTF", &svfitMassMEM2logMwoHadTauTF, &b_svfitMassMEM2logMwoHadTauTF);
+  fChain->SetBranchAddress("svfitMassErrMEM2logMwoHadTauTF", &svfitMassErrMEM2logMwoHadTauTF, &b_svfitMassErrMEM2logMwoHadTauTF);
+  fChain->SetBranchAddress("svfitMass_isValidMEM2logMwoHadTauTF", &svfitMass_isValidMEM2logMwoHadTauTF, &b_svfitMass_isValidMEM2logMwoHadTauTF);
+  //
+  fChain->SetBranchAddress("svfitMassMEM3logMwHadTauTF", &svfitMassMEM3logMwHadTauTF, &b_svfitMassMEM3logMwHadTauTF);
+  fChain->SetBranchAddress("svfitMassErrMEM3logMwHadTauTF", &svfitMassErrMEM3logMwHadTauTF, &b_svfitMassErrMEM3logMwHadTauTF);
+  fChain->SetBranchAddress("svfitMass_isValidMEM3logMwHadTauTF", &svfitMass_isValidMEM3logMwHadTauTF, &b_svfitMass_isValidMEM3logMwHadTauTF);
+  fChain->SetBranchAddress("svfitMassMEM3logMwoHadTauTF", &svfitMassMEM3logMwoHadTauTF, &b_svfitMassMEM3logMwoHadTauTF);
+  fChain->SetBranchAddress("svfitMassErrMEM3logMwoHadTauTF", &svfitMassErrMEM3logMwoHadTauTF, &b_svfitMassErrMEM3logMwoHadTauTF);
+  fChain->SetBranchAddress("svfitMass_isValidMEM3logMwoHadTauTF", &svfitMass_isValidMEM3logMwoHadTauTF, &b_svfitMass_isValidMEM3logMwoHadTauTF);
+  //
+  fChain->SetBranchAddress("svfitMassMEM4logMwHadTauTF", &svfitMassMEM4logMwHadTauTF, &b_svfitMassMEM4logMwHadTauTF);
+  fChain->SetBranchAddress("svfitMassErrMEM4logMwHadTauTF", &svfitMassErrMEM4logMwHadTauTF, &b_svfitMassErrMEM4logMwHadTauTF);
+  fChain->SetBranchAddress("svfitMass_isValidMEM4logMwHadTauTF", &svfitMass_isValidMEM4logMwHadTauTF, &b_svfitMass_isValidMEM4logMwHadTauTF);
+  fChain->SetBranchAddress("svfitMassMEM4logMwoHadTauTF", &svfitMassMEM4logMwoHadTauTF, &b_svfitMassMEM4logMwoHadTauTF);
+  fChain->SetBranchAddress("svfitMassErrMEM4logMwoHadTauTF", &svfitMassErrMEM4logMwoHadTauTF, &b_svfitMassErrMEM4logMwoHadTauTF);
+  fChain->SetBranchAddress("svfitMass_isValidMEM4logMwoHadTauTF", &svfitMass_isValidMEM4logMwoHadTauTF, &b_svfitMass_isValidMEM4logMwoHadTauTF);
+  //
+  fChain->SetBranchAddress("svfitMassMEM5logMwHadTauTF", &svfitMassMEM5logMwHadTauTF, &b_svfitMassMEM5logMwHadTauTF);
+  fChain->SetBranchAddress("svfitMassErrMEM5logMwHadTauTF", &svfitMassErrMEM5logMwHadTauTF, &b_svfitMassErrMEM5logMwHadTauTF);
+  fChain->SetBranchAddress("svfitMass_isValidMEM5logMwHadTauTF", &svfitMass_isValidMEM5logMwHadTauTF, &b_svfitMass_isValidMEM5logMwHadTauTF);
+  fChain->SetBranchAddress("svfitMassMEM5logMwoHadTauTF", &svfitMassMEM5logMwoHadTauTF, &b_svfitMassMEM5logMwoHadTauTF);
+  fChain->SetBranchAddress("svfitMassErrMEM5logMwoHadTauTF", &svfitMassErrMEM5logMwoHadTauTF, &b_svfitMassErrMEM5logMwoHadTauTF);
+  fChain->SetBranchAddress("svfitMass_isValidMEM5logMwoHadTauTF", &svfitMass_isValidMEM5logMwoHadTauTF, &b_svfitMass_isValidMEM5logMwoHadTauTF);
+  Notify();
 }
 
 Bool_t SVfitMEM::Notify()
 {
-   // The Notify() function is called when a new file is opened. This
-   // can be either for a new TTree in a TChain or when when a new TTree
-   // is started when using PROOF. It is normally not necessary to make changes
-   // to the generated code, but the routine can be extended by the
-   // user if needed. The return value is currently not used.
+  // The Notify() function is called when a new file is opened. This
+  // can be either for a new TTree in a TChain or when when a new TTree
+  // is started when using PROOF. It is normally not necessary to make changes
+  // to the generated code, but the routine can be extended by the
+  // user if needed. The return value is currently not used.
 
-   return kTRUE;
+  return kTRUE;
 }
 
 void SVfitMEM::Show(Long64_t entry)
 {
-// Print contents of entry.
-// If entry is not specified, print current entry
-   if (!fChain) return;
-   fChain->Show(entry);
+  // Print contents of entry.
+  // If entry is not specified, print current entry
+  if (!fChain) return;
+  fChain->Show(entry);
 }
 Int_t SVfitMEM::Cut(Long64_t entry)
 {
-// This function may be called from Loop.
-// returns  1 if entry is accepted.
-// returns -1 otherwise.
-   return 1;
+  // This function may be called from Loop.
+  // returns  1 if entry is accepted.
+  // returns -1 otherwise.
+  return 1;
 }
 #endif // #ifdef SVfitMEM_cxx
