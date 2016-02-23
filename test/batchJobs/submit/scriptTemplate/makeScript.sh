@@ -2,19 +2,18 @@
 
 directories=(hadhad muhad emu)
 genOptions=(gen smeared)
-##pathToCfg=(/home/calpas/svfitMEM/CMSSW_7_4_15_patch1/src/TauAnalysis/SVfitPerformanceStudies/test/cfgTemplate)
-pathToCfg=($CMSSW_BASE/src/TauAnalysis/SVfitPerformanceStudies/test/cfgTemplate)
-files=(SUSYGluGluToHToTauTauM300)
-#files=(SUSYGluGluToHToTauTauM200
-#       SUSYGluGluToHToTauTauM300
-#       SUSYGluGluToHToTauTauM500
-#       SUSYGluGluToHToTauTauM800
-#       SUSYGluGluToHToTauTauM1200
-#       SUSYGluGluToHToTauTauM1800
-#       SUSYGluGluToHToTauTauM2600
-#       GluGluHToTauTauM125
-#       DYJetsToLLM50
-#      ) 
+pathToCfg=(/home/calpas/svfitMEM/CMSSW_8_0_0/src/TauAnalysis/SVfitPerformanceStudies/test/cfgTemplate)
+#files=(SUSYGluGluToHToTauTauM300)
+files=(SUSYGluGluToHToTauTauM200
+       SUSYGluGluToHToTauTauM300
+       SUSYGluGluToHToTauTauM500
+       SUSYGluGluToHToTauTauM800
+       SUSYGluGluToHToTauTauM1200
+       SUSYGluGluToHToTauTauM1800
+       SUSYGluGluToHToTauTauM2600
+       GluGluHToTauTauM125
+       DYJetsToLLM50
+      ) 
 
 # create a config files 
 for dir in ${directories[*]}; do
