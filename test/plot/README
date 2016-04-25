@@ -2,6 +2,11 @@
 make
 ./do.exe
 
-# to plot the histogram
-root -l plot.cc
+# to make fig 6 to 8 
+root -l plot_6to8_svfitmem_paper.cc
 
+# to make fig 9
+root -l plot_9_svfitmem_paper.cc
+
+# to make optimization plots
+root -l plot_kOptimization.cc
