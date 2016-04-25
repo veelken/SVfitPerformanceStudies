@@ -1,2 +1,4 @@
-# To run all the worlfow in once
+# To run all the workflow in once to get the ntuples
 ./runAddMassVariablesWorkflow.sh
+
+# to make plots go to plot directory and read the readme.
