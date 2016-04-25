@@ -49,6 +49,8 @@ class SVfitStudyNtupleProducer : public edm::EDAnalyzer
   void addBranch_genHadTau(const std::string&);
   void addBranch_genMET(const std::string&);
   void addBranch_genHadRecoil(const std::string&);
+  void addBranch_genParticle(const std::string&);
+  void addBranch_genJet(const std::string&);
   
   void addBranch_EnPxPyPz(const std::string&);
   void addBranch_PxPyPz(const std::string&);
@@ -71,6 +73,8 @@ class SVfitStudyNtupleProducer : public edm::EDAnalyzer
   void setValue_genHadTau(const std::string&, const reco::GenJet&);
   void setValue_genMET(const std::string&, const reco::GenMET&);
   void setValue_genHadRecoil(const std::string&, const svFitMEM::GenHadRecoil&);
+  void setValue_genParticle(const std::string&, const reco::GenParticle&);
+  void setValue_genJet(const std::string&, const reco::GenJet&);
 
   template <typename T>
   void setValue_EnPxPyPz(const std::string&, const T&);
@@ -91,6 +95,10 @@ class SVfitStudyNtupleProducer : public edm::EDAnalyzer
   edm::InputTag srcGenHadTaus_;
   edm::InputTag srcGenMET_;
   edm::InputTag srcGenHadRecoil_;
+  edm::InputTag srcGenParticles_;
+  edm::InputTag srcGenJets_;
+  double minJetPt_;
+  double maxJetAbsEta_;
 
   edm::InputTag srcSmearedHadTaus_;
   edm::InputTag srcSmearedMET_;

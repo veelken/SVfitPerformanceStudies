@@ -12,10 +12,6 @@ process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
 process.GlobalTag.globaltag = cms.string('MCRUN2_74_V9')
 
-process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(-1)
-)
-
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(                                
         '/store/user/veelken/CMSSW_7_4_x/skims/mssmHtautau3200_RECO_1_1_ONE.root'
@@ -163,6 +159,10 @@ process.ntupleProducer = cms.EDAnalyzer("SVfitStudyNtupleProducer",
     srcGenHadTaus = cms.InputTag('tauGenJetsSelectorAllHadrons'),
     srcGenMET = cms.InputTag('genMEtFromTauDecays'),
     srcGenHadRecoil = cms.InputTag('genHadRecoil'),     
+    srcGenParticles = cms.InputTag('genParticles'),
+    srcGenJets = cms.InputTag('ak4GenJetsNoNu'),
+    minJetPt = cms.double(20.),
+    maxJetAbsEta = cms.double(5.),
 
     srcSmearedHadTaus = cms.InputTag('smearedHadTaus'),
     srcSmearedMET = cms.InputTag('smearedMEt'),

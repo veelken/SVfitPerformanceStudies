@@ -17,6 +17,7 @@
 #include "DataFormats/SVfitPerformanceStudies/interface/GenHadRecoilFwd.h"
 #include "DataFormats/Candidate/interface/Candidate.h"
 #include "DataFormats/TauReco/interface/PFTau.h"
+#include "DataFormats/Math/interface/deltaR.h"
 
 #include "PhysicsTools/JetMCUtils/interface/JetMCTag.h"
 
@@ -24,6 +25,7 @@
 #include <TString.h>
 
 #include <iostream>
+#include <algorithm> // std::sort
 
 SVfitStudyNtupleProducer::SVfitStudyNtupleProducer(const edm::ParameterSet& cfg) 
   : moduleLabel_(cfg.getParameter<std::string>("@module_label")),
@@ -35,6 +37,10 @@ SVfitStudyNtupleProducer::SVfitStudyNtupleProducer(const edm::ParameterSet& cfg)
   srcGenHadTaus_ = cfg.getParameter<edm::InputTag>("srcGenHadTaus");
   srcGenMET_ = cfg.getParameter<edm::InputTag>("srcGenMET");
   srcGenHadRecoil_ = cfg.getParameter<edm::InputTag>("srcGenHadRecoil");
+  srcGenParticles_ = cfg.getParameter<edm::InputTag>("srcGenParticles");
+  srcGenJets_ = cfg.getParameter<edm::InputTag>("srcGenJets");
+  minJetPt_ = cfg.getParameter<double>("minJetPt");
+  maxJetAbsEta_ = cfg.getParameter<double>("maxJetAbsEta");
 
   srcSmearedHadTaus_ = cfg.getParameter<edm::InputTag>("srcSmearedHadTaus");
   srcSmearedMET_ = cfg.getParameter<edm::InputTag>("srcSmearedMET");
@@ -107,6 +113,20 @@ void SVfitStudyNtupleProducer::beginJob()
   // variables for hadronic recoil (smeared)
   addBranch_genHadRecoil("smearedHadRecoil");
 
+  // jet variables
+  addBranch_genJet("genJet1");
+  addBranch_genJet("genJet2");
+  addBranch_genJet("genJet3");
+  addBranch_genJet("genJet4");
+  addBranch_genJet("genJet5");
+  addBranch_genJet("genJet6");
+  addBranchI("numGenJets");
+
+  // variables for W and Z bosons and their decay products
+  addBranch_genParticle("genBoson");
+  addBranch_genParticle("genBosonDaughter1");
+  addBranch_genParticle("genBosonDaughter2");
+
   // event weights/efficiencies
   for ( std::vector<InputTagEntryType>::const_iterator evtWeight = evtWeightsToStore_.begin();
 	evtWeight != evtWeightsToStore_.end(); ++evtWeight ) {
@@ -144,6 +164,39 @@ namespace
       }
     }
     return retVal;
+  }
+
+  struct isHigherPt_ptr
+  {
+    bool operator() (const reco::Candidate* particle1, const reco::Candidate* particle2)
+    {
+      return (particle1->pt() > particle2->pt());
+    }
+  };
+
+  template<typename T>
+  bool isOverlap(const reco::Candidate& particle, const std::vector<T>& overlaps, double dRoverlap) 
+  {
+    for ( typename std::vector<T>::const_iterator overlap = overlaps.begin();
+	  overlap != overlaps.end(); ++overlap ) {
+      double dR = deltaR(particle.p4(), overlap->p4());
+      if ( dR < dRoverlap ) return true;
+    }
+    return false;
+  }
+
+  const reco::GenParticle* findGenParticle(const reco::GenParticleCollection& genParticles, int pdgId1, int pdgId2, int pdgId3)
+  {
+    for ( reco::GenParticleCollection::const_iterator genParticle = genParticles.begin();
+          genParticle != genParticles.end(); ++genParticle ) {
+      int genParticlePdgId = genParticle->pdgId();
+      if ( (pdgId1 != 0 && genParticlePdgId == pdgId1) ||
+           (pdgId2 != 0 && genParticlePdgId == pdgId2) ||
+           (pdgId3 != 0 && genParticlePdgId == pdgId3) ) {
+        return &(*genParticle);
+      }
+    }
+    return 0;
   }
 }
 
@@ -243,6 +296,61 @@ void SVfitStudyNtupleProducer::analyze(const edm::Event& evt, const edm::EventSe
   //genHadRecoil_with_Cov.setSignificanceMatrix(smearedHadRecoil.getSignificanceMatrix());
   genHadRecoil_with_Cov.setSignificanceMatrix(genHadRecoilCov);
   setValue_genHadRecoil("genHadRecoil", genHadRecoil_with_Cov);
+
+  edm::Handle<reco::GenJetCollection> genJets;
+  evt.getByLabel(srcGenJets_, genJets);
+  std::vector<const reco::GenJet*> genJets_selected;
+  for ( reco::GenJetCollection::const_iterator genJet = genJets->begin();
+	genJet != genJets->end(); ++genJet ) {
+    if ( genJet->pt() > minJetPt_ && TMath::Abs(genJet->eta()) < maxJetAbsEta_ ) {
+      if ( isOverlap(*genJet, *genElectrons, 0.3) || 
+	   isOverlap(*genJet, *genMuons, 0.3)     || 
+	   isOverlap(*genJet, *genHadTaus, 0.3)   ) continue;
+      genJets_selected.push_back(&(*genJet));
+    }
+  } 
+  std::sort(genJets_selected.begin(), genJets_selected.end(), isHigherPt_ptr());
+  if ( genJets_selected.size() >= 1 ) setValue_genJet("genJet1", *genJets_selected.at(0));
+  if ( genJets_selected.size() >= 2 ) setValue_genJet("genJet2", *genJets_selected.at(1));
+  if ( genJets_selected.size() >= 3 ) setValue_genJet("genJet3", *genJets_selected.at(2));
+  if ( genJets_selected.size() >= 4 ) setValue_genJet("genJet4", *genJets_selected.at(3));
+  if ( genJets_selected.size() >= 5 ) setValue_genJet("genJet5", *genJets_selected.at(4));
+  if ( genJets_selected.size() >= 6 ) setValue_genJet("genJet6", *genJets_selected.at(5));
+  setValueI("numGenJets", genJets_selected.size());
+
+  edm::Handle<reco::GenParticleCollection> genParticles;
+  evt.getByLabel(srcGenParticles_, genParticles);
+  const reco::GenParticle* genBoson = findGenParticle(*genParticles, 22, 23, 24); // gamma, Z, W
+  //const reco::GenParticle* genBoson = findGenParticle(*genParticles, 25, 35, 36); // h, H, A (CV: ONLY for TESTING !!)
+  if ( genBoson ) {
+    // CV: find last entry in genParticle list for the genBoson,
+    //     after all MC handling and FSR emissions
+    const reco::GenParticle* genBoson_tmp = genBoson;
+    const reco::GenParticle* genBoson_last = 0;
+    bool genBoson_last_isFound = false;
+    while ( !genBoson_last_isFound ) {
+      genBoson_last = 0;
+      size_t numDaughters = genBoson_tmp->numberOfDaughters();
+      for ( size_t idxDaughter = 0; idxDaughter < numDaughters; ++idxDaughter ) {
+	if ( genBoson_tmp->daughter(idxDaughter)->pdgId() == genBoson_tmp->pdgId() ) {
+	  genBoson_last = dynamic_cast<const reco::GenParticle*>(genBoson_tmp->daughter(idxDaughter));
+	}
+      }
+      if ( !genBoson_last ) genBoson_last_isFound = true;
+      else genBoson_tmp = genBoson_last;
+    }
+    genBoson_last = genBoson_tmp;
+    setValue_genParticle("genBoson", *genBoson_last);
+    const reco::GenParticle* genBosonDaughter1 = 0;
+    const reco::GenParticle* genBosonDaughter2 = 0;
+    size_t numDaughters = genBoson_last->numberOfDaughters();
+    for ( size_t idxDaughter = 0; idxDaughter < numDaughters; ++idxDaughter ) {
+      if ( idxDaughter == 0 ) genBosonDaughter1 = dynamic_cast<const reco::GenParticle*>(genBoson_last->daughter(idxDaughter));
+      if ( idxDaughter == 1 ) genBosonDaughter2 = dynamic_cast<const reco::GenParticle*>(genBoson_last->daughter(idxDaughter));
+    }
+    if ( genBosonDaughter1 ) setValue_genParticle("genBosonDaughter1", *genBosonDaughter1);
+    if ( genBosonDaughter2 ) setValue_genParticle("genBosonDaughter2", *genBosonDaughter2);
+  }
 
   for ( std::vector<InputTagEntryType>::const_iterator evtWeight = evtWeightsToStore_.begin();
 	evtWeight != evtWeightsToStore_.end(); ++evtWeight ) {
@@ -402,6 +510,21 @@ void SVfitStudyNtupleProducer::addBranch_genHadRecoil(const std::string& name)
   addBranch_Cov4d(name);
 }
 
+void SVfitStudyNtupleProducer::addBranch_genJet(const std::string& name) 
+{
+  addBranch_EnPxPyPz(name);
+  addBranch_PtEtaPhiMass(name);
+  addBranchF(name + "Charge");
+}
+
+void SVfitStudyNtupleProducer::addBranch_genParticle(const std::string& name) 
+{
+  addBranch_EnPxPyPz(name);
+  addBranch_PtEtaPhiMass(name);
+  addBranchF(name + "Charge");
+  addBranchI(name + "PdgId");
+}
+
 void SVfitStudyNtupleProducer::addBranch_EnPxPyPz(const std::string& name) 
 {
   addBranchF(name + "E");
@@ -503,6 +626,21 @@ void SVfitStudyNtupleProducer::setValue_genHadRecoil(const std::string& name, co
   setValue_PtEtaPhiMass(name, genHadRecoil.p4());
   setValueF(name + "Charge", genHadRecoil.charge());
   setValue_Cov4d(name, genHadRecoil.getSignificanceMatrix());
+}
+
+void SVfitStudyNtupleProducer::setValue_genJet(const std::string& name, const reco::GenJet& genJet) 
+{
+  setValue_EnPxPyPz(name, genJet.p4());
+  setValue_PtEtaPhiMass(name, genJet.p4());
+  setValueF(name + "Charge", genJet.charge());
+}
+
+void SVfitStudyNtupleProducer::setValue_genParticle(const std::string& name, const reco::GenParticle& genParticle) 
+{
+  setValue_EnPxPyPz(name, genParticle.p4());
+  setValue_PtEtaPhiMass(name, genParticle.p4());
+  setValueF(name + "Charge", genParticle.charge());
+  setValueI(name + "PdgId", genParticle.pdgId());
 }
 
 template <typename T>

@@ -8,9 +8,11 @@
   <use   name="PhysicsTools/FWLite"/>
   <use   name="TauAnalysis/SVfitMEM"/>
   <use   name="TauAnalysis/SVfitStandalone"/>
+  <use   name="TauAnalysis/ClassicSVfit"/>
   <use   name="TauAnalysis/SVfitTF"/>
   <use   name="root"/>
   <use   name="rootgraphics"/>
   <use   name="rootmath"/>
+  <Flags CPPDEFINES="USE_SVFITTF"/>
 </bin>
 

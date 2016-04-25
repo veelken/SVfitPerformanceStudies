@@ -6,6 +6,7 @@
 <use   name="DataFormats/Candidate"/>
 <use   name="DataFormats/HepMCCandidate"/>
 <use   name="DataFormats/JetReco"/>
+<use   name="DataFormats/Math"/>
 <use   name="DataFormats/METReco"/>
 <use   name="DataFormats/SVfitPerformanceStudies"/>
 <use   name="PhysicsTools/JetMCUtils"/>
