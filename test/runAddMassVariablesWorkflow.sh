@@ -14,5 +14,6 @@ cd /home/calpas/svfitMEM/CMSSW_8_0_0/src/TauAnalysis/SVfitPerformanceStudies/tes
 ./run_addMassVariables.sh
 
 # once the jogs finish, add the root file
+cd /ntuples/
 ./addRootFile.sh
 
