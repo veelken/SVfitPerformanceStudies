@@ -185,7 +185,7 @@ namespace
 			   double mex, double mey, const TMatrixD& metCov, 
 			   Float_t& svfitMass, Float_t& svfitMassErr, Int_t& svfitMass_isValid)
   {
-    //std::cout << "<compSVfitMassMEM_lo>:" << std::endl;	
+    //std::cout << "<compSVfitMassMEM_lo>:" << std::endl;	>:" << std::endl;	
     //std::cout << "leg1: Pt = " << leg1P4.pt() << ", eta = " << leg1P4.eta() << ", phi = " << leg1P4.phi() << ", mass = " << leg1P4.mass() << " (type = " << leg1Type << ")" << std::endl;
     //std::cout << "leg2: Pt = " << leg2P4.pt() << ", eta = " << leg2P4.eta() << ", phi = " << leg2P4.phi() << ", mass = " << leg2P4.mass() << " (type = " << leg2Type << ")" << std::endl;     
     //std::cout << "met: Px = " << mex << ", Py = " << mey << std::endl; 
@@ -242,7 +242,7 @@ namespace
 			    Float_t& svfitTransverseMass, Float_t& svfitTransverseMassErr, Int_t& svfitTransverseMass_isValid, 
 			    const HadTauTFBase* hadTauTF, bool useHadTauTF, double addLogM_power, int verbosity)
   {
-    //std::cout << "<compClassicSVfitMass>:" << std::endl;	
+    //std::cout << "<compClassicSVfitMass)>:" << std::endl;	
     //std::cout << "leg1: Pt = " << leg1P4.pt() << ", eta = " << leg1P4.eta() << ", phi = " << leg1P4.phi() << ", mass = " << leg1P4.mass() << " (type = " << leg1Type << ")" << std::endl;
     //std::cout << "leg2: Pt = " << leg2P4.pt() << ", eta = " << leg2P4.eta() << ", phi = " << leg2P4.phi() << ", mass = " << leg2P4.mass() << " (type = " << leg2Type << ")" << std::endl;     
     //std::cout << "met: Px = " << mex << ", Py = " << mey << std::endl; 
@@ -799,7 +799,7 @@ int main(int argc, char* argv[])
         leg2P4, 
         mex, mey, 
         caMass, caMass_isValid);
-      mTtotal = TMath::Sqrt(compMt2(leg1P4, leg2P4) + compMt2(leg1P4, metP4) + compMt2(leg2P4, metP4));
+      mTtotal = TMath::Sqrt(compMt2(leg1P4, leg2P4) + compMt2(leg1P4, metP4) + compMt2(leg2P4, metP4));     
       compSVfitMass(
         leg1Type, leg1P4, 
         leg2Type, leg2P4, 
@@ -814,6 +814,7 @@ int main(int argc, char* argv[])
           else svFitAlgoMEM_lo.addLogM(false, (*svFitMEM_logM_entry)->addLogM_power_);
 	  if ( (*svFitMEM_logM_entry)->useHadTauTF_ ) svFitAlgoMEM_lo.enableHadTauTF();
   	  else svFitAlgoMEM_lo.disableHadTauTF();
+	  std::cout << "<compSVfitMassMEM_lo (useHadTauTF = " << (*svFitMEM_logM_entry)->useHadTauTF_ << ", addLogM_power = " << (*svFitMEM_logM_entry)->addLogM_power_ << ")>:" << std::endl;
           compSVfitMassMEM_lo(
             svFitAlgoMEM_lo, 
 	    leg1TypeMEM, leg1P4, 
@@ -839,6 +840,7 @@ int main(int argc, char* argv[])
 	    classicSVfit_logM_entry != classicSVfit_logM_entries.end(); ++classicSVfit_logM_entry ) {
 	classic_svFit::MeasuredTauLepton::kDecayType leg1Type_classic = getDecayType_classic(leg1Type);
 	classic_svFit::MeasuredTauLepton::kDecayType leg2Type_classic = getDecayType_classic(leg2Type);
+	std::cout << "<compClassicSVfitMass (useHadTauTF = " << (*classicSVfit_logM_entry)->useHadTauTF_ << ", addLogM_power = " << (*classicSVfit_logM_entry)->addLogM_power_ << ")>:" << std::endl;
         compClassicSVfitMass(
 	  leg1Type_classic, leg1P4, 
   	  leg2Type_classic, leg2P4, 
