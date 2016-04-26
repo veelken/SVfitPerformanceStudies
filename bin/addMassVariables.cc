@@ -298,6 +298,19 @@ namespace
     Float_t svfitTransverseMassErr_;
     Int_t svfitTransverseMass_isValid_;
   };
+
+  double square(double x)
+  {
+    return x*x;
+  }
+
+  double compMt2(const reco::Candidate::PolarLorentzVector& leg1P4, const reco::Candidate::PolarLorentzVector& leg2P4)
+  {
+    double mt2 = square(leg1P4.Et() + leg2P4.Et()) - (square(leg1P4.px() + leg2P4.px()) + square(leg1P4.py() + leg2P4.py()));
+    // CV: protection against rounding errors
+    if ( mt2 < 0. ) mt2 = 0.; 
+    return mt2;
+  }
 }
 
 int main(int argc, char* argv[]) 
@@ -526,6 +539,12 @@ int main(int argc, char* argv[])
   std::cout << " caMass_isValid (type = I)" << std::endl;
   outputTree->Branch("caMass_isValid", &caMass_isValid, "caMass_isValid/I");
 
+  // mTtotal variable used by ATLAS MSSM Higgs->tautau analysis,
+  // cf. https://cds.cern.ch/record/1744694/files/ATLAS-CONF-2014-049.pdf
+  Float_t mTtotal = -1.;
+  std::cout << " mTtotal (type = F)" << std::endl;
+  outputTree->Branch("mTtotal", &mTtotal, "mTtotal/F");
+
   // mTauTau reconstructed by "old" SVfit
   Float_t svfitMass = -1.;
   std::cout << " svfitMass (type = F)" << std::endl;
@@ -740,6 +759,8 @@ int main(int argc, char* argv[])
     reco::Candidate::PolarLorentzVector leg2P4(leg2Pt, leg2Eta, leg2Phi, leg2Mass);
     Float_t mex            = branchEntryMEx->valueF_;
     Float_t mey            = branchEntryMEy->valueF_;
+    reco::Candidate::LorentzVector metP4_xyzt(mex, mey, 0., TMath::Sqrt(square(mex) + square(mey)));
+    reco::Candidate::PolarLorentzVector metP4(metP4_xyzt.pt(), metP4_xyzt.eta(), metP4_xyzt.phi(), metP4_xyzt.mass());
     Float_t metCov00       = branchEntryMEtCov00->valueF_;
     Float_t metCov01       = branchEntryMEtCov01->valueF_;
     Float_t metCov10       = branchEntryMEtCov10->valueF_;
@@ -778,6 +799,7 @@ int main(int argc, char* argv[])
         leg2P4, 
         mex, mey, 
         caMass, caMass_isValid);
+      mTtotal = TMath::Sqrt(compMt2(leg1P4, leg2P4) + compMt2(leg1P4, metP4) + compMt2(leg2P4, metP4));
       compSVfitMass(
         leg1Type, leg1P4, 
         leg2Type, leg2P4, 
