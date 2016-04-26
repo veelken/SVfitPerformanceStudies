@@ -135,7 +135,8 @@ namespace
   void compSVfitMass(svFitStandalone::kDecayType leg1Type, reco::Candidate::PolarLorentzVector& leg1P4, 
 		     svFitStandalone::kDecayType leg2Type, reco::Candidate::PolarLorentzVector& leg2P4, 
 		     double mex, double mey, const TMatrixD& metCov, 
-		     Float_t& svfitMass, Float_t& svfitMassErr, Int_t& svfitMass_isValid, 
+		     Float_t& svfitMass, Float_t& svfitMassErr, Int_t& svfitMass_isValid,
+		     Float_t& svfitTransverseMass, Float_t& svfitTransverseMassErr, Int_t& svfitTransverseMass_isValid,
 		     int verbosity)
   {
     std::vector<svFitStandalone::MeasuredTauLepton> measuredTauLeptons;
@@ -149,10 +150,16 @@ namespace
       svfitMass = svFitAlgo.mass();
       svfitMassErr = svFitAlgo.massUncert();
       svfitMass_isValid = 1;
+      svfitTransverseMass = svFitAlgo.transverseMass();
+      svfitTransverseMassErr = svFitAlgo.transverseMassUncert();
+      svfitTransverseMass_isValid = ( svFitAlgo.transverseMassLmax() > 0. ) ? 1 : 0;
     } else {
       svfitMass = -1.;
       svfitMassErr = -1.;
       svfitMass_isValid = 0;
+      svfitTransverseMass = -1.;
+      svfitTransverseMassErr = -1.;
+      svfitTransverseMass_isValid = 0;
     }
   }
 
@@ -232,6 +239,7 @@ namespace
 			    classic_svFit::MeasuredTauLepton::kDecayType leg2Type, reco::Candidate::PolarLorentzVector& leg2P4, 
 			    double mex, double mey, const TMatrixD& metCov, 
 			    Float_t& svfitMass, Float_t& svfitMassErr, Int_t& svfitMass_isValid, 
+			    Float_t& svfitTransverseMass, Float_t& svfitTransverseMassErr, Int_t& svfitTransverseMass_isValid, 
 			    const HadTauTFBase* hadTauTF, bool useHadTauTF, double addLogM_power, int verbosity)
   {
     //std::cout << "<compClassicSVfitMass>:" << std::endl;	
@@ -255,12 +263,19 @@ namespace
       svfitMass = svFitAlgo.mass();
       svfitMassErr = svFitAlgo.massErr();
       svfitMass_isValid = 1;
+      svfitTransverseMass = svFitAlgo.transverseMass();
+      svfitTransverseMassErr = svFitAlgo.transverseMassErr();
+      svfitTransverseMass_isValid = ( svFitAlgo.transverseMassLmax() > 0. ) ? 1 : 0;
     } else {
       svfitMass = -1.;
       svfitMassErr = -1.;
       svfitMass_isValid = 0;
+      svfitTransverseMass = -1.;
+      svfitTransverseMassErr = -1.;
+      svfitTransverseMass_isValid = 0;
     }
   }
+
   struct svFitMEM_logM_EntryType
   {
     enum { kLO, kNLO };
@@ -270,6 +285,18 @@ namespace
     Float_t svfitMass_;
     Float_t svfitMassErr_;
     Int_t svfitMass_isValid_;
+  };
+
+  struct classicSVfit_logM_EntryType
+  {
+    double addLogM_power_;
+    bool useHadTauTF_;
+    Float_t svfitMass_;
+    Float_t svfitMassErr_;
+    Int_t svfitMass_isValid_;
+    Float_t svfitTransverseMass_;
+    Float_t svfitTransverseMassErr_;
+    Int_t svfitTransverseMass_isValid_;
   };
 }
 
@@ -509,6 +536,15 @@ int main(int argc, char* argv[])
   Int_t svfitMass_isValid = 0;
   std::cout << " svfitMass_isValid (type = I)" << std::endl;
   outputTree->Branch("svfitMass_isValid", &svfitMass_isValid, "svfitMass_isValid/I");
+  Float_t svfitTransverseMass = -1.;
+  std::cout << " svfitTransverseMass (type = F)" << std::endl;
+  outputTree->Branch("svfitTransverseMass", &svfitTransverseMass, "svfitTransverseMass/F");
+  Float_t svfitTransverseMassErr = -1.;
+  std::cout << " svfitTransverseMassErr (type = F)" << std::endl;
+  outputTree->Branch("svfitTransverseMassErr", &svfitTransverseMassErr, "svfitTransverseMassErr/F");
+  Int_t svfitTransverseMass_isValid = 0;
+  std::cout << " svfitTransverseMass_isValid (type = I)" << std::endl;
+  outputTree->Branch("svfitTransverseMass_isValid", &svfitTransverseMass_isValid, "svfitTransverseMass_isValid/I");
 
   // mTauTau reconstructed by SVfitMEM 
   std::vector<svFitMEM_logM_EntryType*> svFitMEM_logM_entries;
@@ -551,13 +587,12 @@ int main(int argc, char* argv[])
   }
   
   // mTauTau reconstructed by ClassicSVfit
-  std::vector<svFitMEM_logM_EntryType*> classicSVfit_logM_entries;
+  std::vector<classicSVfit_logM_EntryType*> classicSVfit_logM_entries;
   for ( vdouble::const_iterator svFitMEM_addLogM_power = svFitMEM_addLogM_powers.begin();
 	svFitMEM_addLogM_power != svFitMEM_addLogM_powers.end(); ++svFitMEM_addLogM_power ) {
     enum { kEnableHadTauTF, kDisableHadTauTF };
     for ( int optHadTauTF = kEnableHadTauTF; optHadTauTF <= kDisableHadTauTF; ++optHadTauTF ) {
-      svFitMEM_logM_EntryType* classicSVfit_logM_entry = new svFitMEM_logM_EntryType();
-      classicSVfit_logM_entry->lo_or_nlo_ = -1;
+      classicSVfit_logM_EntryType* classicSVfit_logM_entry = new classicSVfit_logM_EntryType();
       classicSVfit_logM_entry->addLogM_power_ = (*svFitMEM_addLogM_power);
       std::string optHadTauTF_string;
       if ( optHadTauTF == kEnableHadTauTF ) {
@@ -577,6 +612,15 @@ int main(int argc, char* argv[])
       std::string branchName_svfitMass_isValid = Form("classicSVfitMass_isValid%ilogM%s", addLogM_power_int, optHadTauTF_string.data());
       std::cout << " " << branchName_svfitMass_isValid << " (type = I)" << std::endl;
       outputTree->Branch(branchName_svfitMass_isValid.data(), &classicSVfit_logM_entry->svfitMass_isValid_, Form("%s/I", branchName_svfitMass_isValid.data()));
+      std::string branchName_svfitTransverseMass = Form("classicSVfitTransverseMass%ilogM%s", addLogM_power_int, optHadTauTF_string.data());
+      std::cout << " " << branchName_svfitTransverseMass << " (type = F)" << std::endl;
+      outputTree->Branch(branchName_svfitTransverseMass.data(), &classicSVfit_logM_entry->svfitTransverseMass_, Form("%s/F", branchName_svfitTransverseMass.data()));
+      std::string branchName_svfitTransverseMassErr = Form("classicSVfitTransverseMassErr%ilogM%s", addLogM_power_int, optHadTauTF_string.data());
+      std::cout << " " << branchName_svfitTransverseMassErr << " (type = F)" << std::endl;
+      outputTree->Branch(branchName_svfitTransverseMassErr.data(), &classicSVfit_logM_entry->svfitTransverseMassErr_, Form("%s/F", branchName_svfitTransverseMassErr.data()));
+      std::string branchName_svfitTransverseMass_isValid = Form("classicSVfitTransverseMass_isValid%ilogM%s", addLogM_power_int, optHadTauTF_string.data());
+      std::cout << " " << branchName_svfitTransverseMass_isValid << " (type = I)" << std::endl;
+      outputTree->Branch(branchName_svfitTransverseMass_isValid.data(), &classicSVfit_logM_entry->svfitTransverseMass_isValid_, Form("%s/I", branchName_svfitTransverseMass_isValid.data()));
       classicSVfit_logM_entries.push_back(classicSVfit_logM_entry);
     }
   }
@@ -738,7 +782,9 @@ int main(int argc, char* argv[])
         leg1Type, leg1P4, 
         leg2Type, leg2P4, 
         mex, mey, metCov, 
-        svfitMass, svfitMassErr, svfitMass_isValid, verbosity - 1);
+        svfitMass, svfitMassErr, svfitMass_isValid, 
+	svfitTransverseMass, svfitTransverseMassErr, svfitTransverseMass_isValid, 
+	verbosity - 1);
       for ( std::vector<svFitMEM_logM_EntryType*>::iterator svFitMEM_logM_entry = svFitMEM_logM_entries.begin();
 	    svFitMEM_logM_entry != svFitMEM_logM_entries.end(); ++svFitMEM_logM_entry ) {
 	if ( (*svFitMEM_logM_entry)->lo_or_nlo_ == svFitMEM_logM_EntryType::kLO ) {
@@ -767,7 +813,7 @@ int main(int argc, char* argv[])
  */
 	} else assert(0);
       }
-      for ( std::vector<svFitMEM_logM_EntryType*>::iterator classicSVfit_logM_entry = classicSVfit_logM_entries.begin();
+      for ( std::vector<classicSVfit_logM_EntryType*>::iterator classicSVfit_logM_entry = classicSVfit_logM_entries.begin();
 	    classicSVfit_logM_entry != classicSVfit_logM_entries.end(); ++classicSVfit_logM_entry ) {
 	classic_svFit::MeasuredTauLepton::kDecayType leg1Type_classic = getDecayType_classic(leg1Type);
 	classic_svFit::MeasuredTauLepton::kDecayType leg2Type_classic = getDecayType_classic(leg2Type);
@@ -776,6 +822,7 @@ int main(int argc, char* argv[])
   	  leg2Type_classic, leg2P4, 
 	  mex, mey, metCov, 
 	  (*classicSVfit_logM_entry)->svfitMass_, (*classicSVfit_logM_entry)->svfitMassErr_, (*classicSVfit_logM_entry)->svfitMass_isValid_,
+	  (*classicSVfit_logM_entry)->svfitTransverseMass_, (*classicSVfit_logM_entry)->svfitTransverseMassErr_, (*classicSVfit_logM_entry)->svfitTransverseMass_isValid_,
 	  &hadTauTF, (*classicSVfit_logM_entry)->useHadTauTF_, (*classicSVfit_logM_entry)->addLogM_power_, verbosity - 1);
       }
     } else {
@@ -785,17 +832,23 @@ int main(int argc, char* argv[])
       svfitMass = -1.;
       svfitMassErr = 0.;
       svfitMass_isValid = 0;
+      svfitTransverseMass = -1.;
+      svfitTransverseMassErr = 0.;
+      svfitTransverseMass_isValid = 0;
       for ( std::vector<svFitMEM_logM_EntryType*>::iterator svFitMEM_logM_entry = svFitMEM_logM_entries.begin();
 	    svFitMEM_logM_entry != svFitMEM_logM_entries.end(); ++svFitMEM_logM_entry ) {
 	(*svFitMEM_logM_entry)->svfitMass_ = -1.;
 	(*svFitMEM_logM_entry)->svfitMassErr_ = 0.;
 	(*svFitMEM_logM_entry)->svfitMass_isValid_ = 0;
       }
-      for ( std::vector<svFitMEM_logM_EntryType*>::iterator classicSVfit_logM_entry = classicSVfit_logM_entries.begin();
+      for ( std::vector<classicSVfit_logM_EntryType*>::iterator classicSVfit_logM_entry = classicSVfit_logM_entries.begin();
 	    classicSVfit_logM_entry != classicSVfit_logM_entries.end(); ++classicSVfit_logM_entry ) {
 	(*classicSVfit_logM_entry)->svfitMass_ = -1.;
 	(*classicSVfit_logM_entry)->svfitMassErr_ = 0.;
 	(*classicSVfit_logM_entry)->svfitMass_isValid_ = 0;
+	(*classicSVfit_logM_entry)->svfitTransverseMass_ = -1.;
+	(*classicSVfit_logM_entry)->svfitTransverseMassErr_ = 0.;
+	(*classicSVfit_logM_entry)->svfitTransverseMass_isValid_ = 0;
       }
     }
 
@@ -807,7 +860,8 @@ int main(int argc, char* argv[])
       std::cout << " MET Cov.:" << std::endl;
       metCov.Print();
       std::cout << " visMass = " << visMass << ", caMass = " << caMass << " (isValid = " << caMass_isValid << ")," 
-		<< " svFitMass = " << svfitMass << " +/- " << svfitMassErr << " (isValid = " << svfitMass_isValid << ")" << std::endl;
+		<< " svFitMass = " << svfitMass << " +/- " << svfitMassErr << " (isValid = " << svfitMass_isValid << "),"  
+		<< " svFitTransverseMass = " << svfitTransverseMass << " +/- " << svfitTransverseMassErr << " (isValid = " << svfitTransverseMass_isValid << ")" << std::endl;
       std::cout << " svFitMassMEM:" << std::endl;
       for ( std::vector<svFitMEM_logM_EntryType*>::const_iterator svFitMEM_logM_entry = svFitMEM_logM_entries.begin();
 	    svFitMEM_logM_entry != svFitMEM_logM_entries.end(); ++svFitMEM_logM_entry ) {
@@ -817,13 +871,14 @@ int main(int argc, char* argv[])
 	std::cout << ":";
 	std::cout << " mass = " << (*svFitMEM_logM_entry)->svfitMass_ << " +/- " << (*svFitMEM_logM_entry)->svfitMassErr_ << " (isValid = " << (*svFitMEM_logM_entry)->svfitMass_isValid_ << ")" << std::endl;
       }
-      for ( std::vector<svFitMEM_logM_EntryType*>::const_iterator classicSVfit_logM_entry = classicSVfit_logM_entries.begin();
+      for ( std::vector<classicSVfit_logM_EntryType*>::const_iterator classicSVfit_logM_entry = classicSVfit_logM_entries.begin();
 	    classicSVfit_logM_entry != classicSVfit_logM_entries.end(); ++classicSVfit_logM_entry ) {
 	std::cout << "  logM = " << (*classicSVfit_logM_entry)->addLogM_power_ << ", hadTauTF = ";
 	if ( (*classicSVfit_logM_entry)->useHadTauTF_ ) std::cout << "enabled";
 	else std::cout << "disabled";
 	std::cout << ":";
-	std::cout << " mass = " << (*classicSVfit_logM_entry)->svfitMass_ << " +/- " << (*classicSVfit_logM_entry)->svfitMassErr_ << " (isValid = " << (*classicSVfit_logM_entry)->svfitMass_isValid_ << ")" << std::endl;
+	std::cout << " mass = " << (*classicSVfit_logM_entry)->svfitMass_ << " +/- " << (*classicSVfit_logM_entry)->svfitMassErr_ << " (isValid = " << (*classicSVfit_logM_entry)->svfitMass_isValid_ << ")," 
+		  << " transverse mass = " << (*classicSVfit_logM_entry)->svfitTransverseMass_ << " +/- " << (*classicSVfit_logM_entry)->svfitTransverseMassErr_ << " (isValid = " << (*classicSVfit_logM_entry)->svfitTransverseMass_isValid_ << ")" << std::endl;
       }
     }
 
@@ -840,7 +895,7 @@ int main(int argc, char* argv[])
 	it != svFitMEM_logM_entries.end(); ++it ) {
     delete (*it);
   }
-  for ( std::vector<svFitMEM_logM_EntryType*>::const_iterator it = classicSVfit_logM_entries.begin();
+  for ( std::vector<classicSVfit_logM_EntryType*>::const_iterator it = classicSVfit_logM_entries.begin();
 	it != classicSVfit_logM_entries.end(); ++it ) {
     delete (*it);
   }
