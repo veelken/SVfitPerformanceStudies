@@ -19,7 +19,7 @@ In order to install the code, execute:
 	git clone https://github.com/veelken/ClassicSVfit TauAnalysis/ClassicSVfit
 	git clone https://github.com/veelken/SVfitTF TauAnalysis/SVfitTF
 	git clone https://github.com/veelken/SVfitPerformanceStudies TauAnalysis/SVfitPerformanceStudies	
-	git clone https://github.com/veelken/https://github.com/veelken/DataFormats_SVfitPerformanceStudies DataFormats/SVfitPerformanceStudies
+	git clone https://github.com/veelken/DataFormats_SVfitPerformanceStudies DataFormats/SVfitPerformanceStudies
 
 Do *not* try to compile the code yet.
 
