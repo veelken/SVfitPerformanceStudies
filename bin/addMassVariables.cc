@@ -135,8 +135,12 @@ namespace
   void compSVfitMass(svFitStandalone::kDecayType leg1Type, reco::Candidate::PolarLorentzVector& leg1P4, 
 		     svFitStandalone::kDecayType leg2Type, reco::Candidate::PolarLorentzVector& leg2P4, 
 		     double mex, double mey, const TMatrixD& metCov, 
+		     Float_t& svfitPt, Float_t& svfitPtErr, Int_t& svfitPt_isValid,
+		     Float_t& svfitEta, Float_t& svfitEtaErr, Int_t& svfitEta_isValid,
+		     Float_t& svfitPhi, Float_t& svfitPhiErr, Int_t& svfitPhi_isValid,
 		     Float_t& svfitMass, Float_t& svfitMassErr, Int_t& svfitMass_isValid,
 		     Float_t& svfitTransverseMass, Float_t& svfitTransverseMassErr, Int_t& svfitTransverseMass_isValid,
+		     Float_t& svfitComputingTime_cpu, Float_t& svfitComputingTime_real, 
 		     int verbosity)
   {
     std::vector<svFitStandalone::MeasuredTauLepton> measuredTauLeptons;
@@ -145,8 +149,18 @@ namespace
 
     SVfitStandaloneAlgorithm svFitAlgo(measuredTauLeptons, mex, mey, metCov, verbosity);
     svFitAlgo.addLogM(false);
+    svFitAlgo.setMaxObjFunctionCalls(10000);
     svFitAlgo.integrateVEGAS();
     if ( svFitAlgo.isValidSolution() ) {
+      svfitPt = svFitAlgo.pt();
+      svfitPtErr = svFitAlgo.ptUncert();
+      svfitPt_isValid = ( svFitAlgo.ptLmax() > 0. ) ? 1 : 0;
+      svfitEta = svFitAlgo.eta();
+      svfitEtaErr = svFitAlgo.etaUncert();
+      svfitEta_isValid = ( svFitAlgo.etaLmax() > 0. ) ? 1 : 0;
+      svfitPhi = svFitAlgo.phi();
+      svfitPhiErr = svFitAlgo.phiUncert();
+      svfitPhi_isValid = ( svFitAlgo.phiLmax() > 0. ) ? 1 : 0;
       svfitMass = svFitAlgo.mass();
       svfitMassErr = svFitAlgo.massUncert();
       svfitMass_isValid = 1;
@@ -154,6 +168,15 @@ namespace
       svfitTransverseMassErr = svFitAlgo.transverseMassUncert();
       svfitTransverseMass_isValid = ( svFitAlgo.transverseMassLmax() > 0. ) ? 1 : 0;
     } else {
+      svfitPt = -1.;
+      svfitPtErr = -1.;
+      svfitPt_isValid = 0;
+      svfitEta = -1.;
+      svfitEtaErr = -1.;
+      svfitEta_isValid = 0;
+      svfitPhi = -1.;
+      svfitPhiErr = -1.;
+      svfitPhi_isValid = 0;
       svfitMass = -1.;
       svfitMassErr = -1.;
       svfitMass_isValid = 0;
@@ -161,6 +184,8 @@ namespace
       svfitTransverseMassErr = -1.;
       svfitTransverseMass_isValid = 0;
     }
+    svfitComputingTime_cpu = svFitAlgo.getComputingTime_cpu();
+    svfitComputingTime_real = svFitAlgo.getComputingTime_real(); 
   }
 
   svFitMEM::MeasuredTauLepton::kDecayType getDecayTypeMEM(svFitStandalone::kDecayType type)
@@ -183,7 +208,8 @@ namespace
 			   svFitMEM::MeasuredTauLepton::kDecayType leg1Type, reco::Candidate::PolarLorentzVector& leg1P4, 
 			   svFitMEM::MeasuredTauLepton::kDecayType leg2Type, reco::Candidate::PolarLorentzVector& leg2P4, 
 			   double mex, double mey, const TMatrixD& metCov, 
-			   Float_t& svfitMass, Float_t& svfitMassErr, Int_t& svfitMass_isValid)
+			   Float_t& svfitMass, Float_t& svfitMassErr, Int_t& svfitMass_isValid,
+			   Float_t& svfitComputingTime_cpu, Float_t& svfitComputingTime_real)
   {
     //std::cout << "<compSVfitMassMEM_lo>:" << std::endl;	>:" << std::endl;	
     //std::cout << "leg1: Pt = " << leg1P4.pt() << ", eta = " << leg1P4.eta() << ", phi = " << leg1P4.phi() << ", mass = " << leg1P4.mass() << " (type = " << leg1Type << ")" << std::endl;
@@ -205,13 +231,16 @@ namespace
       svfitMassErr = -1.;
       svfitMass_isValid = 0;
     }
+    svfitComputingTime_cpu = svFitAlgo.getComputingTime_cpu();
+    svfitComputingTime_real = svFitAlgo.getComputingTime_real(); 
   }
 /*
   void compSVfitMassMEM_nlo(SVfitMEM_nlo& svFitAlgo, 
 			    svFitMEM::MeasuredTauLepton::kDecayType leg1Type, reco::Candidate::PolarLorentzVector& leg1P4, 
 			    svFitMEM::MeasuredTauLepton::kDecayType leg2Type, reco::Candidate::PolarLorentzVector& leg2P4, 
 			    double hadRecoilPx, double hadRecoilPy, double hadRecoilPz, const TMatrixD& hadRecoilCov, 
-			    Float_t& svfitMass, Float_t& svfitMassErr, Int_t& svfitMass_isValid)
+			    Float_t& svfitMass, Float_t& svfitMassErr, Int_t& svfitMass_isValid,
+			    Float_t& svfitComputingTime_cpu, Float_t& svfitComputingTime_real)
   {
     //std::cout << "<compSVfitMassMEM_nlo>:" << std::endl;	
     //std::cout << "leg1: Pt = " << leg1P4.pt() << ", eta = " << leg1P4.eta() << ", phi = " << leg1P4.phi() << ", mass = " << leg1P4.mass() << " (type = " << leg1Type << ")" << std::endl;
@@ -233,13 +262,19 @@ namespace
       svfitMassErr = -1.;
       svfitMass_isValid = 0;
     }
+    svfitComputingTime_cpu = svFitAlgo.getComputingTime_cpu();
+    svfitComputingTime_real = svFitAlgo.getComputingTime_real(); 
   }
  */
   void compClassicSVfitMass(classic_svFit::MeasuredTauLepton::kDecayType leg1Type, reco::Candidate::PolarLorentzVector& leg1P4, 
 			    classic_svFit::MeasuredTauLepton::kDecayType leg2Type, reco::Candidate::PolarLorentzVector& leg2P4, 
 			    double mex, double mey, const TMatrixD& metCov, 
-			    Float_t& svfitMass, Float_t& svfitMassErr, Int_t& svfitMass_isValid, 
+			    Float_t& svfitPt, Float_t& svfitPtErr, Int_t& svfitPt_isValid,
+			    Float_t& svfitEta, Float_t& svfitEtaErr, Int_t& svfitEta_isValid,
+			    Float_t& svfitPhi, Float_t& svfitPhiErr, Int_t& svfitPhi_isValid,
+			    Float_t& svfitMass, Float_t& svfitMassErr, Int_t& svfitMass_isValid, 			    
 			    Float_t& svfitTransverseMass, Float_t& svfitTransverseMassErr, Int_t& svfitTransverseMass_isValid, 
+			    Float_t& svfitComputingTime_cpu, Float_t& svfitComputingTime_real,
 			    const HadTauTFBase* hadTauTF, bool useHadTauTF, double addLogM_power, int verbosity)
   {
     //std::cout << "<compClassicSVfitMass)>:" << std::endl;	
@@ -256,10 +291,20 @@ namespace
     svFitAlgo.setHadTauTF(hadTauTF);
     if ( useHadTauTF ) svFitAlgo.enableHadTauTF();
     else svFitAlgo.disableHadTauTF();
-    if ( addLogM_power > 0. ) svFitAlgo.addLogM(true, addLogM_power);
-    else svFitAlgo.addLogM(false);
+    if ( addLogM_power > 0. ) svFitAlgo.addLogM_fixed(true, addLogM_power);
+    else svFitAlgo.addLogM_fixed(false);
+    svFitAlgo.setMaxObjFunctionCalls(100000);
     svFitAlgo.integrate(measuredTauLeptons, mex, mey, metCov);
     if ( svFitAlgo.isValidSolution() ) {
+      svfitPt = svFitAlgo.pt();
+      svfitPtErr = svFitAlgo.ptErr();
+      svfitPt_isValid = ( svFitAlgo.ptLmax() > 0. ) ? 1 : 0;
+      svfitEta = svFitAlgo.eta();
+      svfitEtaErr = svFitAlgo.etaErr();
+      svfitEta_isValid = ( svFitAlgo.etaLmax() > 0. ) ? 1 : 0;
+      svfitPhi = svFitAlgo.phi();
+      svfitPhiErr = svFitAlgo.phiErr();
+      svfitPhi_isValid = ( svFitAlgo.phiLmax() > 0. ) ? 1 : 0;
       svfitMass = svFitAlgo.mass();
       svfitMassErr = svFitAlgo.massErr();
       svfitMass_isValid = 1;
@@ -267,6 +312,15 @@ namespace
       svfitTransverseMassErr = svFitAlgo.transverseMassErr();
       svfitTransverseMass_isValid = ( svFitAlgo.transverseMassLmax() > 0. ) ? 1 : 0;
     } else {
+      svfitPt = -1.;
+      svfitPtErr = -1.;
+      svfitPt_isValid = 0;
+      svfitEta = -1.;
+      svfitEtaErr = -1.;
+      svfitEta_isValid = 0;
+      svfitPhi = -1.;
+      svfitPhiErr = -1.;
+      svfitPhi_isValid = 0;
       svfitMass = -1.;
       svfitMassErr = -1.;
       svfitMass_isValid = 0;
@@ -274,6 +328,8 @@ namespace
       svfitTransverseMassErr = -1.;
       svfitTransverseMass_isValid = 0;
     }
+    svfitComputingTime_cpu = svFitAlgo.getComputingTime_cpu();
+    svfitComputingTime_real = svFitAlgo.getComputingTime_real(); 
   }
 
   struct svFitMEM_logM_EntryType
@@ -285,18 +341,31 @@ namespace
     Float_t svfitMass_;
     Float_t svfitMassErr_;
     Int_t svfitMass_isValid_;
+    Float_t svfitComputingTime_cpu_;
+    Float_t svfitComputingTime_real_;
   };
 
   struct classicSVfit_logM_EntryType
   {
     double addLogM_power_;
     bool useHadTauTF_;
+    Float_t svfitPt_;
+    Float_t svfitPtErr_;
+    Int_t svfitPt_isValid_;
+    Float_t svfitEta_;
+    Float_t svfitEtaErr_;
+    Int_t svfitEta_isValid_;
+    Float_t svfitPhi_;
+    Float_t svfitPhiErr_;
+    Int_t svfitPhi_isValid_;
     Float_t svfitMass_;
     Float_t svfitMassErr_;
     Int_t svfitMass_isValid_;
     Float_t svfitTransverseMass_;
     Float_t svfitTransverseMassErr_;
     Int_t svfitTransverseMass_isValid_;
+    Float_t svfitComputingTime_cpu_;
+    Float_t svfitComputingTime_real_;
   };
 
   double square(double x)
@@ -546,6 +615,33 @@ int main(int argc, char* argv[])
   outputTree->Branch("mTtotal", &mTtotal, "mTtotal/F");
 
   // mTauTau reconstructed by "old" SVfit
+  Float_t svfitPt = -1.;
+  std::cout << " svfitPt (type = F)" << std::endl;
+  outputTree->Branch("svfitPt", &svfitPt, "svfitPt/F");
+  Float_t svfitPtErr = -1.;
+  std::cout << " svfitPtErr (type = F)" << std::endl;
+  outputTree->Branch("svfitPtErr", &svfitPtErr, "svfitPtErr/F");
+  Int_t svfitPt_isValid = 0;
+  std::cout << " svfitPt_isValid (type = I)" << std::endl;
+  outputTree->Branch("svfitPt_isValid", &svfitPt_isValid, "svfitPt_isValid/I");
+  Float_t svfitEta = -1.;
+  std::cout << " svfitEta (type = F)" << std::endl;
+  outputTree->Branch("svfitEta", &svfitEta, "svfitEta/F");
+  Float_t svfitEtaErr = -1.;
+  std::cout << " svfitEtaErr (type = F)" << std::endl;
+  outputTree->Branch("svfitEtaErr", &svfitEtaErr, "svfitEtaErr/F");
+  Int_t svfitEta_isValid = 0;
+  std::cout << " svfitEta_isValid (type = I)" << std::endl;
+  outputTree->Branch("svfitEta_isValid", &svfitEta_isValid, "svfitEta_isValid/I");
+  Float_t svfitPhi = -1.;
+  std::cout << " svfitPhi (type = F)" << std::endl;
+  outputTree->Branch("svfitPhi", &svfitPhi, "svfitPhi/F");
+  Float_t svfitPhiErr = -1.;
+  std::cout << " svfitPhiErr (type = F)" << std::endl;
+  outputTree->Branch("svfitPhiErr", &svfitPhiErr, "svfitPhiErr/F");
+  Int_t svfitPhi_isValid = 0;
+  std::cout << " svfitPhi_isValid (type = I)" << std::endl;
+  outputTree->Branch("svfitPhi_isValid", &svfitPhi_isValid, "svfitPhi_isValid/I");
   Float_t svfitMass = -1.;
   std::cout << " svfitMass (type = F)" << std::endl;
   outputTree->Branch("svfitMass", &svfitMass, "svfitMass/F");
@@ -564,6 +660,12 @@ int main(int argc, char* argv[])
   Int_t svfitTransverseMass_isValid = 0;
   std::cout << " svfitTransverseMass_isValid (type = I)" << std::endl;
   outputTree->Branch("svfitTransverseMass_isValid", &svfitTransverseMass_isValid, "svfitTransverseMass_isValid/I");
+  Float_t svfitComputingTime_cpu;
+  std::cout << " svfitComputingTime_cpu (type = F)" << std::endl;
+  outputTree->Branch("svfitComputingTime_cpu", &svfitComputingTime_cpu, "svfitComputingTime_cpu/F");
+  Float_t svfitComputingTime_real;
+  std::cout << " svfitComputingTime_real (type = F)" << std::endl;
+  outputTree->Branch("svfitComputingTime_real", &svfitComputingTime_real, "svfitComputingTime_real/F");
 
   // mTauTau reconstructed by SVfitMEM 
   std::vector<svFitMEM_logM_EntryType*> svFitMEM_logM_entries;
@@ -600,6 +702,12 @@ int main(int argc, char* argv[])
 	std::string branchName_svfitMass_isValid = Form("svfitMass_isValidMEM%s%ilogM%s", optLO_or_NLO_string.data(), addLogM_power_int, optHadTauTF_string.data());
 	std::cout << " " << branchName_svfitMass_isValid << " (type = I)" << std::endl;
 	outputTree->Branch(branchName_svfitMass_isValid.data(), &svFitMEM_logM_entry->svfitMass_isValid_, Form("%s/I", branchName_svfitMass_isValid.data()));
+	std::string branchName_svfitComputingTime_cpu = Form("svfitComputingTime_cpuMEM%s%ilogM%s", optLO_or_NLO_string.data(), addLogM_power_int, optHadTauTF_string.data());
+	std::cout << " " << branchName_svfitComputingTime_cpu << " (type = F)" << std::endl;
+	outputTree->Branch(branchName_svfitComputingTime_cpu.data(), &svFitMEM_logM_entry->svfitComputingTime_cpu_, Form("%s/F", branchName_svfitComputingTime_cpu.data()));
+	std::string branchName_svfitComputingTime_real = Form("svfitComputingTime_realMEM%s%ilogM%s", optLO_or_NLO_string.data(), addLogM_power_int, optHadTauTF_string.data());
+	std::cout << " " << branchName_svfitComputingTime_real << " (type = F)" << std::endl;
+	outputTree->Branch(branchName_svfitComputingTime_real.data(), &svFitMEM_logM_entry->svfitComputingTime_real_, Form("%s/F", branchName_svfitComputingTime_real.data()));
 	svFitMEM_logM_entries.push_back(svFitMEM_logM_entry);
       }
     }
@@ -622,6 +730,33 @@ int main(int argc, char* argv[])
 	optHadTauTF_string = "woHadTauTF";
       }
       int addLogM_power_int = TMath::Nint(*svFitMEM_addLogM_power);
+      std::string branchName_svfitPt = Form("classicSVfitPt%ilogM%s", addLogM_power_int, optHadTauTF_string.data());
+      std::cout << " " << branchName_svfitPt << " (type = F)" << std::endl;
+      outputTree->Branch(branchName_svfitPt.data(), &classicSVfit_logM_entry->svfitPt_, Form("%s/F", branchName_svfitPt.data()));
+      std::string branchName_svfitPtErr = Form("classicSVfitPtErr%ilogM%s", addLogM_power_int, optHadTauTF_string.data());
+      std::cout << " " << branchName_svfitPtErr << " (type = F)" << std::endl;
+      outputTree->Branch(branchName_svfitPtErr.data(), &classicSVfit_logM_entry->svfitPtErr_, Form("%s/F", branchName_svfitPtErr.data()));
+      std::string branchName_svfitPt_isValid = Form("classicSVfitPt_isValid%ilogM%s", addLogM_power_int, optHadTauTF_string.data());
+      std::cout << " " << branchName_svfitPt_isValid << " (type = I)" << std::endl;
+      outputTree->Branch(branchName_svfitPt_isValid.data(), &classicSVfit_logM_entry->svfitPt_isValid_, Form("%s/I", branchName_svfitPt_isValid.data()));
+      std::string branchName_svfitEta = Form("classicSVfitEta%ilogM%s", addLogM_power_int, optHadTauTF_string.data());
+      std::cout << " " << branchName_svfitEta << " (type = F)" << std::endl;
+      outputTree->Branch(branchName_svfitEta.data(), &classicSVfit_logM_entry->svfitEta_, Form("%s/F", branchName_svfitEta.data()));
+      std::string branchName_svfitEtaErr = Form("classicSVfitEtaErr%ilogM%s", addLogM_power_int, optHadTauTF_string.data());
+      std::cout << " " << branchName_svfitEtaErr << " (type = F)" << std::endl;
+      outputTree->Branch(branchName_svfitEtaErr.data(), &classicSVfit_logM_entry->svfitEtaErr_, Form("%s/F", branchName_svfitEtaErr.data()));
+      std::string branchName_svfitEta_isValid = Form("classicSVfitEta_isValid%ilogM%s", addLogM_power_int, optHadTauTF_string.data());
+      std::cout << " " << branchName_svfitEta_isValid << " (type = I)" << std::endl;
+      outputTree->Branch(branchName_svfitEta_isValid.data(), &classicSVfit_logM_entry->svfitEta_isValid_, Form("%s/I", branchName_svfitEta_isValid.data()));
+      std::string branchName_svfitPhi = Form("classicSVfitPhi%ilogM%s", addLogM_power_int, optHadTauTF_string.data());
+      std::cout << " " << branchName_svfitPhi << " (type = F)" << std::endl;
+      outputTree->Branch(branchName_svfitPhi.data(), &classicSVfit_logM_entry->svfitPhi_, Form("%s/F", branchName_svfitPhi.data()));
+      std::string branchName_svfitPhiErr = Form("classicSVfitPhiErr%ilogM%s", addLogM_power_int, optHadTauTF_string.data());
+      std::cout << " " << branchName_svfitPhiErr << " (type = F)" << std::endl;
+      outputTree->Branch(branchName_svfitPhiErr.data(), &classicSVfit_logM_entry->svfitPhiErr_, Form("%s/F", branchName_svfitPhiErr.data()));
+      std::string branchName_svfitPhi_isValid = Form("classicSVfitPhi_isValid%ilogM%s", addLogM_power_int, optHadTauTF_string.data());
+      std::cout << " " << branchName_svfitPhi_isValid << " (type = I)" << std::endl;
+      outputTree->Branch(branchName_svfitPhi_isValid.data(), &classicSVfit_logM_entry->svfitPhi_isValid_, Form("%s/I", branchName_svfitPhi_isValid.data()));
       std::string branchName_svfitMass = Form("classicSVfitMass%ilogM%s", addLogM_power_int, optHadTauTF_string.data());
       std::cout << " " << branchName_svfitMass << " (type = F)" << std::endl;
       outputTree->Branch(branchName_svfitMass.data(), &classicSVfit_logM_entry->svfitMass_, Form("%s/F", branchName_svfitMass.data()));
@@ -640,6 +775,12 @@ int main(int argc, char* argv[])
       std::string branchName_svfitTransverseMass_isValid = Form("classicSVfitTransverseMass_isValid%ilogM%s", addLogM_power_int, optHadTauTF_string.data());
       std::cout << " " << branchName_svfitTransverseMass_isValid << " (type = I)" << std::endl;
       outputTree->Branch(branchName_svfitTransverseMass_isValid.data(), &classicSVfit_logM_entry->svfitTransverseMass_isValid_, Form("%s/I", branchName_svfitTransverseMass_isValid.data()));
+      std::string branchName_svfitComputingTime_cpu = Form("classicSVfitComputingTime_cpu%ilogM%s", addLogM_power_int, optHadTauTF_string.data());
+      std::cout << " " << branchName_svfitComputingTime_cpu << " (type = F)" << std::endl;
+      outputTree->Branch(branchName_svfitComputingTime_cpu.data(), &classicSVfit_logM_entry->svfitComputingTime_cpu_, Form("%s/F", branchName_svfitComputingTime_cpu.data()));
+      std::string branchName_svfitComputingTime_real = Form("classicSVfitComputingTime_real%ilogM%s", addLogM_power_int, optHadTauTF_string.data());
+      std::cout << " " << branchName_svfitComputingTime_real << " (type = F)" << std::endl;
+      outputTree->Branch(branchName_svfitComputingTime_real.data(), &classicSVfit_logM_entry->svfitComputingTime_real_, Form("%s/F", branchName_svfitComputingTime_real.data()));
       classicSVfit_logM_entries.push_back(classicSVfit_logM_entry);
     }
   }
@@ -804,8 +945,12 @@ int main(int argc, char* argv[])
         leg1Type, leg1P4, 
         leg2Type, leg2P4, 
         mex, mey, metCov, 
+	svfitPt, svfitPtErr, svfitPt_isValid, 
+	svfitEta, svfitEtaErr, svfitEta_isValid, 
+	svfitPhi, svfitPhiErr, svfitPhi_isValid, 
         svfitMass, svfitMassErr, svfitMass_isValid, 
 	svfitTransverseMass, svfitTransverseMassErr, svfitTransverseMass_isValid, 
+	svfitComputingTime_cpu, svfitComputingTime_real,
 	verbosity - 1);
       for ( std::vector<svFitMEM_logM_EntryType*>::iterator svFitMEM_logM_entry = svFitMEM_logM_entries.begin();
 	    svFitMEM_logM_entry != svFitMEM_logM_entries.end(); ++svFitMEM_logM_entry ) {
@@ -820,7 +965,8 @@ int main(int argc, char* argv[])
 	    leg1TypeMEM, leg1P4, 
   	    leg2TypeMEM, leg2P4, 
 	    mex, mey, metCov, 
-	    (*svFitMEM_logM_entry)->svfitMass_, (*svFitMEM_logM_entry)->svfitMassErr_, (*svFitMEM_logM_entry)->svfitMass_isValid_);
+	    (*svFitMEM_logM_entry)->svfitMass_, (*svFitMEM_logM_entry)->svfitMassErr_, (*svFitMEM_logM_entry)->svfitMass_isValid_,
+	    (*svFitMEM_logM_entry)->svfitComputingTime_cpu_, (*svFitMEM_logM_entry)->svfitComputingTime_real_);
 /*
 	} else if ( (*svFitMEM_logM_entry)->lo_or_nlo_ == svFitMEM_logM_EntryType::kNLO ) {
 	  if ( (*svFitMEM_logM_entry)->addLogM_power_ > 0. ) svFitAlgoMEM_nlo.addLogM(true, (*svFitMEM_logM_entry)->addLogM_power_);
@@ -832,7 +978,8 @@ int main(int argc, char* argv[])
 	    leg1TypeMEM, leg1P4, 
   	    leg2TypeMEM, leg2P4, 
 	    hadRecoilPx, hadRecoilPy, hadRecoilPz, hadRecoilCov, 
-	    (*svFitMEM_logM_entry)->svfitMass_, (*svFitMEM_logM_entry)->svfitMassErr_, (*svFitMEM_logM_entry)->svfitMass_isValid_);
+	    (*svFitMEM_logM_entry)->svfitMass_, (*svFitMEM_logM_entry)->svfitMassErr_, (*svFitMEM_logM_entry)->svfitMass_isValid_,
+	    (*svFitMEM_logM_entry)->svfitComputingTime_cpu_, (*svFitMEM_logM_entry)->svfitComputingTime_real_);
  */
 	} else assert(0);
       }
@@ -845,14 +992,28 @@ int main(int argc, char* argv[])
 	  leg1Type_classic, leg1P4, 
   	  leg2Type_classic, leg2P4, 
 	  mex, mey, metCov, 
+	  (*classicSVfit_logM_entry)->svfitPt_, (*classicSVfit_logM_entry)->svfitPtErr_, (*classicSVfit_logM_entry)->svfitPt_isValid_,
+	  (*classicSVfit_logM_entry)->svfitEta_, (*classicSVfit_logM_entry)->svfitEtaErr_, (*classicSVfit_logM_entry)->svfitEta_isValid_,
+	  (*classicSVfit_logM_entry)->svfitPhi_, (*classicSVfit_logM_entry)->svfitPhiErr_, (*classicSVfit_logM_entry)->svfitPhi_isValid_,
 	  (*classicSVfit_logM_entry)->svfitMass_, (*classicSVfit_logM_entry)->svfitMassErr_, (*classicSVfit_logM_entry)->svfitMass_isValid_,
 	  (*classicSVfit_logM_entry)->svfitTransverseMass_, (*classicSVfit_logM_entry)->svfitTransverseMassErr_, (*classicSVfit_logM_entry)->svfitTransverseMass_isValid_,
+	  (*classicSVfit_logM_entry)->svfitComputingTime_cpu_, (*classicSVfit_logM_entry)->svfitComputingTime_real_,
 	  &hadTauTF, (*classicSVfit_logM_entry)->useHadTauTF_, (*classicSVfit_logM_entry)->addLogM_power_, verbosity - 1);
       }
     } else {
       visMass = -1.;
       caMass = -1.;
       caMass_isValid = 0;
+      mTtotal = -1.;
+      svfitPt = -1.;
+      svfitPtErr = 0.;
+      svfitPt_isValid = 0;
+      svfitEta = -1.;
+      svfitEtaErr = 0.;
+      svfitEta_isValid = 0;
+      svfitPhi = -1.;
+      svfitPhiErr = 0.;
+      svfitPhi_isValid = 0;
       svfitMass = -1.;
       svfitMassErr = 0.;
       svfitMass_isValid = 0;
@@ -864,15 +1025,28 @@ int main(int argc, char* argv[])
 	(*svFitMEM_logM_entry)->svfitMass_ = -1.;
 	(*svFitMEM_logM_entry)->svfitMassErr_ = 0.;
 	(*svFitMEM_logM_entry)->svfitMass_isValid_ = 0;
+	(*svFitMEM_logM_entry)->svfitComputingTime_cpu_ = -1.;
+	(*svFitMEM_logM_entry)->svfitComputingTime_real_ = -1.;
       }
       for ( std::vector<classicSVfit_logM_EntryType*>::iterator classicSVfit_logM_entry = classicSVfit_logM_entries.begin();
 	    classicSVfit_logM_entry != classicSVfit_logM_entries.end(); ++classicSVfit_logM_entry ) {
+	(*classicSVfit_logM_entry)->svfitPt_ = -1.;
+	(*classicSVfit_logM_entry)->svfitPtErr_ = 0.;
+	(*classicSVfit_logM_entry)->svfitPt_isValid_ = 0;
+	(*classicSVfit_logM_entry)->svfitEta_ = -1.;
+	(*classicSVfit_logM_entry)->svfitEtaErr_ = 0.;
+	(*classicSVfit_logM_entry)->svfitEta_isValid_ = 0;
+	(*classicSVfit_logM_entry)->svfitPhi_ = -1.;
+	(*classicSVfit_logM_entry)->svfitPhiErr_ = 0.;
+	(*classicSVfit_logM_entry)->svfitPhi_isValid_ = 0;
 	(*classicSVfit_logM_entry)->svfitMass_ = -1.;
 	(*classicSVfit_logM_entry)->svfitMassErr_ = 0.;
 	(*classicSVfit_logM_entry)->svfitMass_isValid_ = 0;
 	(*classicSVfit_logM_entry)->svfitTransverseMass_ = -1.;
 	(*classicSVfit_logM_entry)->svfitTransverseMassErr_ = 0.;
 	(*classicSVfit_logM_entry)->svfitTransverseMass_isValid_ = 0;
+	(*classicSVfit_logM_entry)->svfitComputingTime_cpu_ = -1.;
+	(*classicSVfit_logM_entry)->svfitComputingTime_real_ = -1.;
       }
     }
 
@@ -886,7 +1060,7 @@ int main(int argc, char* argv[])
       std::cout << " visMass = " << visMass << ", caMass = " << caMass << " (isValid = " << caMass_isValid << ")," 
 		<< " svFitMass = " << svfitMass << " +/- " << svfitMassErr << " (isValid = " << svfitMass_isValid << "),"  
 		<< " svFitTransverseMass = " << svfitTransverseMass << " +/- " << svfitTransverseMassErr << " (isValid = " << svfitTransverseMass_isValid << ")" << std::endl;
-      std::cout << " svFitMassMEM:" << std::endl;
+      std::cout << " svFitMEM:" << std::endl;
       for ( std::vector<svFitMEM_logM_EntryType*>::const_iterator svFitMEM_logM_entry = svFitMEM_logM_entries.begin();
 	    svFitMEM_logM_entry != svFitMEM_logM_entries.end(); ++svFitMEM_logM_entry ) {
 	std::cout << "  logM = " << (*svFitMEM_logM_entry)->addLogM_power_ << ", hadTauTF = ";
@@ -895,6 +1069,7 @@ int main(int argc, char* argv[])
 	std::cout << ":";
 	std::cout << " mass = " << (*svFitMEM_logM_entry)->svfitMass_ << " +/- " << (*svFitMEM_logM_entry)->svfitMassErr_ << " (isValid = " << (*svFitMEM_logM_entry)->svfitMass_isValid_ << ")" << std::endl;
       }
+      std::cout << " classicSVfit:" << std::endl;
       for ( std::vector<classicSVfit_logM_EntryType*>::const_iterator classicSVfit_logM_entry = classicSVfit_logM_entries.begin();
 	    classicSVfit_logM_entry != classicSVfit_logM_entries.end(); ++classicSVfit_logM_entry ) {
 	std::cout << "  logM = " << (*classicSVfit_logM_entry)->addLogM_power_ << ", hadTauTF = ";
