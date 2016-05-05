@@ -149,7 +149,7 @@ namespace
 
     SVfitStandaloneAlgorithm svFitAlgo(measuredTauLeptons, mex, mey, metCov, verbosity);
     svFitAlgo.addLogM(false);
-    svFitAlgo.setMaxObjFunctionCalls(10000);
+    svFitAlgo.maxObjFunctionCalls(10000);
     svFitAlgo.integrateVEGAS();
     if ( svFitAlgo.isValidSolution() ) {
       svfitPt = svFitAlgo.pt();
