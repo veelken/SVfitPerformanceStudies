@@ -17,6 +17,9 @@
 
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Utilities/interface/InputTag.h"
+#include "FWCore/Utilities/interface/EDGetToken.h"
+
+#include "DataFormats/METReco/interface/GenMETCollection.h"
 
 #include <TRandom3.h>
 
@@ -29,7 +32,7 @@ class SmearedMEtProducer : public edm::EDProducer
   void produce(edm::Event&, const edm::EventSetup&);
 
  private:
-  edm::InputTag src_;
+  edm::EDGetTokenT<reco::GenMETCollection> src_;
 
   double sigmaX_;
   double sigmaY_;

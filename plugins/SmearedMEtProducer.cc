@@ -2,14 +2,12 @@
 
 #include "DataFormats/Common/interface/Handle.h"
 #include "DataFormats/METReco/interface/GenMET.h"
-#include "DataFormats/METReco/interface/GenMETCollection.h"
 
 #include <TMath.h>
 
 SmearedMEtProducer::SmearedMEtProducer(const edm::ParameterSet& cfg)
+ : src_(consumes<reco::GenMETCollection>(cfg.getParameter<edm::InputTag>("src")))
 { 
-  src_ = cfg.getParameter<edm::InputTag>("src");
-
   sigmaX_ = cfg.getParameter<double>("sigmaX");
   sigmaY_ = cfg.getParameter<double>("sigmaY");
 
@@ -30,7 +28,7 @@ void SmearedMEtProducer::produce(edm::Event& evt, const edm::EventSetup& es)
   }
 
   edm::Handle<reco::GenMETCollection> genMETs;
-  evt.getByLabel(src_, genMETs);
+  evt.getByToken(src_, genMETs);
 
   std::auto_ptr<reco::GenMETCollection> genMETs_smeared(new reco::GenMETCollection());
 

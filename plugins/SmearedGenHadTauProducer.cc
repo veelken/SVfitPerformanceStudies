@@ -7,7 +7,6 @@
 
 #include "DataFormats/Common/interface/Handle.h"
 #include "DataFormats/JetReco/interface/GenJet.h"
-#include "DataFormats/JetReco/interface/GenJetCollection.h"
 #include "DataFormats/Candidate/interface/Candidate.h"
 
 #include <TFile.h>
@@ -38,10 +37,9 @@ namespace
 }
 
 SmearedGenHadTauProducer::SmearedGenHadTauProducer(const edm::ParameterSet& cfg)
-  : graph_(0)
+  : src_(consumes<reco::GenJetCollection>(cfg.getParameter<edm::InputTag>("src"))),
+    graph_(0)
 { 
-  src_ = cfg.getParameter<edm::InputTag>("src");
-
   inputFileName_ = cfg.getParameter<std::string>("inputFileName");
   TFile* inputFile = new TFile(findFile(inputFileName_).data());
   graphName_ = cfg.getParameter<std::string>("graphName");
@@ -63,7 +61,7 @@ void SmearedGenHadTauProducer::produce(edm::Event& evt, const edm::EventSetup& e
   //std::cout << "<SmearedGenHadTauProducer::produce>:" << std::endl;
 
   edm::Handle<reco::GenJetCollection> genHadTaus;
-  evt.getByLabel(src_, genHadTaus);
+  evt.getByToken(src_, genHadTaus);
 
   std::auto_ptr<reco::GenJetCollection> genHadTaus_smeared(new reco::GenJetCollection());
 

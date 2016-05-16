@@ -13,12 +13,18 @@
 #include "FWCore/Framework/interface/EDAnalyzer.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/EventSetup.h"
-#include "FWCore/Utilities/interface/InputTag.h"
+
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "FWCore/Utilities/interface/InputTag.h"
+#include "FWCore/Utilities/interface/EDGetToken.h"
 
 #include "DataFormats/JetReco/interface/GenJet.h"
+#include "DataFormats/JetReco/interface/GenJetCollection.h"
+#include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
 #include "DataFormats/METReco/interface/GenMET.h"
+#include "DataFormats/METReco/interface/GenMETCollection.h"
 #include "DataFormats/SVfitPerformanceStudies/interface/GenHadRecoil.h"
+#include "DataFormats/SVfitPerformanceStudies/interface/GenHadRecoilFwd.h"
 
 #include <TTree.h>
 
@@ -89,30 +95,34 @@ class SVfitStudyNtupleProducer : public edm::EDAnalyzer
 
   std::string moduleLabel_;
 
-  edm::InputTag srcGenTauLeptons_;
-  edm::InputTag srcGenElectrons_;
-  edm::InputTag srcGenMuons_;
-  edm::InputTag srcGenHadTaus_;
-  edm::InputTag srcGenMET_;
-  edm::InputTag srcGenHadRecoil_;
-  edm::InputTag srcGenParticles_;
-  edm::InputTag srcGenJets_;
+  edm::EDGetTokenT<reco::GenJetCollection> srcGenTauLeptons_;
+  edm::EDGetTokenT<reco::GenJetCollection> srcGenElectrons_;
+  edm::EDGetTokenT<reco::GenJetCollection> srcGenMuons_;  
+  edm::EDGetTokenT<reco::GenJetCollection> srcGenHadTaus_;
+  edm::EDGetTokenT<reco::GenMETCollection> srcGenMET_;
+  edm::InputTag srcGenMET_label_;
+  edm::EDGetTokenT<svFitMEM::GenHadRecoilCollection> srcGenHadRecoil_;
+  edm::InputTag srcGenHadRecoil_label_;
+  edm::EDGetTokenT<reco::GenParticleCollection> srcGenParticles_;
+  edm::EDGetTokenT<reco::GenJetCollection> srcGenJets_;
   double minJetPt_;
   double maxJetAbsEta_;
 
-  edm::InputTag srcSmearedHadTaus_;
-  edm::InputTag srcSmearedMET_;
-  edm::InputTag srcSmearedHadRecoil_;
+  edm::EDGetTokenT<reco::GenJetCollection> srcSmearedHadTaus_;  
+  edm::EDGetTokenT<reco::GenMETCollection> srcSmearedMET_;
+  edm::InputTag srcSmearedMET_label_;   
+  edm::EDGetTokenT<svFitMEM::GenHadRecoilCollection> srcSmearedHadRecoil_;
+  edm::InputTag srcSmearedHadRecoil_label_;
 
   struct InputTagEntryType
   {
-    InputTagEntryType(const std::string& branchName, const edm::InputTag& src)
+    InputTagEntryType(const std::string& branchName, const edm::EDGetTokenT<double>& src)
       : branchName_(branchName),
         src_(src)
     {}
     ~InputTagEntryType() {}
     std::string branchName_;
-    edm::InputTag src_;
+    edm::EDGetTokenT<double> src_;
   };
   std::vector<InputTagEntryType> evtWeightsToStore_;
 

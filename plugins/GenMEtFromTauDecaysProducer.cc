@@ -2,7 +2,6 @@
 
 #include "DataFormats/Common/interface/Handle.h"
 #include "DataFormats/JetReco/interface/GenJet.h"
-#include "DataFormats/JetReco/interface/GenJetCollection.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
 #include "DataFormats/METReco/interface/GenMET.h"
@@ -11,9 +10,8 @@
 #include <TMath.h>
 
 GenMEtFromTauDecaysProducer::GenMEtFromTauDecaysProducer(const edm::ParameterSet& cfg)
+ : src_(consumes<reco::GenJetCollection>(cfg.getParameter<edm::InputTag>("src")))
 { 
-  src_ = cfg.getParameter<edm::InputTag>("src");
-
   verbosity_ = cfg.getParameter<int>("verbosity");
 
   produces<reco::GenMETCollection>("");
@@ -29,9 +27,9 @@ void GenMEtFromTauDecaysProducer::produce(edm::Event& evt, const edm::EventSetup
   if ( verbosity_ >= 1 ) {
     std::cout << "<GenMEtFromTauDecaysProducer::produce>:" << std::endl;
   }
-
+ 
   edm::Handle<reco::GenJetCollection> genTaus;
-  evt.getByLabel(src_, genTaus);
+  evt.getByToken(src_, genTaus);
 
   std::auto_ptr<reco::GenMETCollection> genMETs(new reco::GenMETCollection());
 

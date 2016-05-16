@@ -17,6 +17,9 @@
 
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Utilities/interface/InputTag.h"
+#include "FWCore/Utilities/interface/EDGetToken.h"
+
+#include "DataFormats/JetReco/interface/GenJetCollection.h"
 
 class GenMEtFromTauDecaysProducer : public edm::EDProducer
 {
@@ -27,7 +30,7 @@ class GenMEtFromTauDecaysProducer : public edm::EDProducer
   void produce(edm::Event&, const edm::EventSetup&);
 
  private:
-  edm::InputTag src_;
+  edm::EDGetTokenT<reco::GenJetCollection> src_;
 
   int verbosity_;
 };

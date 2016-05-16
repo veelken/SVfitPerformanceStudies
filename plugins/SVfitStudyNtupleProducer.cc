@@ -8,13 +8,9 @@
 
 #include "DataFormats/Common/interface/Handle.h"
 #include "DataFormats/JetReco/interface/GenJet.h"
-#include "DataFormats/JetReco/interface/GenJetCollection.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
-#include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
 #include "DataFormats/METReco/interface/GenMET.h"
-#include "DataFormats/METReco/interface/GenMETCollection.h"
 #include "DataFormats/SVfitPerformanceStudies/interface/GenHadRecoil.h"
-#include "DataFormats/SVfitPerformanceStudies/interface/GenHadRecoilFwd.h"
 #include "DataFormats/Candidate/interface/Candidate.h"
 #include "DataFormats/TauReco/interface/PFTau.h"
 #include "DataFormats/Math/interface/deltaR.h"
@@ -29,30 +25,32 @@
 
 SVfitStudyNtupleProducer::SVfitStudyNtupleProducer(const edm::ParameterSet& cfg) 
   : moduleLabel_(cfg.getParameter<std::string>("@module_label")),
+    srcGenTauLeptons_(consumes<reco::GenJetCollection>(cfg.getParameter<edm::InputTag>("srcGenTauLeptons"))),
+    srcGenElectrons_(consumes<reco::GenJetCollection>(cfg.getParameter<edm::InputTag>("srcGenElectrons"))),
+    srcGenMuons_(consumes<reco::GenJetCollection>(cfg.getParameter<edm::InputTag>("srcGenMuons"))),
+    srcGenHadTaus_(consumes<reco::GenJetCollection>(cfg.getParameter<edm::InputTag>("srcGenHadTaus"))),
+    srcGenMET_(consumes<reco::GenMETCollection>(cfg.getParameter<edm::InputTag>("srcGenMET"))),
+    srcGenMET_label_(cfg.getParameter<edm::InputTag>("srcGenMET")),
+    srcGenHadRecoil_(consumes<svFitMEM::GenHadRecoilCollection>(cfg.getParameter<edm::InputTag>("srcGenHadRecoil"))),
+    srcGenHadRecoil_label_(cfg.getParameter<edm::InputTag>("srcGenHadRecoil")),
+    srcGenParticles_(consumes<reco::GenParticleCollection>(cfg.getParameter<edm::InputTag>("srcGenParticles"))),
+    srcGenJets_(consumes<reco::GenJetCollection>(cfg.getParameter<edm::InputTag>("srcGenJets"))),
+    srcSmearedHadTaus_(consumes<reco::GenJetCollection>(cfg.getParameter<edm::InputTag>("srcSmearedHadTaus"))),
+    srcSmearedMET_(consumes<reco::GenMETCollection>(cfg.getParameter<edm::InputTag>("srcSmearedMET"))),
+    srcSmearedMET_label_(cfg.getParameter<edm::InputTag>("srcSmearedMET")),
+    srcSmearedHadRecoil_(consumes<svFitMEM::GenHadRecoilCollection>(cfg.getParameter<edm::InputTag>("srcSmearedHadRecoil"))),
+    srcSmearedHadRecoil_label_(cfg.getParameter<edm::InputTag>("srcSmearedHadRecoil")),
     ntuple_(0)
 {
-  srcGenTauLeptons_ = cfg.getParameter<edm::InputTag>("srcGenTauLeptons");
-  srcGenElectrons_ = cfg.getParameter<edm::InputTag>("srcGenElectrons");
-  srcGenMuons_ = cfg.getParameter<edm::InputTag>("srcGenMuons");
-  srcGenHadTaus_ = cfg.getParameter<edm::InputTag>("srcGenHadTaus");
-  srcGenMET_ = cfg.getParameter<edm::InputTag>("srcGenMET");
-  srcGenHadRecoil_ = cfg.getParameter<edm::InputTag>("srcGenHadRecoil");
-  srcGenParticles_ = cfg.getParameter<edm::InputTag>("srcGenParticles");
-  srcGenJets_ = cfg.getParameter<edm::InputTag>("srcGenJets");
   minJetPt_ = cfg.getParameter<double>("minJetPt");
   maxJetAbsEta_ = cfg.getParameter<double>("maxJetAbsEta");
-
-  srcSmearedHadTaus_ = cfg.getParameter<edm::InputTag>("srcSmearedHadTaus");
-  srcSmearedMET_ = cfg.getParameter<edm::InputTag>("srcSmearedMET");
-  srcSmearedHadRecoil_ = cfg.getParameter<edm::InputTag>("srcSmearedHadRecoil");
 
   edm::ParameterSet evtWeights = cfg.getParameter<edm::ParameterSet>("evtWeights");
   typedef std::vector<std::string> vstring;
   vstring evtWeightNames = evtWeights.getParameterNamesForType<edm::InputTag>();
   for ( vstring::const_iterator name = evtWeightNames.begin();
         name != evtWeightNames.end(); ++name ) {    
-    edm::InputTag src = evtWeights.getParameter<edm::InputTag>(*name);
-    evtWeightsToStore_.push_back(InputTagEntryType(*name, src));
+    evtWeightsToStore_.push_back(InputTagEntryType(*name, consumes<double>(evtWeights.getParameter<edm::InputTag>(*name))));
   }
 
   verbosity_ = ( cfg.exists("verbosity") ) ?
@@ -215,48 +213,48 @@ void SVfitStudyNtupleProducer::analyze(const edm::Event& evt, const edm::EventSe
   setValueUL("lumi", evt.luminosityBlock());
   
   edm::Handle<reco::GenJetCollection> genTauLeptons;
-  evt.getByLabel(srcGenTauLeptons_, genTauLeptons);
+  evt.getByToken(srcGenTauLeptons_, genTauLeptons);
   if ( genTauLeptons->size() >= 1 ) setValue_genTauLepton("genTauLepton1", genTauLeptons->at(0));
   if ( genTauLeptons->size() >= 2 ) setValue_genTauLepton("genTauLepton2", genTauLeptons->at(1));
   setValueI("numGenTauLeptons", genTauLeptons->size());
   if ( genTauLeptons->size() >= 2 ) setValue_PtEtaPhiMass("genDiTau", getGenTauLeptonP4(genTauLeptons->at(0)) + getGenTauLeptonP4(genTauLeptons->at(1)));
 
   edm::Handle<reco::GenJetCollection> genElectrons;
-  evt.getByLabel(srcGenElectrons_, genElectrons);
+  evt.getByToken(srcGenElectrons_, genElectrons);
   if ( genElectrons->size() >= 1 ) setValue_genElectron("genElectron1", genElectrons->at(0));
   if ( genElectrons->size() >= 2 ) setValue_genElectron("genElectron2", genElectrons->at(1));
   setValueI("numGenElectrons", genElectrons->size());
 
   edm::Handle<reco::GenJetCollection> genMuons;
-  evt.getByLabel(srcGenMuons_, genMuons);
+  evt.getByToken(srcGenMuons_, genMuons);
   if ( genMuons->size() >= 1 ) setValue_genMuon("genMuon1", genMuons->at(0));
   if ( genMuons->size() >= 2 ) setValue_genMuon("genMuon2", genMuons->at(1));
   setValueI("numGenMuons", genMuons->size());
 
   edm::Handle<reco::GenJetCollection> genHadTaus;
-  evt.getByLabel(srcGenHadTaus_, genHadTaus);
+  evt.getByToken(srcGenHadTaus_, genHadTaus);
   if ( genHadTaus->size() >= 1 ) setValue_genHadTau("genHadTau1", genHadTaus->at(0));
   if ( genHadTaus->size() >= 2 ) setValue_genHadTau("genHadTau2", genHadTaus->at(1));
   setValueI("numGenHadTaus", genHadTaus->size());
   
   edm::Handle<reco::GenJetCollection> smearedHadTaus;
-  evt.getByLabel(srcSmearedHadTaus_, smearedHadTaus);
+  evt.getByToken(srcSmearedHadTaus_, smearedHadTaus);
   if ( smearedHadTaus->size() >= 1 ) setValue_genHadTau("smearedHadTau1", smearedHadTaus->at(0));
   if ( smearedHadTaus->size() >= 2 ) setValue_genHadTau("smearedHadTau2", smearedHadTaus->at(1));
   setValueI("numSmearedHadTaus", smearedHadTaus->size());
 
   edm::Handle<reco::GenMETCollection> genMETs;
-  evt.getByLabel(srcGenMET_, genMETs);
+  evt.getByToken(srcGenMET_, genMETs);
   if ( !(genMETs->size() == 1) ) 
     throw cms::Exception("SVfitStudyNtupleProducer") 
-      << " Collection = '" << srcGenMET_.label() << "' does not contain exactly one reco::GenMET object !!\n";
+      << " Collection = '" << srcGenMET_label_.label() << "' does not contain exactly one reco::GenMET object !!\n";
   const reco::GenMET genMEt = genMETs->front();
 
   edm::Handle<reco::GenMETCollection> smearedMETs;
-  evt.getByLabel(srcSmearedMET_, smearedMETs);
+  evt.getByToken(srcSmearedMET_, smearedMETs);
   if ( !(smearedMETs->size() == 1) ) 
     throw cms::Exception("SVfitStudyNtupleProducer") 
-      << " Collection = '" << srcSmearedMET_.label() << "' does not contain exactly one reco::GenMET object !!\n";
+      << " Collection = '" << srcSmearedMET_label_.label() << "' does not contain exactly one reco::GenMET object !!\n";
   const reco::GenMET smearedMEt = smearedMETs->front();
   setValue_genMET("smearedMEt", smearedMEt);
 
@@ -271,17 +269,17 @@ void SVfitStudyNtupleProducer::analyze(const edm::Event& evt, const edm::EventSe
   setValue_genMET("genMEt", genMEt_with_Cov);
 
   edm::Handle<svFitMEM::GenHadRecoilCollection> genHadRecoils;
-  evt.getByLabel(srcGenHadRecoil_, genHadRecoils);
+  evt.getByToken(srcGenHadRecoil_, genHadRecoils);
   if ( !(genHadRecoils->size() == 1) ) 
     throw cms::Exception("SVfitStudyNtupleProducer") 
-      << " Collection = '" << srcGenHadRecoil_.label() << "' does not contain exactly one svFitMEM::GenHadRecoil object !!\n";
+      << " Collection = '" << srcGenHadRecoil_label_.label() << "' does not contain exactly one svFitMEM::GenHadRecoil object !!\n";
   const svFitMEM::GenHadRecoil genHadRecoil = genHadRecoils->front();
 
   edm::Handle<svFitMEM::GenHadRecoilCollection> smearedHadRecoils;
-  evt.getByLabel(srcSmearedHadRecoil_, smearedHadRecoils);
+  evt.getByToken(srcSmearedHadRecoil_, smearedHadRecoils);
   if ( !(smearedHadRecoils->size() == 1) ) 
     throw cms::Exception("SVfitStudyNtupleProducer") 
-      << " Collection = '" << srcSmearedHadRecoil_.label() << "' does not contain exactly one svFitMEM::GenHadRecoil object !!\n";
+      << " Collection = '" << srcSmearedHadRecoil_label_.label() << "' does not contain exactly one svFitMEM::GenHadRecoil object !!\n";
   const svFitMEM::GenHadRecoil smearedHadRecoil = smearedHadRecoils->front();
   setValue_genHadRecoil("smearedHadRecoil", smearedHadRecoil);
 
@@ -298,8 +296,9 @@ void SVfitStudyNtupleProducer::analyze(const edm::Event& evt, const edm::EventSe
   setValue_genHadRecoil("genHadRecoil", genHadRecoil_with_Cov);
 
   edm::Handle<reco::GenJetCollection> genJets;
-  evt.getByLabel(srcGenJets_, genJets);
+  evt.getByToken(srcGenJets_, genJets);
   std::vector<const reco::GenJet*> genJets_selected;
+  //for ( unsigned int igenJet = 0; igenJet < genJets->size(); ++igenJet ) {
   for ( reco::GenJetCollection::const_iterator genJet = genJets->begin();
 	genJet != genJets->end(); ++genJet ) {
     if ( genJet->pt() > minJetPt_ && TMath::Abs(genJet->eta()) < maxJetAbsEta_ ) {
@@ -319,7 +318,7 @@ void SVfitStudyNtupleProducer::analyze(const edm::Event& evt, const edm::EventSe
   setValueI("numGenJets", genJets_selected.size());
 
   edm::Handle<reco::GenParticleCollection> genParticles;
-  evt.getByLabel(srcGenParticles_, genParticles);
+  evt.getByToken(srcGenParticles_, genParticles);
   const reco::GenParticle* genBoson = findGenParticle(*genParticles, 22, 23, 24); // gamma, Z, W
   //const reco::GenParticle* genBoson = findGenParticle(*genParticles, 25, 35, 36); // h, H, A (CV: ONLY for TESTING !!)
   if ( genBoson ) {
@@ -355,7 +354,7 @@ void SVfitStudyNtupleProducer::analyze(const edm::Event& evt, const edm::EventSe
   for ( std::vector<InputTagEntryType>::const_iterator evtWeight = evtWeightsToStore_.begin();
 	evtWeight != evtWeightsToStore_.end(); ++evtWeight ) {
     edm::Handle<double> evtWeightValue;
-    evt.getByLabel(evtWeight->src_, evtWeightValue);
+    evt.getByToken(evtWeight->src_, evtWeightValue);
     setValueF(evtWeight->branchName_, *evtWeightValue);
   }
   

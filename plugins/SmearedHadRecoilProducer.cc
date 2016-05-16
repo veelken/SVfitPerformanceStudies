@@ -2,14 +2,12 @@
 
 #include "DataFormats/Common/interface/Handle.h"
 #include "DataFormats/SVfitPerformanceStudies/interface/GenHadRecoil.h"
-#include "DataFormats/SVfitPerformanceStudies/interface/GenHadRecoilFwd.h"
 
 #include <TMath.h>
 
 SmearedHadRecoilProducer::SmearedHadRecoilProducer(const edm::ParameterSet& cfg)
+ : src_(consumes<svFitMEM::GenHadRecoilCollection>(cfg.getParameter<edm::InputTag>("src")))
 { 
-  src_ = cfg.getParameter<edm::InputTag>("src");
-
   sigmaPx_   = cfg.getParameter<double>("sigmaPx");
   sigmaPy_   = cfg.getParameter<double>("sigmaPy");
   sigmaPz_   = cfg.getParameter<double>("sigmaPz");
@@ -32,7 +30,7 @@ void SmearedHadRecoilProducer::produce(edm::Event& evt, const edm::EventSetup& e
   }
 
   edm::Handle<svFitMEM::GenHadRecoilCollection> genHadRecoils;
-  evt.getByLabel(src_, genHadRecoils);
+  evt.getByToken(src_, genHadRecoils);
 
   std::auto_ptr<svFitMEM::GenHadRecoilCollection> genHadRecoils_smeared(new svFitMEM::GenHadRecoilCollection());
 

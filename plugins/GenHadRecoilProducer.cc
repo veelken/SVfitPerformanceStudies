@@ -2,9 +2,7 @@
 
 #include "DataFormats/Common/interface/Handle.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
-#include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
 #include "DataFormats/JetReco/interface/GenJet.h"
-#include "DataFormats/JetReco/interface/GenJetCollection.h"
 #include "DataFormats/Math/interface/deltaR.h"
 
 #include "DataFormats/SVfitPerformanceStudies/interface/GenHadRecoil.h"
@@ -13,12 +11,11 @@
 #include <TMath.h>
 
 GenHadRecoilProducer::GenHadRecoilProducer(const edm::ParameterSet& cfg)
+  : srcGenParticles_(consumes<reco::GenParticleCollection>(cfg.getParameter<edm::InputTag>("srcGenParticles"))),
+    srcGenElectrons_(consumes<reco::GenJetCollection>(cfg.getParameter<edm::InputTag>("srcGenElectrons"))),
+    srcGenMuons_(consumes<reco::GenJetCollection>(cfg.getParameter<edm::InputTag>("srcGenMuons"))),
+    srcGenHadTaus_(consumes<reco::GenJetCollection>(cfg.getParameter<edm::InputTag>("srcGenHadTaus"))) 
 { 
-  srcGenParticles_ = cfg.getParameter<edm::InputTag>("srcGenParticles");
-  srcGenElectrons_ = cfg.getParameter<edm::InputTag>("srcGenElectrons");
-  srcGenMuons_ = cfg.getParameter<edm::InputTag>("srcGenMuons");
-  srcGenHadTaus_ = cfg.getParameter<edm::InputTag>("srcGenHadTaus");
-
   verbosity_ = cfg.getParameter<int>("verbosity");
 
   produces<svFitMEM::GenHadRecoilCollection>("");
@@ -55,16 +52,16 @@ void GenHadRecoilProducer::produce(edm::Event& evt, const edm::EventSetup& es)
   if ( verbosity_ >= 1 ) {
     std::cout << "<GenHadRecoilProducer::produce>:" << std::endl;
   }
-  
+ 
   edm::Handle<reco::GenParticleCollection> genParticles;
-  evt.getByLabel(srcGenParticles_, genParticles);
+  evt.getByToken(srcGenParticles_, genParticles);
 
   edm::Handle<reco::GenJetCollection> genElectrons;
-  evt.getByLabel(srcGenElectrons_, genElectrons);
+  evt.getByToken(srcGenElectrons_, genElectrons);
   edm::Handle<reco::GenJetCollection> genMuons;
-  evt.getByLabel(srcGenMuons_, genMuons);
+  evt.getByToken(srcGenMuons_, genMuons);
   edm::Handle<reco::GenJetCollection> genHadTaus;
-  evt.getByLabel(srcGenHadTaus_, genHadTaus);
+  evt.getByToken(srcGenHadTaus_, genHadTaus);
 
   std::auto_ptr<svFitMEM::GenHadRecoilCollection> genHadRecoils(new svFitMEM::GenHadRecoilCollection());
 

@@ -17,6 +17,9 @@
 
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Utilities/interface/InputTag.h"
+#include "FWCore/Utilities/interface/EDGetToken.h"
+
+#include "DataFormats/SVfitPerformanceStudies/interface/GenHadRecoilFwd.h"
 
 #include <TRandom3.h>
 
@@ -29,7 +32,7 @@ class SmearedHadRecoilProducer : public edm::EDProducer
   void produce(edm::Event&, const edm::EventSetup&);
 
  private:
-  edm::InputTag src_;
+  edm::EDGetTokenT<svFitMEM::GenHadRecoilCollection> src_;
 
   double sigmaPx_;
   double sigmaPy_;

@@ -17,6 +17,10 @@
 
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Utilities/interface/InputTag.h"
+#include "FWCore/Utilities/interface/EDGetToken.h"
+
+#include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
+#include "DataFormats/JetReco/interface/GenJetCollection.h"
 
 class GenHadRecoilProducer : public edm::EDProducer
 {
@@ -27,10 +31,10 @@ class GenHadRecoilProducer : public edm::EDProducer
   void produce(edm::Event&, const edm::EventSetup&);
 
  private:
-  edm::InputTag srcGenParticles_;
-  edm::InputTag srcGenElectrons_;
-  edm::InputTag srcGenMuons_;
-  edm::InputTag srcGenHadTaus_;
+  edm::EDGetTokenT<reco::GenParticleCollection> srcGenParticles_;
+  edm::EDGetTokenT<reco::GenJetCollection> srcGenElectrons_;
+  edm::EDGetTokenT<reco::GenJetCollection> srcGenMuons_;
+  edm::EDGetTokenT<reco::GenJetCollection> srcGenHadTaus_;
 
   int verbosity_;
 };
