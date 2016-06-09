@@ -266,7 +266,8 @@ namespace
     svfitComputingTime_real = svFitAlgo.getComputingTime_real(); 
   }
  */
-  void compClassicSVfitMass(classic_svFit::MeasuredTauLepton::kDecayType leg1Type, reco::Candidate::PolarLorentzVector& leg1P4, 
+  void compClassicSVfitMass(ClassicSVfit& svFitAlgo,
+			    classic_svFit::MeasuredTauLepton::kDecayType leg1Type, reco::Candidate::PolarLorentzVector& leg1P4, 
 			    classic_svFit::MeasuredTauLepton::kDecayType leg2Type, reco::Candidate::PolarLorentzVector& leg2P4, 
 			    double mex, double mey, const TMatrixD& metCov, 
 			    Float_t& svfitPt, Float_t& svfitPtErr, Int_t& svfitPt_isValid,
@@ -274,8 +275,7 @@ namespace
 			    Float_t& svfitPhi, Float_t& svfitPhiErr, Int_t& svfitPhi_isValid,
 			    Float_t& svfitMass, Float_t& svfitMassErr, Int_t& svfitMass_isValid, 			    
 			    Float_t& svfitTransverseMass, Float_t& svfitTransverseMassErr, Int_t& svfitTransverseMass_isValid, 
-			    Float_t& svfitComputingTime_cpu, Float_t& svfitComputingTime_real,
-			    const HadTauTFBase* hadTauTF, bool useHadTauTF, double addLogM_power, int verbosity)
+			    Float_t& svfitComputingTime_cpu, Float_t& svfitComputingTime_real)
   {
     //std::cout << "<compClassicSVfitMass)>:" << std::endl;	
     //std::cout << "leg1: Pt = " << leg1P4.pt() << ", eta = " << leg1P4.eta() << ", phi = " << leg1P4.phi() << ", mass = " << leg1P4.mass() << " (type = " << leg1Type << ")" << std::endl;
@@ -287,13 +287,6 @@ namespace
     measuredTauLeptons.push_back(classic_svFit::MeasuredTauLepton(leg1Type, leg1P4.pt(), leg1P4.eta(), leg1P4.phi(), leg1P4.mass()));
     measuredTauLeptons.push_back(classic_svFit::MeasuredTauLepton(leg2Type, leg2P4.pt(), leg2P4.eta(), leg2P4.phi(), leg2P4.mass()));
 
-    ClassicSVfit svFitAlgo(verbosity);
-    svFitAlgo.setHadTauTF(hadTauTF);
-    if ( useHadTauTF ) svFitAlgo.enableHadTauTF();
-    else svFitAlgo.disableHadTauTF();
-    if ( addLogM_power > 0. ) svFitAlgo.addLogM_fixed(true, addLogM_power);
-    else svFitAlgo.addLogM_fixed(false);
-    svFitAlgo.setMaxObjFunctionCalls(100000);
     svFitAlgo.integrate(measuredTauLeptons, mex, mey, metCov);
     if ( svFitAlgo.isValidSolution() ) {
       svfitPt = svFitAlgo.pt();
@@ -860,8 +853,8 @@ int main(int argc, char* argv[])
   
   SVfitMEM_lo svFitAlgoMEM_lo(svFitMEM_sqrtS, svFitMEM_pdfName.data(), svFitMEM::SVfitIntegrand_lo::kLiterature, "", svFitMEM_verbosity);
   svFitAlgoMEM_lo.setCrossSection_and_Acc(svFitMEM_graph_xSection_lo, 0, 1.);
-  //HadTauTFfromTGraph hadTauTF(svFitMEM_graph_hadTauTF);
-  HadTauTFCrystalBall2 hadTauTF;
+  HadTauTFfromTGraph hadTauTF(svFitMEM_graph_hadTauTF);
+  //HadTauTFCrystalBall2 hadTauTF;
   svFitAlgoMEM_lo.setHadTauTF(&hadTauTF);
   svFitAlgoMEM_lo.setMaxObjFunctionCalls(svFitMEM_maxObjFunctionCalls);
   svFitAlgoMEM_lo.setIntMode(svFitMEM_intMode);
@@ -873,6 +866,10 @@ int main(int argc, char* argv[])
   svFitAlgoMEM_nlo.setMaxObjFunctionCalls(svFitMEM_maxObjFunctionCalls);
   svFitAlgoMEM_nlo.setIntMode(svFitMEM_intMode);
  */
+  ClassicSVfit classicSVfitAlgo(verbosity - 1);
+  classicSVfitAlgo.setHadTauTF(&hadTauTF);
+  classicSVfitAlgo.setMaxObjFunctionCalls(100000);
+
   int numEntries = inputTree->GetEntries();
   int selectedEntries = 0;
   for ( int iEntry = 0; iEntry < numEntries && (maxEvents == -1 || selectedEntries < maxEvents); ++iEntry ) {
@@ -956,7 +953,7 @@ int main(int argc, char* argv[])
 	    svFitMEM_logM_entry != svFitMEM_logM_entries.end(); ++svFitMEM_logM_entry ) {
 	if ( (*svFitMEM_logM_entry)->lo_or_nlo_ == svFitMEM_logM_EntryType::kLO ) {
           if ( (*svFitMEM_logM_entry)->addLogM_power_ > 0. ) svFitAlgoMEM_lo.addLogM(true, (*svFitMEM_logM_entry)->addLogM_power_);
-          else svFitAlgoMEM_lo.addLogM(false, (*svFitMEM_logM_entry)->addLogM_power_);
+          else svFitAlgoMEM_lo.addLogM(false);
 	  if ( (*svFitMEM_logM_entry)->useHadTauTF_ ) svFitAlgoMEM_lo.enableHadTauTF();
   	  else svFitAlgoMEM_lo.disableHadTauTF();
 	  std::cout << "<compSVfitMassMEM_lo (useHadTauTF = " << (*svFitMEM_logM_entry)->useHadTauTF_ << ", addLogM_power = " << (*svFitMEM_logM_entry)->addLogM_power_ << ")>:" << std::endl;
@@ -987,8 +984,13 @@ int main(int argc, char* argv[])
 	    classicSVfit_logM_entry != classicSVfit_logM_entries.end(); ++classicSVfit_logM_entry ) {
 	classic_svFit::MeasuredTauLepton::kDecayType leg1Type_classic = getDecayType_classic(leg1Type);
 	classic_svFit::MeasuredTauLepton::kDecayType leg2Type_classic = getDecayType_classic(leg2Type);
+	if ( (*classicSVfit_logM_entry)->addLogM_power_ > 0. ) classicSVfitAlgo.addLogM_fixed(true, (*classicSVfit_logM_entry)->addLogM_power_);
+	else classicSVfitAlgo.addLogM_fixed(false);
+	if ( (*classicSVfit_logM_entry)->useHadTauTF_ ) classicSVfitAlgo.enableHadTauTF();
+	else classicSVfitAlgo.disableHadTauTF();
 	std::cout << "<compClassicSVfitMass (useHadTauTF = " << (*classicSVfit_logM_entry)->useHadTauTF_ << ", addLogM_power = " << (*classicSVfit_logM_entry)->addLogM_power_ << ")>:" << std::endl;
         compClassicSVfitMass(
+	  classicSVfitAlgo,		     
 	  leg1Type_classic, leg1P4, 
   	  leg2Type_classic, leg2P4, 
 	  mex, mey, metCov, 
@@ -997,8 +999,7 @@ int main(int argc, char* argv[])
 	  (*classicSVfit_logM_entry)->svfitPhi_, (*classicSVfit_logM_entry)->svfitPhiErr_, (*classicSVfit_logM_entry)->svfitPhi_isValid_,
 	  (*classicSVfit_logM_entry)->svfitMass_, (*classicSVfit_logM_entry)->svfitMassErr_, (*classicSVfit_logM_entry)->svfitMass_isValid_,
 	  (*classicSVfit_logM_entry)->svfitTransverseMass_, (*classicSVfit_logM_entry)->svfitTransverseMassErr_, (*classicSVfit_logM_entry)->svfitTransverseMass_isValid_,
-	  (*classicSVfit_logM_entry)->svfitComputingTime_cpu_, (*classicSVfit_logM_entry)->svfitComputingTime_real_,
-	  &hadTauTF, (*classicSVfit_logM_entry)->useHadTauTF_, (*classicSVfit_logM_entry)->addLogM_power_, verbosity - 1);
+	  (*classicSVfit_logM_entry)->svfitComputingTime_cpu_, (*classicSVfit_logM_entry)->svfitComputingTime_real_);
       }
     } else {
       visMass = -1.;
