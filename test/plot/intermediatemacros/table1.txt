@@ -1,0 +1,69 @@
+\begin{table}
+\begin{center}
+\begin{tabular}{|l|cc|cc|}
+\hline
+\multicolumn{5}{|c|}{$\Pe\Pgm$  decay channel} \\
+\hline
+\hline
+\multirow{2}{17mm}{Sample} & \multicolumn{2}{c|}{$m_{\vis}$} & \multicolumn{2}{c|}{$m_{\Pgt\Pgt}$ (SVfitMEM, $\kappa = 2$)} \\
+\cline{2-5}
+ & Median~[\GeV] & RMS/Median & Median~[\GeV] & RMS/Median \\
+\hline
+$\PHiggs \to \Pgt\Pgt$: $\quad m_{\PHiggs} =7$~\GeV & $0.55945$ & $0.218$ & $0.95905$ & $0.224$ & $ \\
+$\PHiggs \to \Pgt\Pgt$: $\quad m_{\PHiggs} =7$~\GeV & $0.45955$ & $0.28$ & $0.95905$ & $0.214$ & $ \\
+$\PHiggs \to \Pgt\Pgt$: $\quad m_{\PHiggs} =7$~\GeV & $0.35965$ & $0.388$ & $0.95905$ & $0.236$ & $ \\
+$\PHiggs \to \Pgt\Pgt$: $\quad m_{\PHiggs} =7$~\GeV & $0.35965$ & $0.412$ & $0.95905$ & $0.257$ & $ \\
+$\PHiggs \to \Pgt\Pgt$: $\quad m_{\PHiggs} =7$~\GeV & $0.35965$ & $0.429$ & $0.95905$ & $0.246$ & $ \\
+$\PHiggs \to \Pgt\Pgt$: $\quad m_{\PHiggs} =7$~\GeV & $0.25975$ & $0.632$ & $0.95905$ & $0.255$ & $ \\
+$\PHiggs \to \Pgt\Pgt$: $\quad m_{\PHiggs} =7$~\GeV & $0.25975$ & $0.63$ & $0.95905$ & $0.238$ & $ \\
+\hline
+\end{tabular}
+
+\vspace*{0.4 cm}
+
+\begin{tabular}{|l|cc|cc|}
+\hline
+\multicolumn{5}{|c|}{$\Pgm\tauh$ decay channel} \\
+\hline
+\hline
+\multirow{2}{17mm}{Sample} & \multicolumn{2}{c|}{$m_{\vis}$} & \multicolumn{2}{c|}{$m_{\Pgt\Pgt}$ (SVfitMEM, $\kappa = 3$)} \\
+\cline{2-5}
+ & Median~[\GeV] & RMS/Median & Median~[\GeV] & RMS/Median \\
+\hline
+$\PHiggs \to \Pgt\Pgt$: $\quad m_{\PHiggs} =7$~\GeV & $0.75925$ & $0.139$ & $1.05895$ & $0.125$ & $ \\
+$\PHiggs \to \Pgt\Pgt$: $\quad m_{\PHiggs} =7$~\GeV & $0.65935$ & $0.205$ & $0.95905$ & $0.14$ & $ \\
+$\PHiggs \to \Pgt\Pgt$: $\quad m_{\PHiggs} =7$~\GeV & $0.55945$ & $0.26$ & $0.95905$ & $0.172$ & $ \\
+$\PHiggs \to \Pgt\Pgt$: $\quad m_{\PHiggs} =7$~\GeV & $0.55945$ & $0.28$ & $0.95905$ & $0.191$ & $ \\
+$\PHiggs \to \Pgt\Pgt$: $\quad m_{\PHiggs} =7$~\GeV & $0.45955$ & $0.368$ & $0.95905$ & $0.205$ & $ \\
+$\PHiggs \to \Pgt\Pgt$: $\quad m_{\PHiggs} =7$~\GeV & $0.45955$ & $0.385$ & $0.95905$ & $0.199$ & $ \\
+$\PHiggs \to \Pgt\Pgt$: $\quad m_{\PHiggs} =7$~\GeV & $0.45955$ & $0.398$ & $0.95905$ & $0.198$ & $ \\
+$\PHiggs \to \Pgt\Pgt$: $\quad m_{\PHiggs} =7$~\GeV & $0.45955$ & $0.408$ & $0.95905$ & $0.187$ & $ \\
+$\PHiggs \to \Pgt\Pgt$: $\quad m_{\PHiggs} =7$~\GeV & $0.45955$ & $0.43$ & $0.85915$ & $0.209$ & $ \\
+\hline
+\end{tabular}
+
+\vspace*{0.4 cm}
+
+\begin{tabular}{|l|cc|cc|}
+\hline
+\multicolumn{5}{|c|}{$\tauh\tauh$ decay channel} \\
+\hline
+\hline
+\multirow{2}{17mm}{Sample} & \multicolumn{2}{c|}{$m_{\vis}$} & \multicolumn{2}{c|}{$m_{\Pgt\Pgt}$ (SVfitMEM, $\kappa = 3$)} \\
+\cline{2-5}
+ & Median~[\GeV] & RMS/Median & Median~[\GeV] & RMS/Median \\
+\hline
+$\PHiggs \to \Pgt\Pgt$: $\quad m_{\PHiggs} =7$~\GeV & $0.85915$ & $0.194$ & $1.05895$ & $0.122$ & $ \\
+$\PHiggs \to \Pgt\Pgt$: $\quad m_{\PHiggs} =7$~\GeV & $0.85915$ & $0.153$ & $0.95905$ & $0.105$ & $ \\
+$\PHiggs \to \Pgt\Pgt$: $\quad m_{\PHiggs} =7$~\GeV & $0.75925$ & $0.166$ & $0.95905$ & $0.128$ & $ \\
+$\PHiggs \to \Pgt\Pgt$: $\quad m_{\PHiggs} =7$~\GeV & $0.65935$ & $0.221$ & $0.95905$ & $0.15$ & $ \\
+$\PHiggs \to \Pgt\Pgt$: $\quad m_{\PHiggs} =7$~\GeV & $0.65935$ & $0.248$ & $0.85915$ & $0.188$ & $ \\
+$\PHiggs \to \Pgt\Pgt$: $\quad m_{\PHiggs} =7$~\GeV & $0.65935$ & $0.264$ & $0.85915$ & $0.187$ & $ \\
+$\PHiggs \to \Pgt\Pgt$: $\quad m_{\PHiggs} =7$~\GeV & $0.55945$ & $0.321$ & $0.85915$ & $0.187$ & $ \\
+$\PHiggs \to \Pgt\Pgt$: $\quad m_{\PHiggs} =7$~\GeV & $0.55945$ & $0.326$ & $0.85915$ & $0.18$ & $ \\
+$\PHiggs \to \Pgt\Pgt$: $\quad m_{\PHiggs} =7$~\GeV & $0.55945$ & $0.331$ & $0.85915$ & $0.182$ & $ \\
+\hline
+\end{tabular}
+
+\vspace*{0.4 cm}
+

@@ -1,0 +1,74 @@
+\begin{table}
+\begin{center}
+\begin{tabular}{|l|ccc|ccc|}
+\hline
+\multicolumn{7}{|c|}{$\tauh\tauh$ decay channel} \\
+\hline
+\hline
+\multirow{2}{17mm}{Sample} & \multicolumn{3}{c|}{$m_{\vis}$} & \multicolumn{3}{c|}{SVfitSA} \\
+\cline{2-7}
+& $\textrm{M}$~[\GeV\unskip] & $\sigma/\textrm{M}$ & $S/\sqrt{B}$ & $\textrm{M}$~[\GeV\unskip] & $\sigma/\textrm{M}$ & $S/\sqrt{B}$ \\
+\hline
+$\PZ \to \Pgt\Pgt$: & & & & & & \\ 
+$\quad$ $0$-jet              &  $100.045$ & $ 0.089$ & $-$ &  $117.85$ & $ 0.096$ & $-$  \\
+$\quad$ $1$-jet non--boosted &  $80.5$ & $ 0.179$ & $-$ &  $97$ & $ 0.146$ & $-$  \\
+$\quad$ $1$-jet boosted      &  $69.8824$ & $ 0.201$ & $-$ &  $90.4167$ & $ 0.115$ & $-$  \\
+$\quad$ $2$-jet VBF          &  $69$ & $ 0.196$ & $-$ &  $92$ & $ 0.087$ & $-$  \\
+SM $\Pg\Pg \to \PHiggs$, $\PHiggs \to \Pgt\Pgt$: & & & & & & \\ 
+$\quad$ $0$-jet              &  $109.24$ & $ 0.091$ & $0.245\pm0.01 $ &  $129.994$ & $ 0.096$ & $0.279\pm0.023 $ \\
+$\quad$ $1$-jet non--boosted &  $103.938$ & $ 0.138$ & $ 0.138\pm0.008$ &  $126.938$ & $ 0.106$ & $ 0.436\pm0.083 $  \\
+$\quad$ $1$-jet boosted      &  $93.8095$ & $ 0.199$ & $ 0.021\pm0.001$ &  $123.306$ & $ 0.095$ & $0.314\pm0.079$  \\
+SM $\Pquark\APquark \to \PHiggs$, $\PHiggs \to \Pgt\Pgt$: & & & & & & 
+$\quad$ $2$-jet VBF          &  $94.735$ & $ 0.183$ & $ 0.152\pm0.014$ &  $123.386$ & $ 0.1$ & $100\pm230767$  \\
+\hline
+\end{tabular}
+
+\begin{tabular}{|l|ccc|ccc|}
+\hline
+\multicolumn{7}{|c|}{$\tauh\tauh$ decay channel} \\
+\hline
+\hline
+\multirow{2}{17mm}{Sample} & \multicolumn{3}{c|}{$cSVfit, $\kappa=0$$} & \multicolumn{3}{c|}{cSVfit, $\kappa=5$} \\
+\cline{2-7}
+& $\textrm{M}$~[\GeV\unskip] & $\sigma/\textrm{M}$ & $S/\sqrt{B}$ & $\textrm{M}$~[\GeV\unskip] & $\sigma/\textrm{M}$ & $S/\sqrt{B}$ \\
+\hline
+$\PZ \to \Pgt\Pgt$: & & & & & & \\ 
+$\quad$ $0$-jet              &  $128.812$ & $ 0.34$ & $-$ &  $115.636$ & $ 0.097$ & $-$  \\
+$\quad$ $1$-jet non--boosted &  $99.6$ & $ 0.157$ & $-$ &  $95$ & $ 0.144$ & $-$  \\
+$\quad$ $1$-jet boosted      &  $91.5769$ & $ 0.117$ & $-$ &  $89.0294$ & $ 0.117$ & $-$  \\
+$\quad$ $2$-jet VBF          &  $93$ & $ 0.09$ & $-$ &  $90.5$ & $ 0.091$ & $-$  \\
+SM $\Pg\Pg \to \PHiggs$, $\PHiggs \to \Pgt\Pgt$: & & & & & & \\ 
+$\quad$ $0$-jet              &  $143.611$ & $ 0.217$ & $0.326\pm0.027 $ &  $127.612$ & $ 0.093$ & $0.333\pm0.028 $ \\
+$\quad$ $1$-jet non--boosted &  $133.274$ & $ 0.143$ & $ 0.363\pm0.062$ &  $124.739$ & $ 0.104$ & $ 0.332\pm0.054 $  \\
+$\quad$ $1$-jet boosted      &  $124.971$ & $ 0.096$ & $ 0.356\pm0.087$ &  $121.794$ & $ 0.096$ & $0.364\pm0.089$  \\
+SM $\Pquark\APquark \to \PHiggs$, $\PHiggs \to \Pgt\Pgt$: & & & & & & 
+$\quad$ $2$-jet VBF          &  $125.764$ & $ 0.109$ & $ 100\pm251569$ &  $121.581$ & $ 0.099$ & $100\pm249273$  \\
+\hline
+\end{tabular}
+
+\begin{tabular}{|l|ccc|ccc|}
+\begin{tabular}{|l|ccc|ccc|}
+\hline
+\multicolumn{7}{|c|}{$\tauh\tauh$ decay channel} \\
+\hline
+\hline
+\multirow{2}{17mm}{Sample} & \multicolumn{3}{c|}{$SVfitMEM, $\kappa=0$$} & \multicolumn{3}{c|}{SVfitMEM, $\kappa=5$} \\
+\cline{2-7}
+& $\textrm{M}$~[\GeV\unskip] & $\sigma/\textrm{M}$ & $S/\sqrt{B}$ & $\textrm{M}$~[\GeV\unskip] & $\sigma/\textrm{M}$ & $S/\sqrt{B}$ \\
+\hline
+$\PZ \to \Pgt\Pgt$: & & & & & & \\ 
+$\quad$ $0$-jet              &  $128.083$ & $ 0.159$ & $-$ &  $115.611$ & $ 0.101$ & $-$  \\
+$\quad$ $1$-jet non--boosted &  $99.2083$ & $ 0.163$ & $-$ &  $95.4$ & $ 0.141$ & $-$  \\
+$\quad$ $1$-jet boosted      &  $91.75$ & $ 0.118$ & $-$ &  $89.2273$ & $ 0.116$ & $-$  \\
+$\quad$ $2$-jet VBF          &  $94.5$ & $ 0.091$ & $-$ &  $91.5$ & $ 0.085$ & $-$  \\
+SM $\Pg\Pg \to \PHiggs$, $\PHiggs \to \Pgt\Pgt$: & & & & & & \\ 
+$\quad$ $0$-jet              &  $142.244$ & $ 0.878$ & $0.257\pm0.024 $ &  $127.945$ & $ 0.097$ & $0.287\pm0.028 $ \\
+$\quad$ $1$-jet non--boosted &  $133.01$ & $ 0.744$ & $ 0.334\pm0.057$ &  $125.079$ & $ 0.106$ & $ 0.32\pm0.054 $  \\
+$\quad$ $1$-jet boosted      &  $125.125$ & $ 0.095$ & $ 0.28\pm0.08$ &  $121.946$ & $ 0.096$ & $0.358\pm0.115$  \\
+SM $\Pquark\APquark \to \PHiggs$, $\PHiggs \to \Pgt\Pgt$: & & & & & & 
+$\quad$ $2$-jet VBF          &  $125.716$ & $ 0.241$ & $ 100\pm252789$ &  $121.849$ & $ 0.1$ & $100\pm250909$  \\
+\hline
+\end{tabular}
+
+\end{table}
+

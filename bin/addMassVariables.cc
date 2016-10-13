@@ -426,6 +426,25 @@ int main(int argc, char* argv[])
   std::string metBranchName = cfgAddMassVariables.getParameter<std::string>("metBranchName");
   std::string hadRecoilBranchName = cfgAddMassVariables.getParameter<std::string>("hadRecoilBranchName");
 
+  //START ADDING
+  std::string genJet1BranchName = cfgAddMassVariables.getParameter<std::string>("genJet1BranchName");
+  std::string genJet2BranchName = cfgAddMassVariables.getParameter<std::string>("genJet2BranchName");
+  std::string genJet3BranchName = cfgAddMassVariables.getParameter<std::string>("genJet3BranchName");
+  std::string genJet4BranchName = cfgAddMassVariables.getParameter<std::string>("genJet4BranchName");
+  std::string genJet5BranchName = cfgAddMassVariables.getParameter<std::string>("genJet5BranchName");
+  std::string genJet6BranchName = cfgAddMassVariables.getParameter<std::string>("genJet6BranchName");
+  enum {kInclusive, k0Jets, k1JetBoosted, k1JetNotBoosted, k2Jets};
+  std::string eventSelection = cfgAddMassVariables.getParameter<std::string>("eventSelection");
+  int eventSelection_categorization = -1;
+  if      (eventSelection == "inclusive"      ) eventSelection_categorization = kInclusive;
+  else if (eventSelection == "0Jets"          ) eventSelection_categorization = k0Jets;
+  else if (eventSelection == "1JetBoosted"    ) eventSelection_categorization = k1JetBoosted;
+  else if (eventSelection == "1JetNotBoosted" ) eventSelection_categorization = k1JetNotBoosted;
+  else if (eventSelection == "2Jets"          ) eventSelection_categorization = k2Jets;
+  else throw cms::Exception("addMassVariables") 
+    << "Invalid Configuration parameter 'eventSelection' = " << eventSelection << " !!\n";
+  //FINISH ADDING
+
   edm::ParameterSet cfgSVfitMEM = cfgAddMassVariables.getParameter<edm::ParameterSet>("svFitMEM");
   double svFitMEM_sqrtS = cfgSVfitMEM.getParameter<double>("sqrtS");
   std::string svFitMEM_apply_xSection_times_AccCorr_string = cfgSVfitMEM.getParameter<std::string>("apply_xSection_times_AccCorr");
@@ -795,6 +814,31 @@ int main(int argc, char* argv[])
   const branchEntryType* branchEntryMEtCov01       = 0;
   const branchEntryType* branchEntryMEtCov10       = 0;
   const branchEntryType* branchEntryMEtCov11       = 0;
+  const branchEntryType* branchEntryGenJet1Pt      = 0;
+  const branchEntryType* branchEntryGenJet1Eta     = 0;
+  const branchEntryType* branchEntryGenJet1Phi     = 0;
+  const branchEntryType* branchEntryGenJet1Mass    = 0;
+  const branchEntryType* branchEntryGenJet2Pt      = 0;
+  const branchEntryType* branchEntryGenJet2Eta     = 0;
+  const branchEntryType* branchEntryGenJet2Phi     = 0;
+  const branchEntryType* branchEntryGenJet2Mass    = 0;
+  const branchEntryType* branchEntryGenJet3Pt      = 0;
+  const branchEntryType* branchEntryGenJet3Eta     = 0;
+  const branchEntryType* branchEntryGenJet3Phi     = 0;
+  const branchEntryType* branchEntryGenJet3Mass    = 0;
+  const branchEntryType* branchEntryGenJet4Pt      = 0;
+  const branchEntryType* branchEntryGenJet4Eta     = 0;
+  const branchEntryType* branchEntryGenJet4Phi     = 0;
+  const branchEntryType* branchEntryGenJet4Mass    = 0;
+  const branchEntryType* branchEntryGenJet5Pt      = 0;
+  const branchEntryType* branchEntryGenJet5Eta     = 0;
+  const branchEntryType* branchEntryGenJet5Phi     = 0;
+  const branchEntryType* branchEntryGenJet5Mass    = 0;
+  const branchEntryType* branchEntryGenJet6Pt      = 0;
+  const branchEntryType* branchEntryGenJet6Eta     = 0;
+  const branchEntryType* branchEntryGenJet6Phi     = 0;
+  const branchEntryType* branchEntryGenJet6Mass    = 0;
+
 /*
   const branchEntryType* branchEntryHadRecoilPx    = 0;
   const branchEntryType* branchEntryHadRecoilPy    = 0;
@@ -823,6 +867,30 @@ int main(int argc, char* argv[])
     else if ( (*branchEntry)->branchName_ == Form("%sCov01", metBranchName.data())       ) branchEntryMEtCov01       = (*branchEntry);
     else if ( (*branchEntry)->branchName_ == Form("%sCov10", metBranchName.data())       ) branchEntryMEtCov10       = (*branchEntry);
     else if ( (*branchEntry)->branchName_ == Form("%sCov11", metBranchName.data())       ) branchEntryMEtCov11       = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPt", genJet1BranchName.data())      ) branchEntryGenJet1Pt         = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sEta", genJet1BranchName.data())     ) branchEntryGenJet1Eta        = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPhi", genJet1BranchName.data())     ) branchEntryGenJet1Phi        = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sMass", genJet1BranchName.data())    ) branchEntryGenJet1Mass       = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPt", genJet2BranchName.data())      ) branchEntryGenJet2Pt         = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sEta", genJet2BranchName.data())     ) branchEntryGenJet2Eta        = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPhi", genJet2BranchName.data())     ) branchEntryGenJet2Phi        = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sMass", genJet2BranchName.data())    ) branchEntryGenJet2Mass       = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPt", genJet3BranchName.data())      ) branchEntryGenJet3Pt         = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sEta", genJet3BranchName.data())     ) branchEntryGenJet3Eta        = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPhi", genJet3BranchName.data())     ) branchEntryGenJet3Phi        = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sMass", genJet3BranchName.data())    ) branchEntryGenJet3Mass       = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPt", genJet4BranchName.data())      ) branchEntryGenJet4Pt         = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sEta", genJet4BranchName.data())     ) branchEntryGenJet4Eta        = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPhi", genJet4BranchName.data())     ) branchEntryGenJet4Phi        = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sMass", genJet4BranchName.data())    ) branchEntryGenJet4Mass       = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPt", genJet5BranchName.data())      ) branchEntryGenJet5Pt         = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sEta", genJet5BranchName.data())     ) branchEntryGenJet5Eta        = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPhi", genJet5BranchName.data())     ) branchEntryGenJet5Phi        = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sMass", genJet5BranchName.data())    ) branchEntryGenJet5Mass       = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPt", genJet6BranchName.data())      ) branchEntryGenJet6Pt         = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sEta", genJet6BranchName.data())     ) branchEntryGenJet6Eta        = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPhi", genJet6BranchName.data())     ) branchEntryGenJet6Phi        = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sMass", genJet6BranchName.data())    ) branchEntryGenJet6Mass       = (*branchEntry);
 /*
     else if ( (*branchEntry)->branchName_ == Form("%sPx", hadRecoilBranchName.data())    ) branchEntryHadRecoilPx    = (*branchEntry);    
     else if ( (*branchEntry)->branchName_ == Form("%sPy", hadRecoilBranchName.data())    ) branchEntryHadRecoilPy    = (*branchEntry);
@@ -842,6 +910,24 @@ int main(int argc, char* argv[])
   if ( !(branchEntryMEx && branchEntryMEy && branchEntryMEtCov00 && branchEntryMEtCov01 && branchEntryMEtCov10 && branchEntryMEtCov11) )     
     throw cms::Exception("addMassVariables") 
       << "Branches for met = '" << metBranchName << "*' do not exist !!\n";
+  if ( !(branchEntryGenJet1Pt && branchEntryGenJet1Eta && branchEntryGenJet1Phi && branchEntryGenJet1Mass) ) 
+    throw cms::Exception("addMassVariables") 
+      << "Branches for genJet1 = '" << genJet1BranchName << "*' do not exist !!\n";
+  if ( !(branchEntryGenJet2Pt && branchEntryGenJet2Eta && branchEntryGenJet2Phi && branchEntryGenJet2Mass) ) 
+    throw cms::Exception("addMassVariables") 
+      << "Branches for genJet2 = '" << genJet2BranchName << "*' do not exist !!\n";
+  if ( !(branchEntryGenJet3Pt && branchEntryGenJet3Eta && branchEntryGenJet3Phi && branchEntryGenJet3Mass) ) 
+    throw cms::Exception("addMassVariables") 
+      << "Branches for genJet3 = '" << genJet3BranchName << "*' do not exist !!\n";
+  if ( !(branchEntryGenJet4Pt && branchEntryGenJet4Eta && branchEntryGenJet4Phi && branchEntryGenJet4Mass) ) 
+    throw cms::Exception("addMassVariables") 
+      << "Branches for genJet4 = '" << genJet4BranchName << "*' do not exist !!\n";
+  if ( !(branchEntryGenJet5Pt && branchEntryGenJet5Eta && branchEntryGenJet5Phi && branchEntryGenJet5Mass) ) 
+    throw cms::Exception("addMassVariables") 
+      << "Branches for genJet5 = '" << genJet5BranchName << "*' do not exist !!\n";
+  if ( !(branchEntryGenJet6Pt && branchEntryGenJet6Eta && branchEntryGenJet6Phi && branchEntryGenJet6Mass) ) 
+    throw cms::Exception("addMassVariables") 
+      << "Branches for genJet6 = '" << genJet6BranchName << "*' do not exist !!\n";
 /*
   if ( !(branchEntryHadRecoilPx && branchEntryHadRecoilPy && branchEntryHadRecoilPz && branchEntryHadRecoilCov00 && branchEntryHadRecoilCov01 && branchEntryHadRecoilCov10 && branchEntryHadRecoilCov11) )     
     throw cms::Exception("addMassVariables") 
@@ -908,6 +994,69 @@ int main(int argc, char* argv[])
     metCov[0][1] = metCov01;
     metCov[1][0] = metCov10;
     metCov[1][1] = metCov11;
+    Float_t genJet1Pt         = branchEntryGenJet1Pt->valueF_;
+    Float_t genJet1Eta        = branchEntryGenJet1Eta->valueF_;
+    Float_t genJet1Phi        = branchEntryGenJet1Phi->valueF_;
+    Float_t genJet1Mass       = branchEntryGenJet1Mass->valueF_;
+    reco::Candidate::PolarLorentzVector genJet1P4(genJet1Pt, genJet1Eta, genJet1Phi, genJet1Mass);
+    Float_t genJet2Pt         = branchEntryGenJet2Pt->valueF_;
+    Float_t genJet2Eta        = branchEntryGenJet2Eta->valueF_;
+    Float_t genJet2Phi        = branchEntryGenJet2Phi->valueF_;
+    Float_t genJet2Mass       = branchEntryGenJet2Mass->valueF_;
+    reco::Candidate::PolarLorentzVector genJet2P4(genJet2Pt, genJet2Eta, genJet2Phi, genJet2Mass);
+    Float_t genJet3Pt         = branchEntryGenJet3Pt->valueF_;
+    Float_t genJet3Eta        = branchEntryGenJet3Eta->valueF_;
+    Float_t genJet3Phi        = branchEntryGenJet3Phi->valueF_;
+    Float_t genJet3Mass       = branchEntryGenJet3Mass->valueF_;
+    reco::Candidate::PolarLorentzVector genJet3P4(genJet3Pt, genJet3Eta, genJet3Phi, genJet3Mass);
+    Float_t genJet4Pt         = branchEntryGenJet4Pt->valueF_;
+    Float_t genJet4Eta        = branchEntryGenJet4Eta->valueF_;
+    Float_t genJet4Phi        = branchEntryGenJet4Phi->valueF_;
+    Float_t genJet4Mass       = branchEntryGenJet4Mass->valueF_;
+    reco::Candidate::PolarLorentzVector genJet4P4(genJet4Pt, genJet4Eta, genJet4Phi, genJet4Mass);
+    Float_t genJet5Pt         = branchEntryGenJet5Pt->valueF_;
+    Float_t genJet5Eta        = branchEntryGenJet5Eta->valueF_;
+    Float_t genJet5Phi        = branchEntryGenJet5Phi->valueF_;
+    Float_t genJet5Mass       = branchEntryGenJet5Mass->valueF_;
+    reco::Candidate::PolarLorentzVector genJet5P4(genJet5Pt, genJet5Eta, genJet5Phi, genJet5Mass);
+    Float_t genJet6Pt         = branchEntryGenJet6Pt->valueF_;
+    Float_t genJet6Eta        = branchEntryGenJet6Eta->valueF_;
+    Float_t genJet6Phi        = branchEntryGenJet6Phi->valueF_;
+    Float_t genJet6Mass       = branchEntryGenJet6Mass->valueF_;
+    reco::Candidate::PolarLorentzVector genJet6P4(genJet6Pt, genJet6Eta, genJet6Phi, genJet6Mass);
+
+    int  nGenJets  = 0;
+    int  nVBFpairs = 0;
+    bool category_0Jets          = false;
+    bool category_1JetBoosted    = false;
+    bool category_1JetNotBoosted = false;
+    bool category_2Jets          = false;
+    bool categorization          = false;
+
+    std::vector<reco::Candidate::PolarLorentzVector> genJetsP4{genJet1P4,genJet2P4,genJet3P4,genJet4P4,genJet5P4,genJet6P4};
+    for(size_t ijet=0; ijet<genJetsP4.size(); ijet++){
+	    reco::Candidate::PolarLorentzVector genJetX1P4 = genJetsP4[ijet];
+	    if(genJetX1P4.pt()>30 && TMath::Abs(genJetX1P4.eta())<4.5) nGenJets++;
+	    for(size_t jjet=1; jjet<genJetsP4.size(); jjet++){
+		    reco::Candidate::PolarLorentzVector genJetX2P4 = genJetsP4[jjet];
+		    //visMass = (leg1P4 + leg2P4).mass()
+		    if(genJetX1P4.pt()>30 && TMath::Abs(genJetX1P4.eta())<4.5 && genJetX2P4.pt()>30 && TMath::Abs(genJetX2P4.eta())<4.5 &&
+				    (genJetX1P4+genJetX2P4).mass()>500 && TMath::Abs( genJetX1P4.eta()-genJetX2P4.eta())>3.5) nVBFpairs++;
+	    }
+    }
+      
+    if(nGenJets==0)                               category_0Jets          = true;
+    if(nGenJets>=2 && nVBFpairs>=1)               category_2Jets          = true;
+    else{
+	    if(nGenJets>=1 && (leg1P4+leg2P4).pt() < 100) category_1JetNotBoosted = true;
+	    if(nGenJets>=1 && (leg1P4+leg2P4).pt() > 100) category_1JetBoosted    = true;
+    }
+
+    if      (eventSelection_categorization == kInclusive)                                   { categorization = true; }
+    if      (eventSelection_categorization == k0Jets && (category_0Jets))                   { categorization = true; }
+    if      (eventSelection_categorization == k1JetBoosted && (category_1JetBoosted))       { categorization = true; }
+    if      (eventSelection_categorization == k1JetNotBoosted && (category_1JetNotBoosted)) { categorization = true; }
+    if      (eventSelection_categorization == k2Jets && (category_2Jets))                   { categorization = true; }
 /*
     //Float_t hadRecoilPx    = branchEntryHadRecoilPx->valueF_;
     //Float_t hadRecoilPy    = branchEntryHadRecoilPy->valueF_;
@@ -928,7 +1077,10 @@ int main(int argc, char* argv[])
     TMatrixD hadRecoilCov = metCov;
  */
     // compute mass variables
-    if ( leg1P4.pt() > leg1minPt && TMath::Abs(leg1P4.eta()) < leg1maxAbsEta && leg2P4.pt() > leg2minPt && TMath::Abs(leg2P4.eta()) < leg2maxAbsEta ) {
+    
+    
+
+    if ( leg1P4.pt() > leg1minPt && TMath::Abs(leg1P4.eta()) < leg1maxAbsEta && leg2P4.pt() > leg2minPt && TMath::Abs(leg2P4.eta()) < leg2maxAbsEta && categorization) {
       visMass = compVisMass(
         leg1P4, 
         leg2P4);

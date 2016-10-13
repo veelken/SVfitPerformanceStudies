@@ -13,15 +13,17 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condD
 process.GlobalTag.globaltag = cms.string('MCRUN2_74_V9')
 
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring(                                
-        '/store/user/veelken/CMSSW_7_4_x/skims/mssmHtautau3200_RECO_1_1_ONE.root'
+    fileNames = cms.untracked.vstring( 
+         'file:/hdfs/cms/store/mc/RunIIFall15MiniAODv2/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/70000/BACD287C-77BA-E511-8AFF-0025905B85E8.root'  
+        #'file:/hdfs/cms/store/mc/RunIIFall15MiniAODv2/SUSYGluGluToHToTauTau_M-1500_TuneCUETP8M1_13TeV-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/50000/2669A374-C2B8-E511-8FC7-0025907B4FB6.root'                             
+        #'/store/user/veelken/CMSSW_7_4_x/skims/mssmHtautau3200_RECO_1_1_ONE.root'
     ),
     ##eventsToProcess = cms.untracked.VEventRange(
     ##    '1:8:1309'
     ##)      
 )
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(-1)
+    input = cms.untracked.int32(5000)
 )
 
 process.ntupleProductionSequence = cms.Sequence()
@@ -30,7 +32,7 @@ process.ntupleProductionSequence = cms.Sequence()
 # print-out of generator level information
 process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
 process.printGenParticleList = cms.EDAnalyzer("ParticleListDrawer",
-    src = cms.InputTag('genParticles'),
+    src = cms.InputTag('prunedGenParticles'),
     maxEventsToPrint = cms.untracked.int32(10)
 )
 ##process.ntupleProductionSequence += process.printGenParticleList
@@ -45,7 +47,7 @@ process.printGenParticleList = cms.EDAnalyzer("ParticleListDrawer",
 #--------------------------------------------------------------------------------
 # produce collection of tauGenJets
 process.genParticlesFromZorHiggsDecays = cms.EDProducer("GenParticlePruner",
-    src = cms.InputTag('genParticles'),
+    src = cms.InputTag('prunedGenParticles'),
     select = cms.vstring(
         "drop  *  ", # this is the default
         "keep++ pdgId = {Z0}",
@@ -113,7 +115,7 @@ process.genMEtFromTauDecays = cms.EDProducer("GenMEtFromTauDecaysProducer",
 process.ntupleProductionSequence += process.genMEtFromTauDecays
 
 process.genHadRecoil = cms.EDProducer("GenHadRecoilProducer",
-    srcGenParticles = cms.InputTag('genParticles'),
+    srcGenParticles = cms.InputTag('prunedGenParticles'),
     srcGenElectrons = cms.InputTag('tauGenJetsSelectorElectron'),
     srcGenMuons = cms.InputTag('tauGenJetsSelectorMuon'),
     srcGenHadTaus = cms.InputTag('tauGenJetsSelectorAllHadrons'), 
@@ -159,8 +161,8 @@ process.ntupleProducer = cms.EDAnalyzer("SVfitStudyNtupleProducer",
     srcGenHadTaus = cms.InputTag('tauGenJetsSelectorAllHadrons'),
     srcGenMET = cms.InputTag('genMEtFromTauDecays'),
     srcGenHadRecoil = cms.InputTag('genHadRecoil'),     
-    srcGenParticles = cms.InputTag('genParticles'),
-    srcGenJets = cms.InputTag('ak4GenJetsNoNu'),
+    srcGenParticles = cms.InputTag('prunedGenParticles'),
+    srcGenJets = cms.InputTag('slimmedGenJets'),
     minJetPt = cms.double(20.),
     maxJetAbsEta = cms.double(5.),
 

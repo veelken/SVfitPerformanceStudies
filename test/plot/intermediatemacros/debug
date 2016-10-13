@@ -1,0 +1,17 @@
+   ------------------------------------------------------------
+  | Welcome to ROOT 6.02/13                http://root.cern.ch |
+  |                               (c) 1995-2014, The ROOT Team |
+  | Built for linuxx8664gcc                                    |
+  | From tag , 24 June 2015                                    |
+  | Try '.help', '.demo', '.license', '.credits', '.quit'/'.q' |
+   ------------------------------------------------------------
+
+
+Processing plot_6to8_svfitmem_paper_ratio.cc...
+plotting hist...
+
+dir: emu_smeared
+
+dir: muhad_smeared
+
+dir: hadhad_smeared

@@ -1,0 +1,230 @@
+   ------------------------------------------------------------
+  | Welcome to ROOT 6.02/13                http://root.cern.ch |
+  |                               (c) 1995-2014, The ROOT Team |
+  | Built for linuxx8664gcc                                    |
+  | From tag , 24 June 2015                                    |
+  | Try '.help', '.demo', '.license', '.credits', '.quit'/'.q' |
+   ------------------------------------------------------------
+
+
+Processing table1_hadhad.cc...
+plotting hist...
+ outside the function 
+ vh_SVfitSA[3]->Integral(binxmin_SVfitSA_2,binxmax_SVfitSA_2) 0 bkg_SVfitSA_2Jets 
+ vh_SVfitSA[7]->Integral(binxmin_SVfitSA_2,binxmax_SVfitSA_2) 0.699425 signal_SVfitSA_2Jets 
+ into the function hadhad_smeared_vismass_fine_bin
+ nBkg 0.457219
+ nSig 0.694844
+ poissonBkg 0.67618
+ poissonSig 0.833573
+(nSig*xsSig*ceSig) 1.06039 (xsBkg*ceBkg) 943.039
+xsBkg 5765.4 ceBkg 0.163569 xsSig 2.75378 ceSig 0.554179
+ term1 300855 term2 457214 term3 3.49047e+10
+ final error 0.00466028
+ into the function hadhad_smeared_vismass_fine_bin
+ nBkg 0.232984
+ nSig 0.688211
+ poissonBkg 0.482684
+ poissonSig 0.829585
+(nSig*xsSig*ceSig) 0.336665 (xsBkg*ceBkg) 1045.92
+xsBkg 5765.4 ceBkg 0.181413 xsSig 2.75378 ceSig 0.177642
+ term1 9779.63 term2 28888 term3 3.54563e+09
+ final error 0.00330238
+ into the function hadhad_smeared_vismass_fine_bin
+ nBkg 0.388535
+ nSig 0.69268
+ poissonBkg 0.623326
+ poissonSig 0.832274
+(nSig*xsSig*ceSig) 0.0955098 (xsBkg*ceBkg) 1183.09
+xsBkg 5765.4 ceBkg 0.205204 xsSig 2.75378 ceSig 0.0500709
+ term1 2782.64 term2 4960.88 term3 4.46834e+10
+ final error 0.00041629
+ into the function hadhad_smeared_vismass_fine_bin
+ nBkg 0.277778
+ nSig 0.683701
+ poissonBkg 0.527046
+ poissonSig 0.826862
+(nSig*xsSig*ceSig) 0.0653675 (xsBkg*ceBkg) 154.316
+xsBkg 5765.4 ceBkg 0.0267658 xsSig 0.235 ceSig 0.406844
+ term1 11.4834 term2 28.2644 term3 3.39684e+06
+ final error 0.00342073
+ into the function hadhad_smeared_svFit_fine_bin
+ nBkg 0.398396
+ nSig 0.687903
+ poissonBkg 0.631186
+ poissonSig 0.829399
+(nSig*xsSig*ceSig) 1.0498 (xsBkg*ceBkg) 943.039
+xsBkg 5765.4 ceBkg 0.163569 xsSig 2.75378 ceSig 0.554179
+ term1 226140 term2 390471 term3 2.01477e+10
+ final error 0.00553214
+ into the function hadhad_smeared_svFit_fine_bin
+ nBkg 0.0732984
+ nSig 0.685935
+ poissonBkg 0.270737
+ poissonSig 0.828212
+(nSig*xsSig*ceSig) 0.335552 (xsBkg*ceBkg) 1045.92
+xsBkg 5765.4 ceBkg 0.181413 xsSig 2.75378 ceSig 0.177642
+ term1 964.761 term2 9028.35 term3 3.51523e+07
+ final error 0.0168606
+ into the function hadhad_smeared_svFit_fine_bin
+ nBkg 0.0254777
+ nSig 0.689227
+ poissonBkg 0.159617
+ poissonSig 0.830197
+(nSig*xsSig*ceSig) 0.0950337 (xsBkg*ceBkg) 1183.09
+xsBkg 5765.4 ceBkg 0.205204 xsSig 2.75378 ceSig 0.0500709
+ term1 11.9055 term2 322.068 term3 835939
+ final error 0.019988
+ into the function hadhad_smeared_svFit_fine_bin
+ nBkg 0
+ nSig 0.699425
+ poissonBkg 1
+ poissonSig 0.836317
+(nSig*xsSig*ceSig) 0.0668708 (xsBkg*ceBkg) 154.316
+xsBkg 5765.4 ceBkg 0.0267658 xsSig 0.235 ceSig 0.406844
+ term1 0 term2 106.486 term3 1.99962e-05
+ final error 2307.67
+ into the function hadhad_smeared_svfitclatfk5_fine_bin
+ nBkg 0.390374
+ nSig 0.69063
+ poissonBkg 0.624799
+ poissonSig 0.831041
+(nSig*xsSig*ceSig) 0.975584 (xsBkg*ceBkg) 748.073
+xsBkg 5765.4 ceBkg 0.129752 xsSig 2.75378 ceSig 0.512967
+ term1 117526 term2 207921 term3 7.37044e+09
+ final error 0.00664497
+ into the function hadhad_smeared_svfitclatfk5_fine_bin
+ nBkg 0.0994764
+ nSig 0.685935
+ poissonBkg 0.315399
+ poissonSig 0.828212
+(nSig*xsSig*ceSig) 0.360475 (xsBkg*ceBkg) 1086.37
+xsBkg 5765.4 ceBkg 0.18843 xsSig 2.75378 ceSig 0.190837
+ term1 2212.41 term2 15255.6 term3 1.38223e+08
+ final error 0.0112417
+ into the function hadhad_smeared_svfitclatfk5_fine_bin
+ nBkg 0.0270701
+ nSig 0.703729
+ poissonBkg 0.16453
+ poissonSig 0.838886
+(nSig*xsSig*ceSig) 0.107396 (xsBkg*ceBkg) 1086.37
+xsBkg 5765.4 ceBkg 0.18843 xsSig 2.75378 ceSig 0.0554184
+ term1 14.1746 term2 368.491 term3 758936
+ final error 0.0224547
+ into the function hadhad_smeared_svfitclatfk5_fine_bin
+ nBkg 0
+ nSig 0.695797
+ poissonBkg 1
+ poissonSig 0.834144
+(nSig*xsSig*ceSig) 0.0669016 (xsBkg*ceBkg) 166.768
+xsBkg 5765.4 ceBkg 0.0289256 xsSig 0.235 ceSig 0.409154
+ term1 0 term2 124.48 term3 2.00331e-05
+ final error 2492.73
+ into the function hadhad_smeared_svfitclatfk0_fine_bin
+ nBkg 0.395722
+ nSig 0.685176
+ poissonBkg 0.629064
+ poissonSig 0.827754
+(nSig*xsSig*ceSig) 0.96788 (xsBkg*ceBkg) 748.073
+xsBkg 5765.4 ceBkg 0.129752 xsSig 2.75378 ceSig 0.512967
+ term1 119814 term2 207453 term3 7.78047e+09
+ final error 0.00648558
+ into the function hadhad_smeared_svfitclatfk0_fine_bin
+ nBkg 0.091623
+ nSig 0.689577
+ poissonBkg 0.302693
+ poissonSig 0.830408
+(nSig*xsSig*ceSig) 0.362389 (xsBkg*ceBkg) 1086.37
+xsBkg 5765.4 ceBkg 0.18843 xsSig 2.75378 ceSig 0.190837
+ term1 1886.84 term2 14200.8 term3 9.95973e+07
+ final error 0.0127093
+ into the function hadhad_smeared_svfitclatfk0_fine_bin
+ nBkg 0.0270701
+ nSig 0.687845
+ poissonBkg 0.16453
+ poissonSig 0.829364
+(nSig*xsSig*ceSig) 0.104972 (xsBkg*ceBkg) 1086.37
+xsBkg 5765.4 ceBkg 0.18843 xsSig 2.75378 ceSig 0.0554184
+ term1 13.8546 term2 352.044 term3 758687
+ final error 0.0219608
+ into the function hadhad_smeared_svfitclatfk0_fine_bin
+ nBkg 0
+ nSig 0.689447
+ poissonBkg 1
+ poissonSig 0.830329
+(nSig*xsSig*ceSig) 0.0662911 (xsBkg*ceBkg) 166.768
+xsBkg 5765.4 ceBkg 0.0289256 xsSig 0.235 ceSig 0.409154
+ term1 0 term2 122.218 term3 1.93117e-05
+ final error 2515.69
+ into the function hadhad_smeared_svfitmemtfk5_fine_bin
+ nBkg 0.387701
+ nSig 0.690134
+ poissonBkg 0.622656
+ poissonSig 0.830743
+(nSig*xsSig*ceSig) 0.974883 (xsBkg*ceBkg) 748.073
+xsBkg 5765.4 ceBkg 0.129752 xsSig 2.75378 ceSig 0.512967
+ term1 115838 term2 206200 term3 7.17117e+09
+ final error 0.0067013
+ into the function hadhad_smeared_svfitmemtfk5_fine_bin
+ nBkg 0.0994764
+ nSig 0.68366
+ poissonBkg 0.315399
+ poissonSig 0.826837
+(nSig*xsSig*ceSig) 0.359279 (xsBkg*ceBkg) 1086.37
+xsBkg 5765.4 ceBkg 0.18843 xsSig 2.75378 ceSig 0.190837
+ term1 2205.07 term2 15154.5 term3 1.38217e+08
+ final error 0.011207
+ into the function hadhad_smeared_svfitmemtfk5_fine_bin
+ nBkg 0.022293
+ nSig 0.686464
+ poissonBkg 0.149308
+ poissonSig 0.828531
+(nSig*xsSig*ceSig) 0.104762 (xsBkg*ceBkg) 1086.37
+xsBkg 5765.4 ceBkg 0.18843 xsSig 2.75378 ceSig 0.0554184
+ term1 9.37736 term2 288.755 term3 350016
+ final error 0.0291851
+ into the function hadhad_smeared_svfitmemtfk5_fine_bin
+ nBkg 0
+ nSig 0.691261
+ poissonBkg 1
+ poissonSig 0.831421
+(nSig*xsSig*ceSig) 0.0664655 (xsBkg*ceBkg) 166.768
+xsBkg 5765.4 ceBkg 0.0289256 xsSig 0.235 ceSig 0.409154
+ term1 0 term2 122.862 term3 1.95158e-05
+ final error 2509.09
+ into the function hadhad_smeared_svfitmemtfk0_fine_bin
+ nBkg 0.433155
+ nSig 0.688894
+ poissonBkg 0.658145
+ poissonSig 0.829997
+(nSig*xsSig*ceSig) 0.973133 (xsBkg*ceBkg) 748.073
+xsBkg 5765.4 ceBkg 0.129752 xsSig 2.75378 ceSig 0.512967
+ term1 144333 term2 229549 term3 1.11573e+10
+ final error 0.0057888
+ into the function hadhad_smeared_svfitmemtfk0_fine_bin
+ nBkg 0.0968586
+ nSig 0.693218
+ poissonBkg 0.311221
+ poissonSig 0.832597
+(nSig*xsSig*ceSig) 0.364302 (xsBkg*ceBkg) 1086.37
+xsBkg 5765.4 ceBkg 0.18843 xsSig 2.75378 ceSig 0.190837
+ term1 2119.77 term2 15171.2 term3 1.24301e+08
+ final error 0.0117943
+ into the function hadhad_smeared_svfitmemtfk0_fine_bin
+ nBkg 0.0286624
+ nSig 0.690608
+ poissonBkg 0.1693
+ poissonSig 0.831028
+(nSig*xsSig*ceSig) 0.105394 (xsBkg*ceBkg) 1086.37
+xsBkg 5765.4 ceBkg 0.18843 xsSig 2.75378 ceSig 0.0554184
+ term1 15.5949 term2 375.752 term3 952878
+ final error 0.0202657
+ into the function hadhad_smeared_svfitmemtfk0_fine_bin
+ nBkg 0
+ nSig 0.68612
+ poissonBkg 1
+ poissonSig 0.828324
+(nSig*xsSig*ceSig) 0.0659712 (xsBkg*ceBkg) 166.768
+xsBkg 5765.4 ceBkg 0.0289256 xsSig 0.235 ceSig 0.409154
+ term1 0 term2 121.041 term3 1.89417e-05
+ final error 2527.89
