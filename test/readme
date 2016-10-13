@@ -1,4 +1,66 @@
-# To run all the workflow in once to get the ntuples
-./runAddMassVariablesWorkflow.sh
+# the last ntuples produced by Lucia are located in Tallinn:
+# /hdfs/local/lucia/files/ 
 
-# to make plots go to plot directory and read the readme.
+cd submitBatchJobs
+
+#Edit makeCfg.py, createScriptForSubmission.py and submitAllJobs.py before running. 
+#You can choose which sample/channel/category consider and the splitting of the jobs as
+#a function of the number of entries.
+
+python makeCfg.py
+python createScriptForSubmission.py
+python submitAllJobs.py
+
+#the output files will be stored to /hdfs/local/lucia according to the logic
+#/hdfs/local/lucia/+channel+/+option+/+sample+/+selection
+#you find all the output files here:
+#1) /hdfs/local/lucia/emu 
+#2) /hdfs/local/lucia/muhad
+#3)/hdfs/local/lucia/hadhad
+#from this files, then you perform a massive merging and locate the output here:
+#/hdfs/local/lucia/SVfitFiles/
+#
+#NOW YOU ARE READY TO RUN THE CODE to make the plots!!!
+
+cd plot
+make clean
+make
+./do.exe
+
+#the dir in which all the final root files with histograms are is 
+#/home/lucia/SVfitPerformanceStudiesII/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/SVfitFiles_Output_IV/
+
+#now you are ready to start doing nice plots for the paper
+cd plot/intermediatemacros/
+
+#each plot to produce has its own macro
+root -b plot_6to8_svfitmem_paper_ratio.cc
+root -b plot_9_svfitmem_paper.cc
+root -b plot_10to12_ratio_svfitmem_paper.cc
+root -b plot_13_ratio_svfitmem_paper.cc
+root -b plot_14_svfitmem_paper.cc
+root -b plot_15_svfitmem_paper.cc
+
+#root files with canvases will be stored in ../plot/
+#
+#NOW time to polish the style!
+cd ../finalmacros/
+#again each plot of the paper has its own macro!
+root -b makeSVfitMEM_massPlots_from6to8_ratio.C
+root -b makeSVfitMEM_massPlots_from9.C
+root -b makeSVfitMEM_massPlots_from10to12_ratio.C
+root -b makeSVfitMEM_massPlots_from13.C
+root -b makeSVfitMEM_massPlots_from14.C
+root -b makeSVfitMEM_massPlots_from15.C
+#final plots will be located to ../finalplots
+#to produce the tables, still in the same dir "finalmacros"
+root -b table1_hadhad.cc
+root -b table2_muhad.cc
+root -b table3_emu.cc
+root -b table4_hadhad.cc
+root -b table5_muhad.cc
+root -b table6_emu.cc
+#the corresponding *txt files will be located in the same dir
+#
+#GOOD LUCK! :-)
+
