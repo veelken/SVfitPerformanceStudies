@@ -11,8 +11,8 @@ void plot_14_svfitmem_paper(){
   // root file
 
   vector<string> vinput {
-    "hist_DYJetsToLLM50_inclusive.root",
-    "hist_GluGluHToTauTauM125_inclusive.root",
+    "hist_smeared_DYJetsToLLM50_inclusive.root",
+    "hist_smeared_GluGluHToTauTauM125_inclusive.root",
   };
 
   vector<string>vsample{
@@ -40,25 +40,47 @@ void plot_14_svfitmem_paper(){
   haxisphi->SetTitle("");
 
   int ndir{static_cast<int>(vdir.size())};
-  TCanvas *canvas[ndir];
+  TCanvas *canvas = new TCanvas("canvas_smeared","canvas_smeared", 900, 700);
+  canvas->Divide(3, 3);
 
-  for(int i=0; i<ndir; i++){
-	  canvas[i] = new TCanvas(vdir[i].c_str(), vdir[i].c_str(), 900, 700);
-	  canvas[i]->Divide(3, 1);
+  canvas->cd(1);
+  gPad->SetLogy();
+  haxispt->Draw();
 
-	  canvas[i]->cd(1);
-	  gPad->SetLogy();
-	  haxispt->Draw();
+  canvas->cd(2);
+  gPad->SetLogy();
+  haxisphi->Draw();
 
-	  canvas[i]->cd(2);
-	  gPad->SetLogy();
+  canvas->cd(3);
+  if(log) gPad->SetLogx();
+  gPad->SetLogy();
+  haxisphi->Draw();
+
+  canvas->cd(4);
+  gPad->SetLogy();
+  haxispt->Draw();
+
+  canvas->cd(5);
+  gPad->SetLogy();
+  haxisphi->Draw();
+
+  canvas->cd(6);
+  if(log) gPad->SetLogx();
+  gPad->SetLogy();
+  haxisphi->Draw();
+
+  canvas->cd(7);
+  gPad->SetLogy();
+  haxispt->Draw();
+
+  canvas->cd(8);
+  gPad->SetLogy();
+  haxisphi->Draw();
+
+  canvas->cd(9);
+  if(log) gPad->SetLogx();
+  gPad->SetLogy();
 	  haxisphi->Draw();
-
-	  canvas[i]->cd(3);
-	  if(log) gPad->SetLogx();
-	  gPad->SetLogy();
-	  haxisphi->Draw();
-  }
 
 
   vector<TH1D*> vhmass;
@@ -110,51 +132,49 @@ void plot_14_svfitmem_paper(){
 	if( vdir[i]=="emu_smeared"){
 		if( histname.find("_genMinusVisible_pt")!=std::string::npos || histname.find("genMinusClassicSVfitComputingTime_cpu0_pt")!=std::string::npos 
                    || histname.find("genMinusClassicSVfitComputingTime_cpu3_pt")!=std::string::npos) 
-				{canvas[i]->cd(1); vhmass.back()->Rebin(5); vhmass.back()->Draw("same&hist"); }
+				{canvas->cd(1); vhmass.back()->Rebin(20); vhmass.back()->Draw("same&hist"); }
 		if( histname.find("_genMinusVisible_eta")!=std::string::npos || histname.find("genMinusClassicSVfitComputingTime_cpu0_eta")!=std::string::npos 
                    || histname.find("genMinusClassicSVfitComputingTime_cpu3_eta")!=std::string::npos) 
-				{canvas[i]->cd(2); vhmass.back()->Draw("same&hist"); }
+				{canvas->cd(2); vhmass.back()->Rebin(4); vhmass.back()->Draw("same&hist"); }
 		if( histname.find("_genMinusVisible_phi")!=std::string::npos || histname.find("genMinusClassicSVfitComputingTime_cpu0_phi")!=std::string::npos 
                    || histname.find("genMinusClassicSVfitComputingTime_cpu3_phi")!=std::string::npos) 
-				{canvas[i]->cd(3); vhmass.back()->Draw("same&hist"); }
+				{canvas->cd(3); vhmass.back()->Rebin(4); vhmass.back()->Draw("same&hist"); }
 	}if( vdir[i]=="muhad_smeared"){
 		if( histname.find("_genMinusVisible_pt")!=std::string::npos || histname.find("genMinusClassicSVfitComputingTime_cpu0_pt")!=std::string::npos 
                    || histname.find("genMinusClassicSVfitComputingTime_cpu4_pt")!=std::string::npos) 
-				{canvas[i]->cd(1); vhmass.back()->Rebin(5); vhmass.back()->Draw("same&hist"); }
+				{canvas->cd(4); vhmass.back()->Rebin(20); vhmass.back()->Draw("same&hist"); }
 		if( histname.find("_genMinusVisible_eta")!=std::string::npos || histname.find("genMinusClassicSVfitComputingTime_cpu0_eta")!=std::string::npos 
                    || histname.find("genMinusClassicSVfitComputingTime_cpu4_eta")!=std::string::npos) 
-				{canvas[i]->cd(2); vhmass.back()->Draw("same&hist"); }
+				{canvas->cd(5); vhmass.back()->Rebin(4); vhmass.back()->Draw("same&hist"); }
 		if( histname.find("_genMinusVisible_phi")!=std::string::npos || histname.find("genMinusClassicSVfitComputingTime_cpu0_phi")!=std::string::npos 
                    || histname.find("genMinusClassicSVfitComputingTime_cpu4_phi")!=std::string::npos) 
-				{canvas[i]->cd(3); vhmass.back()->Draw("same&hist"); } 
+				{canvas->cd(6); vhmass.back()->Rebin(4); vhmass.back()->Draw("same&hist"); } 
 	}if( vdir[i]=="hadhad_smeared"){
 		if( histname.find("_genMinusVisible_pt")!=std::string::npos || histname.find("genMinusClassicSVfitComputingTime_cpu0_pt")!=std::string::npos 
                    || histname.find("genMinusClassicSVfitComputingTime_cpu5_pt")!=std::string::npos) 
-				{canvas[i]->cd(1); vhmass.back()->Rebin(5); vhmass.back()->Draw("same&hist"); }
+				{canvas->cd(7); vhmass.back()->Rebin(20); vhmass.back()->Draw("same&hist"); }
 		if( histname.find("_genMinusVisible_eta")!=std::string::npos || histname.find("genMinusClassicSVfitComputingTime_cpu0_eta")!=std::string::npos 
                    || histname.find("genMinusClassicSVfitComputingTime_cpu5_eta")!=std::string::npos) 
-				{canvas[i]->cd(2); vhmass.back()->Draw("same&hist"); }
+				{canvas->cd(8); vhmass.back()->Rebin(4); vhmass.back()->Draw("same&hist"); }
 		if( histname.find("_genMinusVisible_phi")!=std::string::npos || histname.find("genMinusClassicSVfitComputingTime_cpu0_phi")!=std::string::npos 
                    || histname.find("genMinusClassicSVfitComputingTime_cpu5_phi")!=std::string::npos) 
-				{canvas[i]->cd(3); vhmass.back()->Draw("same&hist"); } 
+				{canvas->cd(9); vhmass.back()->Rebin(4); vhmass.back()->Draw("same&hist"); } 
 	}
     } // while hist
   } // input file
 } // dir
 
 //save canvas
-for(int i=0; i<ndir; i++){
-  if(log){ 
-    imagepng = savePath+"plot_14_log_ratio_"+canvas[i]->GetName()+".png";
-    imageroot = savePath+"plot_14_log_ratio_"+canvas[i]->GetName()+".root";
-  }
-  else {
-    imagepng = savePath+"plot_14_lin_ratio_"+canvas[i]->GetName()+".png";
-    imageroot = savePath+"plot_14_lin_ratio_"+canvas[i]->GetName()+".root";
-  }
-  canvas[i]->Print(imagepng.c_str()); 
-  canvas[i]->Print(imageroot.c_str()); 
-} 
+if(log){ 
+	imagepng = savePath+"plot_14_log.png";
+	imageroot = savePath+"plot_14_log.root";
+}
+else {
+	imagepng = savePath+"plot_14_lin.png";
+	imageroot = savePath+"plot_14_lin.root";
+}
+canvas->Print(imagepng.c_str()); 
+canvas->Print(imageroot.c_str()); 
 
 } // void
 
