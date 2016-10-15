@@ -10,33 +10,9 @@ void plot_15_svfitmem_paper(){
   string savePath{"/home/lucia/SVfitPerformanceStudiesII/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/"};
   // root file
 
-/*
-  KEY: TH1D	hadhad_smeared_memSVfitComputingTime_cpu_LOG;1	memSVfitComputingTime_cpu_LOG
-  KEY: TH1D	hadhad_smeared_memSVfitComputingTime_cpulo0logMwHadTauTF_LOG;1	memSVfitComputingTime_cpulo0logMwHadTauTF_LOG
-  KEY: TH1D	hadhad_smeared_memSVfitComputingTime_cpulo1logMwHadTauTF_LOG;1	memSVfitComputingTime_cpulo1logMwHadTauTF_LOG
-  KEY: TH1D	hadhad_smeared_memSVfitComputingTime_cpulo2logMwHadTauTF_LOG;1	memSVfitComputingTime_cpulo2logMwHadTauTF_LOG
-  KEY: TH1D	hadhad_smeared_memSVfitComputingTime_cpulo3logMwHadTauTF_LOG;1	memSVfitComputingTime_cpulo3logMwHadTauTF_LOG
-  KEY: TH1D	hadhad_smeared_memSVfitComputingTime_cpulo4logMwHadTauTF_LOG;1	memSVfitComputingTime_cpulo4logMwHadTauTF_LOG
-  KEY: TH1D	hadhad_smeared_memSVfitComputingTime_cpulo5logMwHadTauTF_LOG;1	memSVfitComputingTime_cpulo5logMwHadTauTF_LOG
-  KEY: TH1D	hadhad_smeared_memSVfitComputingTime_cpulo6logMwHadTauTF_LOG;1	memSVfitComputingTime_cpulo6logMwHadTauTF_LOG
-  KEY: TH1D	hadhad_smeared_memSVfitComputingTime_cpulo7logMwHadTauTF_LOG;1	memSVfitComputingTime_cpulo7logMwHadTauTF_LOG
-  KEY: TH1D	hadhad_smeared_memSVfitComputingTime_cpulo8logMwHadTauTF_LOG;1	memSVfitComputingTime_cpulo8logMwHadTauTF_LOG
-  KEY: TH1D	hadhad_smeared_classicSVfitComputingTime_cpu0logMwHadTauTF_LOG;1	classicSVfitComputingTime_cpu0logMwHadTauTF_LOG
-  KEY: TH1D	hadhad_smeared_classicSVfitComputingTime_cpu1logMwHadTauTF_LOG;1	classicSVfitComputingTime_cpu1logMwHadTauTF_LOG
-  KEY: TH1D	hadhad_smeared_classicSVfitComputingTime_cpu2logMwHadTauTF_LOG;1	classicSVfitComputingTime_cpu2logMwHadTauTF_LOG
-  KEY: TH1D	hadhad_smeared_classicSVfitComputingTime_cpu3logMwHadTauTF_LOG;1	classicSVfitComputingTime_cpu3logMwHadTauTF_LOG
-  KEY: TH1D	hadhad_smeared_classicSVfitComputingTime_cpu4logMwHadTauTF_LOG;1	classicSVfitComputingTime_cpu4logMwHadTauTF_LOG
-  KEY: TH1D	hadhad_smeared_classicSVfitComputingTime_cpu5logMwHadTauTF_LOG;1	classicSVfitComputingTime_cpu5logMwHadTauTF_LOG
-  KEY: TH1D	hadhad_smeared_classicSVfitComputingTime_cpu6logMwHadTauTF_LOG;1	classicSVfitComputingTime_cpu6logMwHadTauTF_LOG
-  KEY: TH1D	hadhad_smeared_classicSVfitComputingTime_cpu7logMwHadTauTF_LOG;1	classicSVfitComputingTime_cpu7logMwHadTauTF_LOG
-  KEY: TH1D	hadhad_smeared_classicSVfitComputingTime_cpu8logMwHadTauTF_LOG;1	classicSVfitComputingTime_cpu8logMwHadTauTF_LOG
-*/
-
-
-
   vector<string> vinput {
-    "hist_DYJetsToLLM50_inclusive.root",
-    "hist_HToTauTauM125_inclusive.root",
+    "hist_smeared_DYJetsToLLM50_inclusive.root",
+    "hist_smeared_HToTauTauM125_inclusive.root",
   };
 
   vector<string>vsample{
@@ -61,24 +37,41 @@ void plot_15_svfitmem_paper(){
 
   int ndir{static_cast<int>(vdir.size())};
   
-  TCanvas *canvas[ndir];
+  TCanvas *canvas;
 
-  for(int i=0; i<ndir; i++){
-    canvas[i] = new TCanvas(vdir[i].c_str(), vdir[i].c_str(), 900, 700); 
-    canvas[i]->Divide(2, 1);
+  canvas = new TCanvas("canvas_smeared","canvas_smeared", 900, 700); 
+  canvas->Divide(2,3);
 
-    canvas[i]->cd(1);
-    if(log) gPad->SetLogx();
-    gPad->SetLogy();
-    haxis->Draw();
+  canvas->cd(1);
+  if(log) gPad->SetLogx();
+  gPad->SetLogy();
+  haxis->Draw();
 
-    canvas[i]->cd(2);
-    if(log) gPad->SetLogx();
-    gPad->SetLogy();
-    haxis->Draw();
-  }
-
-
+  canvas->cd(2);
+  if(log) gPad->SetLogx();
+  gPad->SetLogy();
+  haxis->Draw();
+  
+  canvas->cd(3);
+  if(log) gPad->SetLogx();
+  gPad->SetLogy();
+  haxis->Draw();
+  
+  canvas->cd(4);
+  if(log) gPad->SetLogx();
+  gPad->SetLogy();
+  haxis->Draw();
+  
+  canvas->cd(5);
+  if(log) gPad->SetLogx();
+  gPad->SetLogy();
+  haxis->Draw();
+  
+  canvas->cd(6);
+  if(log) gPad->SetLogx();
+  gPad->SetLogy();
+  haxis->Draw();
+  
   vector<TH1D*> vhmass;
   string header;
   string imagepng;
@@ -138,10 +131,10 @@ void plot_15_svfitmem_paper(){
 		    histname.find("classicSVfitComputingTime_cpu3")!=std::string::npos ){
 
 			if(input.find("DYJetsToLLM50")!=std::string::npos)  {
-				canvas[i]->cd(2); vhmass.back()->Draw("same&hist"); 
+				canvas->cd(5); vhmass.back()->Draw("same&hist"); 
 			}
 			if(input.find("HToTauTauM125")!=std::string::npos) {
-				canvas[i]->cd(1); vhmass.back()->Draw("same&hist"); 
+				canvas->cd(6); vhmass.back()->Draw("same&hist"); 
 			}
 		}
 	}if( vdir[i]=="muhad_smeared"){
@@ -150,10 +143,10 @@ void plot_15_svfitmem_paper(){
 		    histname.find("classicSVfitComputingTime_cpu4")!=std::string::npos ){
 
 			if(input.find("DYJetsToLLM50")!=std::string::npos)  {
-				canvas[i]->cd(2); vhmass.back()->Draw("same&hist"); 
+				canvas->cd(3); vhmass.back()->Draw("same&hist"); 
 			}
 			if(input.find("HToTauTauM125")!=std::string::npos) {
-				canvas[i]->cd(1); vhmass.back()->Draw("same&hist"); 
+				canvas->cd(4); vhmass.back()->Draw("same&hist"); 
 			}
 		}
 	}if( vdir[i]=="hadhad_smeared"){
@@ -163,10 +156,10 @@ void plot_15_svfitmem_paper(){
 		    histname.find("classicSVfitComputingTime_cpu5")!=std::string::npos ){
 
 			if(input.find("DYJetsToLLM50")!=std::string::npos)  {
-				canvas[i]->cd(2); vhmass.back()->Draw("same&hist"); 
+				canvas->cd(1); vhmass.back()->Draw("same&hist"); 
 			}
 			if(input.find("HToTauTauM125")!=std::string::npos) {
-				canvas[i]->cd(1); vhmass.back()->Draw("same&hist"); 
+				canvas->cd(2); vhmass.back()->Draw("same&hist"); 
 			}
 		}
         }
@@ -175,18 +168,16 @@ void plot_15_svfitmem_paper(){
 } // dir
 
 //save canvas
-for(int i=0; i<ndir; i++){
-  if(log){ 
-    imagepng = savePath+"plot_15_log_ratio_"+canvas[i]->GetName()+".png";
-    imageroot = savePath+"plot_15_log_ratio_"+canvas[i]->GetName()+".root";
-  }
-  else {
-    imagepng = savePath+"plot_15_lin_ratio_"+canvas[i]->GetName()+".png";
-    imageroot = savePath+"plot_15_lin_ratio_"+canvas[i]->GetName()+".root";
-  }
-  canvas[i]->Print(imagepng.c_str()); 
-  canvas[i]->Print(imageroot.c_str()); 
-} 
+if(log){ 
+	imagepng = savePath+"plot_15_log.png";
+	imageroot = savePath+"plot_15_log.root";
+}
+else {
+	imagepng = savePath+"plot_15_lin.png";
+	imageroot = savePath+"plot_15_lin.root";
+}
+canvas->Print(imagepng.c_str()); 
+canvas->Print(imageroot.c_str()); 
 
 } // void
 
