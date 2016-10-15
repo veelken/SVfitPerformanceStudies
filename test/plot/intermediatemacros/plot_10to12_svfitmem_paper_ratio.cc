@@ -1,7 +1,7 @@
 #include "func.C"
 
 
-void plot_10to12_svfitmem_paper(){
+void plot_10to12_svfitmem_paper_ratio(){
 
 	// plot histogram
 	cout<<"plotting hist...\n";
@@ -31,14 +31,14 @@ void plot_10to12_svfitmem_paper(){
 	vector<string>vdir{"emu_smeared", "muhad_smeared",   "hadhad_smeared"};
 	vector<string>vdirleg{"e#mu", "#mu#tau_{h}", "#tau_{h}#tau_{h}"};
 
-	TH1D *haxis = new TH1D("", "", 100, 0, 4000);
+	TH1D *haxis = new TH1D("", "", 100, 0, 20);
 	haxis->SetStats(false);
-	haxis->GetXaxis()->SetRangeUser(0, 4000);
-	haxis->GetYaxis()->SetRangeUser(0.0001, 1);
+	haxis->GetXaxis()->SetRangeUser(0.1, 10);
+	haxis->GetYaxis()->SetRangeUser(0.001, 10);
 	haxis->GetXaxis()->SetTitleOffset(1.);
 	haxis->GetYaxis()->SetTitleOffset(1.4);
-	haxis->GetXaxis()->SetTitle("m_{#tau#tau}[GeV]");
-	haxis->GetYaxis()->SetTitle("dN/dm_{#tau#tau}[1/GeV]");
+	haxis->GetXaxis()->SetTitle("m_{#tau#tau}/m^{true}_{#tau#tau}");
+	haxis->GetYaxis()->SetTitle("dN/d(m_{#tau#tau}/m^{true}_{#tau#tau})");
 
 	int ndir{static_cast<int>(vdir.size())};
 
@@ -114,15 +114,17 @@ void plot_10to12_svfitmem_paper(){
 				if(histname.find("_svfitmemtfk6")!=std::string::npos) continue;
 				if(histname.find("_svfitmemtfk7")!=std::string::npos) continue;
 				if(histname.find("_svfitmemtfk8")!=std::string::npos) continue;
-				if(histname.find("_ratio")!=std::string::npos) continue;
-				cout<<"\nhistname: "<<histname<<endl;
+				if(histname.find("_svfitclatfk1")!=std::string::npos) continue;
+				if(histname.find("_svfitclatfk2")!=std::string::npos) continue;
+				if(histname.find("_svfitclatfk6")!=std::string::npos) continue;
+				if(histname.find("_svfitclatfk7")!=std::string::npos) continue;
+				if(histname.find("_svfitclatfk8")!=std::string::npos) continue;
+				if(histname.find("_ratio")==std::string::npos) continue;
 
+                                hmass->Scale(1./hmass->Integral());
 				vhmass.push_back((TH1D*)hmass->Clone());
 				vhmass.back()->SetLineWidth(2);
-				//vhmass.back()->Rebin( vhmass.back()->GetXaxis()->GetNbins()/40 );
-				vhmass.back()->GetYaxis()->SetRangeUser(0.0001, 0.50);
 
-				//cout<<vhmass.back()->GetName()<<": "<<vhmass.back()->Integral()<<endl;
 				cout<<"integral: "<<vhmass.back()->Integral()<<endl;
 				cout<<"mean: "<<vhmass.back()->GetMean()<<endl;
 				cout<<"mean/RMS: "<<vhmass.back()->GetMean()/vhmass.back()->GetRMS()<<endl;
@@ -136,18 +138,24 @@ void plot_10to12_svfitmem_paper(){
 				if     (histname.find("ca")!=std::string::npos)          {vhmass.back()->SetLineStyle(6); vhmass.back()->SetLineColor(kGreen); }
 				else if(histname.find("svFit")!=std::string::npos)       {vhmass.back()->SetLineStyle(2); vhmass.back()->SetLineColor(kBlue); }
 				else if(histname.find("svfitmemtfk0")!=std::string::npos){vhmass.back()->SetLineStyle(3); vhmass.back()->SetLineColor(kMagenta); }
-				else if(histname.find("svfitmemtfk3")!=std::string::npos || histname.find("svfitmemtfk4")!=std::string::npos || 
-                                       histname.find("svfitmemtfk5")!=std::string::npos ){vhmass.back()->SetLineStyle(1); vhmass.back()->SetLineColor(kRed);}
+				else if(histname.find("svfitclatfk0")!=std::string::npos){vhmass.back()->SetLineStyle(3); vhmass.back()->SetLineColor(kBlack); }
+				else if(histname.find("svfitmemtfk3")!=std::string::npos || histname.find("svfitmemtfk4")!=std::string::npos ||
+                                        histname.find("svfitmemtfk5")!=std::string::npos){vhmass.back()->SetLineStyle(1); vhmass.back()->SetLineColor(kRed);}
+				else if(histname.find("svfitclatfk3")!=std::string::npos || histname.find("svfitclatfk4")!=std::string::npos ||
+                                        histname.find("svfitclatfk5")!=std::string::npos){vhmass.back()->SetLineStyle(1); vhmass.back()->SetLineColor(kOrange);}
 
 
 				if(vdir[i]=="emu_smeared"){
 					if( histname.find("_ca")!=std::string::npos || histname.find("_svFit")!=std::string::npos || 
-							histname.find("_svfitmemtfk0")!=std::string::npos || histname.find("_svfitmemtfk3")!=std::string::npos ){
+							histname.find("_svfitmemtfk0")!=std::string::npos || histname.find("_svfitmemtfk3")!=std::string::npos ||
+							histname.find("_svfitclatfk0")!=std::string::npos || histname.find("_svfitclatfk3")!=std::string::npos ){
 						if ( input.find("M200_")!=std::string::npos){ 
 							if(histname.find("_ca")!=std::string::npos) legend->AddEntry( vhmass.back(), "m_{ca}", "l");
 							if(histname.find("_svFit")!=std::string::npos)        legend->AddEntry( vhmass.back(), "SVfit", "l");
 							if(histname.find("_svfitmemtfk0")!=std::string::npos) legend->AddEntry( vhmass.back(), "SVfitMEM, #kappa = 0", "l");
 							if(histname.find("_svfitmemtfk3")!=std::string::npos) legend->AddEntry( vhmass.back(), "SVfitMEM, #kappa = 3", "l");
+							if(histname.find("_svfitclatfk0")!=std::string::npos) legend->AddEntry( vhmass.back(), "SVfit standalone, #kappa = 0", "l");
+							if(histname.find("_svfitclatfk3")!=std::string::npos) legend->AddEntry( vhmass.back(), "SVfit standalone, #kappa = 3", "l");
 						}
 						if(input.find("M200_")!=std::string::npos)  {canvas[i]->cd(1); vhmass.back()->Draw("same&hist"); } 
 						if(input.find("M200_")!=std::string::npos)  {canvas[i]->cd(6); legend->Draw("same"); }
@@ -158,36 +166,42 @@ void plot_10to12_svfitmem_paper(){
 					} 
 				}if(vdir[i]=="muhad_smeared"){
 					if( histname.find("_ca")!=std::string::npos || histname.find("_svFit")!=std::string::npos || 
-							histname.find("_svfitmemtfk0")!=std::string::npos || histname.find("_svfitmemtfk4")!=std::string::npos ){
+							histname.find("_svfitmemtfk0")!=std::string::npos || histname.find("_svfitmemtfk4")!=std::string::npos ||
+							histname.find("_svfitclatfk0")!=std::string::npos || histname.find("_svfitclatfk4")!=std::string::npos ){
 						if ( input.find("M200_")!=std::string::npos){ 
-							if(histname.find("_ca")!=std::string::npos)           legend->AddEntry( vhmass.back(), "m_{ca}", "l");
+							if(histname.find("_ca")!=std::string::npos) legend->AddEntry( vhmass.back(), "m_{ca}", "l");
 							if(histname.find("_svFit")!=std::string::npos)        legend->AddEntry( vhmass.back(), "SVfit", "l");
 							if(histname.find("_svfitmemtfk0")!=std::string::npos) legend->AddEntry( vhmass.back(), "SVfitMEM, #kappa = 0", "l");
 							if(histname.find("_svfitmemtfk4")!=std::string::npos) legend->AddEntry( vhmass.back(), "SVfitMEM, #kappa = 4", "l");
+							if(histname.find("_svfitclatfk0")!=std::string::npos) legend->AddEntry( vhmass.back(), "SVfit standalone, #kappa = 0", "l");
+							if(histname.find("_svfitclatfk4")!=std::string::npos) legend->AddEntry( vhmass.back(), "SVfit standalone, #kappa = 4", "l");
 						}
-						if(input.find("M200_")!=std::string::npos)  {canvas[i]->cd(1); vhmass.back()->Draw("same&hist"); }
+						if(input.find("M200_")!=std::string::npos)  {canvas[i]->cd(1); vhmass.back()->Draw("same&hist"); } 
 						if(input.find("M200_")!=std::string::npos)  {canvas[i]->cd(6); legend->Draw("same"); }
-						if(input.find("M300_")!=std::string::npos)  {canvas[i]->cd(2); vhmass.back()->Draw("same&hist"); }
-						if(input.find("M500_")!=std::string::npos)  {canvas[i]->cd(3); vhmass.back()->Draw("same&hist"); }
-						if(input.find("M800_")!=std::string::npos)  {canvas[i]->cd(4); vhmass.back()->Draw("same&hist"); }
-						if(input.find("M1200_")!=std::string::npos) {canvas[i]->cd(5); vhmass.back()->Draw("same&hist"); }
-					}
+						if(input.find("M300_")!=std::string::npos)  {canvas[i]->cd(2); vhmass.back()->Draw("same&hist"); } 
+						if(input.find("M500_")!=std::string::npos)  {canvas[i]->cd(3); vhmass.back()->Draw("same&hist"); } 
+						if(input.find("M800_")!=std::string::npos)  {canvas[i]->cd(4); vhmass.back()->Draw("same&hist"); } 
+						if(input.find("M1200_")!=std::string::npos) {canvas[i]->cd(5); vhmass.back()->Draw("same&hist"); } 
+					} 
 				}if(vdir[i]=="hadhad_smeared"){
-                                        if( histname.find("_ca")!=std::string::npos || histname.find("_svFit")!=std::string::npos || 
-                                                        histname.find("_svfitmemtfk0")!=std::string::npos || histname.find("_svfitmemtfk5")!=std::string::npos ){
-                                                if ( input.find("M200_")!=std::string::npos){ 
-                                                        if(histname.find("_ca")!=std::string::npos)           legend->AddEntry( vhmass.back(), "m_{ca}", "l");
-                                                        if(histname.find("_svFit")!=std::string::npos)        legend->AddEntry( vhmass.back(), "SVfit", "l");
-                                                        if(histname.find("_svfitmemtfk0")!=std::string::npos) legend->AddEntry( vhmass.back(), "SVfitMEM, #kappa = 0", "l");
-                                                        if(histname.find("_svfitmemtfk5")!=std::string::npos) legend->AddEntry( vhmass.back(), "SVfitMEM, #kappa = 5", "l");
-                                                }
-                                                if(input.find("M200_")!=std::string::npos)  {canvas[i]->cd(1); vhmass.back()->Draw("same&hist"); }
-                                                if(input.find("M200_")!=std::string::npos)  {canvas[i]->cd(6); legend->Draw("same"); }
-                                                if(input.find("M300_")!=std::string::npos)  {canvas[i]->cd(2); vhmass.back()->Draw("same&hist"); }
-                                                if(input.find("M500_")!=std::string::npos)  {canvas[i]->cd(3); vhmass.back()->Draw("same&hist"); }
-                                                if(input.find("M800_")!=std::string::npos)  {canvas[i]->cd(4); vhmass.back()->Draw("same&hist"); }
-                                                if(input.find("M1200_")!=std::string::npos) {canvas[i]->cd(5); vhmass.back()->Draw("same&hist"); }
-                                        }
+					if( histname.find("_ca")!=std::string::npos || histname.find("_svFit")!=std::string::npos || 
+							histname.find("_svfitmemtfk0")!=std::string::npos || histname.find("_svfitmemtfk5")!=std::string::npos ||
+							histname.find("_svfitclatfk0")!=std::string::npos || histname.find("_svfitclatfk5")!=std::string::npos ){
+						if ( input.find("M200_")!=std::string::npos){ 
+							if(histname.find("_ca")!=std::string::npos) legend->AddEntry( vhmass.back(), "m_{ca}", "l");
+							if(histname.find("_svFit")!=std::string::npos)        legend->AddEntry( vhmass.back(), "SVfit", "l");
+							if(histname.find("_svfitmemtfk0")!=std::string::npos) legend->AddEntry( vhmass.back(), "SVfitMEM, #kappa = 0", "l");
+							if(histname.find("_svfitmemtfk5")!=std::string::npos) legend->AddEntry( vhmass.back(), "SVfitMEM, #kappa = 5", "l");
+							if(histname.find("_svfitclatfk0")!=std::string::npos) legend->AddEntry( vhmass.back(), "SVfit standalone, #kappa = 0", "l");
+							if(histname.find("_svfitclatfk5")!=std::string::npos) legend->AddEntry( vhmass.back(), "SVfit standalone, #kappa = 5", "l");
+						}
+						if(input.find("M200_")!=std::string::npos)  {canvas[i]->cd(1); vhmass.back()->Draw("same&hist"); } 
+						if(input.find("M200_")!=std::string::npos)  {canvas[i]->cd(6); legend->Draw("same"); }
+						if(input.find("M300_")!=std::string::npos)  {canvas[i]->cd(2); vhmass.back()->Draw("same&hist"); } 
+						if(input.find("M500_")!=std::string::npos)  {canvas[i]->cd(3); vhmass.back()->Draw("same&hist"); } 
+						if(input.find("M800_")!=std::string::npos)  {canvas[i]->cd(4); vhmass.back()->Draw("same&hist"); } 
+						if(input.find("M1200_")!=std::string::npos) {canvas[i]->cd(5); vhmass.back()->Draw("same&hist"); } 
+					} 
 				}
 			} // while hist
 		} // input file
@@ -196,12 +210,12 @@ void plot_10to12_svfitmem_paper(){
 	//save canvas
 	for(int i=0; i<ndir; i++){
 		if(log){ 
-			imagepng = savePath+"plot_10to12_log_"+canvas[i]->GetName()+".png";
-			imageroot = savePath+"plot_10to12_log_"+canvas[i]->GetName()+".root";
+			imagepng = savePath+"plot_10to12_log_ratio_"+canvas[i]->GetName()+".png";
+			imageroot = savePath+"plot_10to12_log_ratio_"+canvas[i]->GetName()+".root";
 		}
 		else {
-			imagepng = savePath+"plot_10to12_lin_"+canvas[i]->GetName()+".png";
-			imageroot = savePath+"plot_10to12_lin_"+canvas[i]->GetName()+".root";
+			imagepng = savePath+"plot_10to12_lin_ratio_"+canvas[i]->GetName()+".png";
+			imageroot = savePath+"plot_10to12_lin_ratio_"+canvas[i]->GetName()+".root";
 		}
 		canvas[i]->Print(imagepng.c_str()); 
 		canvas[i]->Print(imageroot.c_str()); 
