@@ -848,6 +848,9 @@ int main(int argc, char* argv[])
   const branchEntryType* branchEntryHadRecoilCov10 = 0;
   const branchEntryType* branchEntryHadRecoilCov11 = 0;
  */
+
+  const branchEntryType* branchEntryGenDiTauPt     = 0;
+
   for ( std::vector<branchEntryType*>::const_iterator branchEntry = branchesToKeep.begin();
 	branchEntry != branchesToKeep.end(); ++branchEntry ) {
     if      ( (*branchEntry)->branchName_ == "run"                                       ) branchEntryRun            = (*branchEntry);
@@ -867,30 +870,30 @@ int main(int argc, char* argv[])
     else if ( (*branchEntry)->branchName_ == Form("%sCov01", metBranchName.data())       ) branchEntryMEtCov01       = (*branchEntry);
     else if ( (*branchEntry)->branchName_ == Form("%sCov10", metBranchName.data())       ) branchEntryMEtCov10       = (*branchEntry);
     else if ( (*branchEntry)->branchName_ == Form("%sCov11", metBranchName.data())       ) branchEntryMEtCov11       = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sPt", genJet1BranchName.data())      ) branchEntryGenJet1Pt         = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sEta", genJet1BranchName.data())     ) branchEntryGenJet1Eta        = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sPhi", genJet1BranchName.data())     ) branchEntryGenJet1Phi        = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sMass", genJet1BranchName.data())    ) branchEntryGenJet1Mass       = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sPt", genJet2BranchName.data())      ) branchEntryGenJet2Pt         = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sEta", genJet2BranchName.data())     ) branchEntryGenJet2Eta        = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sPhi", genJet2BranchName.data())     ) branchEntryGenJet2Phi        = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sMass", genJet2BranchName.data())    ) branchEntryGenJet2Mass       = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sPt", genJet3BranchName.data())      ) branchEntryGenJet3Pt         = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sEta", genJet3BranchName.data())     ) branchEntryGenJet3Eta        = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sPhi", genJet3BranchName.data())     ) branchEntryGenJet3Phi        = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sMass", genJet3BranchName.data())    ) branchEntryGenJet3Mass       = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sPt", genJet4BranchName.data())      ) branchEntryGenJet4Pt         = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sEta", genJet4BranchName.data())     ) branchEntryGenJet4Eta        = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sPhi", genJet4BranchName.data())     ) branchEntryGenJet4Phi        = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sMass", genJet4BranchName.data())    ) branchEntryGenJet4Mass       = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sPt", genJet5BranchName.data())      ) branchEntryGenJet5Pt         = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sEta", genJet5BranchName.data())     ) branchEntryGenJet5Eta        = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sPhi", genJet5BranchName.data())     ) branchEntryGenJet5Phi        = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sMass", genJet5BranchName.data())    ) branchEntryGenJet5Mass       = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sPt", genJet6BranchName.data())      ) branchEntryGenJet6Pt         = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sEta", genJet6BranchName.data())     ) branchEntryGenJet6Eta        = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sPhi", genJet6BranchName.data())     ) branchEntryGenJet6Phi        = (*branchEntry);
-    else if ( (*branchEntry)->branchName_ == Form("%sMass", genJet6BranchName.data())    ) branchEntryGenJet6Mass       = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPt", genJet1BranchName.data())      ) branchEntryGenJet1Pt      = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sEta", genJet1BranchName.data())     ) branchEntryGenJet1Eta     = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPhi", genJet1BranchName.data())     ) branchEntryGenJet1Phi     = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sMass", genJet1BranchName.data())    ) branchEntryGenJet1Mass    = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPt", genJet2BranchName.data())      ) branchEntryGenJet2Pt      = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sEta", genJet2BranchName.data())     ) branchEntryGenJet2Eta     = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPhi", genJet2BranchName.data())     ) branchEntryGenJet2Phi     = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sMass", genJet2BranchName.data())    ) branchEntryGenJet2Mass    = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPt", genJet3BranchName.data())      ) branchEntryGenJet3Pt      = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sEta", genJet3BranchName.data())     ) branchEntryGenJet3Eta     = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPhi", genJet3BranchName.data())     ) branchEntryGenJet3Phi     = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sMass", genJet3BranchName.data())    ) branchEntryGenJet3Mass    = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPt", genJet4BranchName.data())      ) branchEntryGenJet4Pt      = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sEta", genJet4BranchName.data())     ) branchEntryGenJet4Eta     = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPhi", genJet4BranchName.data())     ) branchEntryGenJet4Phi     = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sMass", genJet4BranchName.data())    ) branchEntryGenJet4Mass    = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPt", genJet5BranchName.data())      ) branchEntryGenJet5Pt      = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sEta", genJet5BranchName.data())     ) branchEntryGenJet5Eta     = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPhi", genJet5BranchName.data())     ) branchEntryGenJet5Phi     = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sMass", genJet5BranchName.data())    ) branchEntryGenJet5Mass    = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPt", genJet6BranchName.data())      ) branchEntryGenJet6Pt      = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sEta", genJet6BranchName.data())     ) branchEntryGenJet6Eta     = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sPhi", genJet6BranchName.data())     ) branchEntryGenJet6Phi     = (*branchEntry);
+    else if ( (*branchEntry)->branchName_ == Form("%sMass", genJet6BranchName.data())    ) branchEntryGenJet6Mass    = (*branchEntry);
 /*
     else if ( (*branchEntry)->branchName_ == Form("%sPx", hadRecoilBranchName.data())    ) branchEntryHadRecoilPx    = (*branchEntry);    
     else if ( (*branchEntry)->branchName_ == Form("%sPy", hadRecoilBranchName.data())    ) branchEntryHadRecoilPy    = (*branchEntry);
@@ -900,6 +903,7 @@ int main(int argc, char* argv[])
     else if ( (*branchEntry)->branchName_ == Form("%sCov10", hadRecoilBranchName.data()) ) branchEntryHadRecoilCov10 = (*branchEntry);
     else if ( (*branchEntry)->branchName_ == Form("%sCov11", hadRecoilBranchName.data()) ) branchEntryHadRecoilCov11 = (*branchEntry);
  */
+    else if ( (*branchEntry)->branchName_ == "genDiTauPt"                                ) branchEntryGenDiTauPt        = (*branchEntry);
   }
   if ( !(branchEntryLeg1Pt && branchEntryLeg1Eta && branchEntryLeg1Phi && branchEntryLeg1Mass) ) 
     throw cms::Exception("addMassVariables") 
@@ -933,6 +937,9 @@ int main(int argc, char* argv[])
     throw cms::Exception("addMassVariables") 
       << "Branches for hadRecoil = '" << hadRecoilBranchName << "*' do not exist !!\n";
  */
+  if ( !branchEntryGenDiTauPt ) 
+    throw cms::Exception("addMassVariables") 
+      << "Branches for genDiTau = 'genDiTau*' do not exist !!\n";
     
   //std::string svFitMEM_pdfName = "cteq66";
   std::string svFitMEM_pdfName = "MSTW2008lo68cl";
@@ -1039,19 +1046,28 @@ int main(int argc, char* argv[])
 	    if(genJetX1P4.pt()>30 && TMath::Abs(genJetX1P4.eta())<4.5) nGenJets++;
 	    for(size_t jjet=1; jjet<genJetsP4.size(); jjet++){
 		    reco::Candidate::PolarLorentzVector genJetX2P4 = genJetsP4[jjet];
-		    //visMass = (leg1P4 + leg2P4).mass()
 		    if(genJetX1P4.pt()>30 && TMath::Abs(genJetX1P4.eta())<4.5 && genJetX2P4.pt()>30 && TMath::Abs(genJetX2P4.eta())<4.5 &&
 				    (genJetX1P4+genJetX2P4).mass()>500 && TMath::Abs( genJetX1P4.eta()-genJetX2P4.eta())>3.5) nVBFpairs++;
 	    }
     }
       
+    if ( nGenJets >= 2 && nVBFpairs >= 1 ) {
+      category_2Jets = true;
+    } else if ( nGenJets >= 1 ) {
+      Float_t genDiTauPt = branchEntryGenDiTauPt->valueF_;
+      if ( genDiTauPt > 100. ) category_1JetBoosted = true;
+      else category_1JetNotBoosted = true;
+    } else {
+      category_0Jets = true;
+    }
+/*
     if(nGenJets==0)                               category_0Jets          = true;
     if(nGenJets>=2 && nVBFpairs>=1)               category_2Jets          = true;
     else{
 	    if(nGenJets>=1 && (leg1P4+leg2P4).pt() < 100) category_1JetNotBoosted = true;
 	    if(nGenJets>=1 && (leg1P4+leg2P4).pt() > 100) category_1JetBoosted    = true;
     }
-
+ */
     if      (eventSelection_categorization == kInclusive)                                   { categorization = true; }
     if      (eventSelection_categorization == k0Jets && (category_0Jets))                   { categorization = true; }
     if      (eventSelection_categorization == k1JetBoosted && (category_1JetBoosted))       { categorization = true; }
