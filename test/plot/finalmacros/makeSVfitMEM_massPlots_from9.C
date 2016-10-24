@@ -55,9 +55,9 @@ void makePlot(const std::string& inputFilePath, const std::string& canvasName, c
   canvas_new->SetFillColor(10);
   canvas_new->SetBorderSize(2);
   canvas_new->SetTopMargin(0.065);
-  canvas_new->SetLeftMargin(0.185);
+  canvas_new->SetLeftMargin(0.195);
   canvas_new->SetBottomMargin(0.149);
-  canvas_new->SetRightMargin(0.025);
+  canvas_new->SetRightMargin(0.010);
   if(histogram == "HiggsDiTauPt" || histogram == "DYJetsDiTauPt" ) canvas_new->SetLogx(true);
   canvas_new->SetLogy(true);
   canvas_new->Draw();
