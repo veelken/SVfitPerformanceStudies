@@ -182,7 +182,7 @@ void makePlot(const std::string& inputFilePath, const std::string inputFileName,
 		TAxis* yAxis =histogramcSVfitkEq0 ->GetYaxis();
 		if(iCat==0||iCat==2||iCat==4) yAxis->SetTitle("dN/dt [1/s]");
 		else yAxis->SetTitle("");
-		yAxis->SetRangeUser(0.000005,330000);
+		yAxis->SetRangeUser(0.000005,3300);
 		yAxis->SetTitleOffset(4);
 		yAxis->SetTitleSize(60);
 		yAxis->SetTitleFont(43);
@@ -213,7 +213,7 @@ void makePlot(const std::string& inputFilePath, const std::string inputFileName,
 		if(iCat==2||iCat==3) label_channel->AddText("#mu#tau_{h}");
 		if(iCat==4||iCat==5) label_channel->AddText("e#mu");
 		label_channel->SetTextFont(63); //text font with precision = 3
-		label_channel->SetTextSize(50); //size given in pixel
+		label_channel->SetTextSize(60); //size given in pixel
 		label_channel->SetTextColor(1);
 		label_channel->SetTextAlign(11);
 		label_channel->Draw(); 
@@ -225,7 +225,7 @@ void makePlot(const std::string& inputFilePath, const std::string inputFileName,
 		label_letter->SetBorderSize(0);
 		label_letter->AddText(letters[iCat].c_str());
 		label_letter->SetTextFont(63); //text font with precision = 3
-		label_letter->SetTextSize(50); //size given in pixel
+		label_letter->SetTextSize(80); //size given in pixel
 		label_letter->SetTextColor(1);
 		label_letter->SetTextAlign(11);
 		label_letter->Draw();
@@ -243,15 +243,15 @@ void makePlot(const std::string& inputFilePath, const std::string inputFileName,
                 double rmsSVfitMEMkEq0   = histogramSVfitMEMkEq0->GetRMS();
                 double rmsSVfitMEMkNeq0  = histogramSVfitMEMkNeq0->GetRMS();
 
-                TLegend* legend_new  = new TLegend(0.52, 0.54, 0.73, 0.95); //good for iCat==4 
-                if(iCat==0||iCat==2) legend_new = new TLegend(0.52, 0.45, 0.73, 0.95);
-                if(iCat==5) legend_new = new TLegend(0.43, 0.54, 0.73, 0.95); 
-                if(iCat==1||iCat==3) legend_new = new TLegend(0.43, 0.45, 0.73, 0.95); // 
+                TLegend* legend_new  = new TLegend(0.62, 0.65, 0.83, 0.95); //good for iCat==4 
+                if(iCat==0||iCat==2) legend_new = new TLegend(0.62, 0.60, 0.83, 0.95);
+                if(iCat==5) legend_new = new TLegend(0.53, 0.65, 0.83, 0.95);
+                if(iCat==1||iCat==3) legend_new = new TLegend(0.53, 0.60, 0.83, 0.95); // 
                 legend_new->SetFillColor(10);
                 legend_new->SetFillStyle(0);
                 legend_new->SetBorderSize(0);
                 legend_new->SetTextFont(43);
-                legend_new->SetTextSize(50);
+                legend_new->SetTextSize(60);
                 legend_new->SetTextColor(1);
                 //legend_new->SetNColumns(2);
                 
@@ -267,30 +267,30 @@ void makePlot(const std::string& inputFilePath, const std::string inputFileName,
                 if(m1=="-0.00" || m1=="0.00") m1="0";
                 if(m2=="-0.00" || m2=="0.00") m2="0";*/
 
-                TLegendEntry* l1 = legend_new->AddEntry(hdummy, Form("Mean=%.2f, RMS=%.2f",meanSVfit,rmsSVfit), "l");
-		l1->SetTextFont(83); l1->SetTextSize(40); l1->SetTextColor(kGreen-6);
+                //iTLegendEntry* l1 = legend_new->AddEntry(hdummy, Form("Mean=%.2f, RMS=%.2f",meanSVfit,rmsSVfit), "l");
+		//l1->SetTextFont(83); l1->SetTextSize(40); l1->SetTextColor(kGreen-6);
 
 		legend_new->AddEntry(histogramcSVfitkEq0, "cSVfit (#kappa=0)", "l");
-                TLegendEntry* l2 = legend_new->AddEntry(hdummy, Form("Mean=%.2f, RMS=%.2f",meancSVfitkEq0,rmscSVfitkEq0), "l");
-		l2->SetTextFont(83); l2->SetTextSize(40); l2->SetTextColor(28);
+                //TLegendEntry* l2 = legend_new->AddEntry(hdummy, Form("Mean=%.2f, RMS=%.2f",meancSVfitkEq0,rmscSVfitkEq0), "l");
+		//l2->SetTextFont(83); l2->SetTextSize(40); l2->SetTextColor(28);
 
-		if(iCat<2)                legend_new->AddEntry(histogramcSVfitkNeq0, "cSVfit (#kappa=5)", "lp");
-		else if(iCat>1 && iCat<3) legend_new->AddEntry(histogramcSVfitkNeq0, "cSVfit (#kappa=4)", "lp");
-		else                      legend_new->AddEntry(histogramcSVfitkNeq0, "cSVfit (#kappa=3)", "lp");
+		if(iCat<2)                legend_new->AddEntry(histogramcSVfitkNeq0, "cSVfit (#kappa=5)", "p");
+		else if(iCat>1 && iCat<3) legend_new->AddEntry(histogramcSVfitkNeq0, "cSVfit (#kappa=4)", "p");
+		else                      legend_new->AddEntry(histogramcSVfitkNeq0, "cSVfit (#kappa=3)", "p");
 		
-                TLegendEntry* l3 = legend_new->AddEntry(hdummy, Form("Mean=%.2f, RMS=%.2f",meancSVfitkNeq0,rmscSVfitkNeq0), "lp");
-		l3->SetTextFont(83); l3->SetTextSize(40); l3->SetTextColor(kBlue-7);
+                //TLegendEntry* l3 = legend_new->AddEntry(hdummy, Form("Mean=%.2f, RMS=%.2f",meancSVfitkNeq0,rmscSVfitkNeq0), "p");
+		//l3->SetTextFont(83); l3->SetTextSize(40); l3->SetTextColor(kBlue-7);
 		
                 legend_new->AddEntry(histogramSVfitMEMkEq0, "SVfitMEM (#kappa=0)", "l");
-                TLegendEntry* l4 = legend_new->AddEntry(hdummy, Form("Mean=%.2f, RMS=%.2f",meanSVfitMEMkEq0,rmsSVfitMEMkEq0), "l");
-		l4->SetTextFont(83); l4->SetTextSize(40); l4->SetTextColor(kMagenta-7);
+                //TLegendEntry* l4 = legend_new->AddEntry(hdummy, Form("Mean=%.2f, RMS=%.2f",meanSVfitMEMkEq0,rmsSVfitMEMkEq0), "l");
+		//l4->SetTextFont(83); l4->SetTextSize(40); l4->SetTextColor(kMagenta-7);
 
-		if(iCat<2)                legend_new->AddEntry(histogramSVfitMEMkNeq0, "SVfitMEM (#kappa=5)", "lp");
-		else if(iCat>1 && iCat<3) legend_new->AddEntry(histogramSVfitMEMkNeq0, "SVfitMEM (#kappa=4)", "lp");
-		else                      legend_new->AddEntry(histogramSVfitMEMkNeq0, "SVfitMEM (#kappa=3)", "lp");
+		if(iCat<2)                legend_new->AddEntry(histogramSVfitMEMkNeq0, "SVfitMEM (#kappa=5)", "p");
+		else if(iCat>1 && iCat<3) legend_new->AddEntry(histogramSVfitMEMkNeq0, "SVfitMEM (#kappa=4)", "p");
+		else                      legend_new->AddEntry(histogramSVfitMEMkNeq0, "SVfitMEM (#kappa=3)", "p");
 		
-                TLegendEntry* l5 = legend_new->AddEntry(hdummy, Form("Mean=%.2f, RMS=%.2f",meanSVfitMEMkNeq0,rmsSVfitMEMkNeq0), "lp");
-		l5->SetTextFont(83); l5->SetTextSize(40); l5->SetTextColor(kBlack);
+                //TLegendEntry* l5 = legend_new->AddEntry(hdummy, Form("Mean=%.2f, RMS=%.2f",meanSVfitMEMkNeq0,rmsSVfitMEMkNeq0), "p");
+		//l5->SetTextFont(83); l5->SetTextSize(40); l5->SetTextColor(kBlack);
 		
                 legend_new->Draw();
 

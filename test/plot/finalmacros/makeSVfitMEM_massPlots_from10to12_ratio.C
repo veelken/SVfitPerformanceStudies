@@ -151,7 +151,7 @@ void makePlot(const std::string& inputFilePath, const std::string& canvasName, c
 
   int colors[6]       = { 28, kGreen - 6, kBlue - 7, kBlack, kMagenta -7, kBlack };
   int lineStyles[6]   = { 7, 1, 1, 1, 1, 1 };
-  int lineWidths[6]   = { 4, 4, 1, 1, 1, 1 };
+  int lineWidths[6]   = { 8, 8, 1, 1, 1, 1 };
   int markerStyles[6] = { 20, 25, 21, 24, 22, 32};
   int markerSizes[6]  = { 4, 4, 3, 3, 3, 3};
 
@@ -161,8 +161,8 @@ void makePlot(const std::string& inputFilePath, const std::string& canvasName, c
   histogramCA->SetLineStyle(lineStyles[0]);
   histogramCA->SetLineWidth(lineWidths[0]);
   histogramCA->SetMarkerColor(colors[0]);
-  histogramCA->SetMarkerStyle(markerStyles[0]);
-  histogramCA->SetMarkerSize(markerSizes[0]);
+  //histogramCA->SetMarkerStyle(markerStyles[0]);
+  //histogramCA->SetMarkerSize(markerSizes[0]);
 
   histogramSVfit->SetFillColor(0);
   histogramSVfit->SetFillStyle(0);

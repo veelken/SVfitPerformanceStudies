@@ -47,7 +47,7 @@ void makePlot_legend(TLegend* legend, const std::string& outputFilePath, const s
     if ( legendEntry ) {
       TH1* histogram = dynamic_cast<TH1*>(legendEntry->GetObject());
       if ( histogram ) {
-	histogram->SetLineWidth(2*histogram->GetLineWidth());
+	histogram->SetLineWidth(4*histogram->GetLineWidth());
 	histogram->SetMarkerSize(3);
       }
     }
@@ -194,12 +194,11 @@ void makePlot(const std::string& inputFilePath, const std::string& canvasName, c
 
 			TH1* tmpHistogram = dynamic_cast<TH1*>(obj);
 			if ( tmpHistogram ) {
-				/*std::cout << "tmpHistogram:" 
+				std::cout << "tmpHistogram:" 
 				  << " fillColor = " << tmpHistogram->GetFillColor() << ", fillStyle = " << tmpHistogram->GetFillStyle() << ","
 				  << " lineColor = " << tmpHistogram->GetLineColor() << ", lineStyle = " << tmpHistogram->GetLineStyle() << ", lineWidth = " << tmpHistogram->GetLineWidth() << ","
 				  << " markerColor = " << tmpHistogram->GetMarkerColor() << ", markerStyle = " << tmpHistogram->GetMarkerStyle() << ", markerSize = " << tmpHistogram->GetMarkerSize() << ","
 				  << " integral = " << tmpHistogram->Integral() << std::endl;
-				  std::cout << "(mean = " << tmpHistogram->GetMean() << ", rms = " << tmpHistogram->GetRMS() << ": rms/mean = " << (tmpHistogram->GetRMS()/tmpHistogram->GetMean()) << ")" << std::endl;*/
 				if ( tmpHistogram->GetLineColor() == 416 ) histogramCA            = tmpHistogram;
 				if ( tmpHistogram->GetLineColor() == 600 ) histogramSVfit         = tmpHistogram;
 				if ( tmpHistogram->GetLineColor() == 616 ) histogramSVfitMEMkEq0  = tmpHistogram;
@@ -216,9 +215,9 @@ void makePlot(const std::string& inputFilePath, const std::string& canvasName, c
 		
                 int colors[6]       = { 28, kGreen - 6, kBlue - 7, kBlack, kMagenta -7, kBlack };
 		int lineStyles[6]   = { 7, 1, 1, 1, 1, 1 };
-		int lineWidths[6]   = { 2, 2, 1, 1 ,1, 1};
+		int lineWidths[6]   = { 5, 5, 1, 1 ,1, 1};
 		int markerStyles[6] = { 20, 25, 21, 24, 22, 32}; 
-		int markerSizes[6]  = { 2, 2, 3,3, 3, 3};
+		int markerSizes[6]  = { 2,2,4,4,4,4};
 
 		histogramCA->SetFillColor(0);
 		histogramCA->SetFillStyle(0);
@@ -366,7 +365,7 @@ void makePlot(const std::string& inputFilePath, const std::string& canvasName, c
 		label_letter->SetBorderSize(0);
                 label_letter->AddText(letters[iCat].c_str());
 		label_letter->SetTextFont(63); //text font with precision = 3
-		label_letter->SetTextSize(50); //size given in pixel
+		label_letter->SetTextSize(80); //size given in pixel
 		label_letter->SetTextColor(1);
 		label_letter->SetTextAlign(11);
 		label_letter->Draw();
@@ -380,12 +379,18 @@ void makePlot(const std::string& inputFilePath, const std::string& canvasName, c
 		legend_new->SetTextSize(0.055);
 		legend_new->SetTextColor(1);
 		legend_new->SetMargin(0.2);
-		legend_new->AddEntry(histogramCA, "CA", "l");
-		legend_new->AddEntry(histogramSVfit, "SVfitSA", "l");
-		legend_new->AddEntry(histogramSVfitCLAkEq0, "cSVfit (#kappa=0)", "p");
-		legend_new->AddEntry(histogramSVfitCLAkNeq0, Form("cSVfit (#kappa=%1.0f)", k), "p");
-		legend_new->AddEntry(histogramSVfitMEMkEq0, "SVfitMEM (#kappa=0)", "p");
-		legend_new->AddEntry(histogramSVfitMEMkNeq0, Form("SVfitMEM (#kappa=%1.0f)", k), "p");
+                TH1D* dummyCA = (TH1D*)histogramCA->Clone(); 
+                TH1D* dummySVfit = (TH1D*)histogramSVfit->Clone(); 
+                TH1D* dummySVfitCLAkEq0  = (TH1D*)histogramSVfitCLAkEq0->Clone(); 
+                TH1D* dummySVfitCLAkNeq0 = (TH1D*)histogramSVfitCLAkNeq0->Clone(); 
+                TH1D* dummySVfitMEMkEq0  = (TH1D*)histogramSVfitMEMkEq0->Clone(); 
+                TH1D* dummySVfitMEMkNeq0 = (TH1D*)histogramSVfitMEMkNeq0->Clone(); 
+		legend_new->AddEntry(dummyCA, "CA", "l");
+		legend_new->AddEntry(dummySVfit, "SVfitSA", "l");
+		legend_new->AddEntry(dummySVfitCLAkEq0, "cSVfit (#kappa=0)", "p");
+		legend_new->AddEntry(dummySVfitCLAkNeq0, Form("cSVfit (#kappa=%1.0f)", k), "p");
+		legend_new->AddEntry(dummySVfitMEMkEq0, "SVfitMEM (#kappa=0)", "p");
+		legend_new->AddEntry(dummySVfitMEMkNeq0, Form("SVfitMEM (#kappa=%1.0f)", k), "p");
 		//legend_new->Draw();
 
 

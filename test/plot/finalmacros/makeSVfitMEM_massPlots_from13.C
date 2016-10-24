@@ -125,7 +125,8 @@ void makePlot(const std::string& inputFilePath, const std::string& canvasName, c
   histogramHiggs300->SetLineWidth(lineWidths[3]);
 
   TAxis* xAxis = histogramHiggs300->GetXaxis();
-  xAxis->SetRangeUser(0,500);
+  if ( histogram == "mVis"    ) xAxis->SetRangeUser(0,350);
+  else xAxis->SetRangeUser(0,450);
   xAxis->SetTitle(xAxisTitle.data());
   xAxis->SetTitleOffset(1.00);
   xAxis->SetTitleSize(0.070);
@@ -153,7 +154,7 @@ void makePlot(const std::string& inputFilePath, const std::string& canvasName, c
 
   histogramHiggs300->SetTitle("");
   histogramHiggs300->SetStats(false);
-  histogramHiggs300->SetMaximum(0.41);
+  histogramHiggs300->SetMaximum(1.2*histogramDYJets->GetMaximum());
   histogramHiggs300->SetMinimum(0.);
   histogramHiggs300->Draw("hist");
   histogramHiggs200->Draw("histsame");
