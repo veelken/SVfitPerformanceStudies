@@ -11,7 +11,7 @@ void plot_kOptimization(){
   // plot histogram
   cout<<"plotting hist...\n";
 
-  string inputPath{"/home/lucia/SVfitPerformanceStudiesII/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/SVfitFiles_Output/"};
+  string inputPath{"/home/lucia/SVfitPerformanceStudiesII/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/SVfitFiles_Output_V/"};
   string savePath{"/home/lucia/SVfitPerformanceStudiesII/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/"};
   // root file, for optimisation use 1 file!!
   vector<string> vsample {
@@ -20,7 +20,7 @@ void plot_kOptimization(){
 
   vector<string> vinput {
     //"hist_DYJetsToLLM50_inclusive.root"
-    "hist_DYJetsToLLM50_inclusive.root"
+    "hist_smeared_DYJetsToLLM50_inclusive.root"
   }; 
 
   func();

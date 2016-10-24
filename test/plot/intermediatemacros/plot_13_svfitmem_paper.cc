@@ -6,7 +6,7 @@
 double Median(const TH1D * h1);
 double rounded(double val);
 
-void plot_13_ratio_svfitmem_paper(){
+void plot_13_svfitmem_paper(){
 
   // plot histogram
   cout<<"plotting hist...\n";
@@ -144,7 +144,7 @@ void plot_13_ratio_svfitmem_paper(){
 	if(histname.find("MET_")!=std::string::npos) continue; 
 	if(histname.find("_LOG")!=std::string::npos) continue; 
 	if(histname.find("_gen_")!=std::string::npos) continue; 
-	if(histname.find("_ratio_")==std::string::npos) continue; 
+	if(histname.find("_ratio_")!=std::string::npos) continue; 
 
 	hmass->Scale(1./hmass->Integral());
         //hmass->Rebin(5);
@@ -180,7 +180,7 @@ void plot_13_ratio_svfitmem_paper(){
 		else if(input.find("M300_")!=std::string::npos) legend1[i]->AddEntry( vhmass.back(), "H#rightarrow#tau#tau, m_{H} = 300 GeV", "f");
 		if   ( input.find("M50_") !=std::string::npos   || input.find("M125_")  !=std::string::npos ||
 		       input.find("M200_")  !=std::string::npos || input.find("M300_")  !=std::string::npos ) {
-			canvas[i]->cd(1); vhmass.back()->Draw("same&hist"); 
+			canvas[i]->cd(1); vhmass.back()->Rebin(5); vhmass.back()->Draw("same&hist"); 
 			legend1[i]->Draw("same");
 		}
 
@@ -201,7 +201,7 @@ void plot_13_ratio_svfitmem_paper(){
 		if   ( input.find("M50_") !=std::string::npos   || 
 				input.find("M125_")  !=std::string::npos ||
 				input.find("M200_")  !=std::string::npos ||
-				input.find("M300_")  !=std::string::npos ) {canvas[i]->cd(2); vhmass.back()->Draw("same&hist"); legend2[i]->Draw("same");}
+				input.find("M300_")  !=std::string::npos ) {vhmass.back()->Rebin(5); canvas[i]->cd(2); vhmass.back()->Draw("same&hist"); legend2[i]->Draw("same");}
 
 	      //table1<< vhmass.back()->GetMean()<<"$ & $"<<vhmass.back()->GetRMS()/vhmass.back()->GetMean()<<"$ & $ \\\\"<<endl;
 	      table1<< Median(vhmass.back())<<"$ & $"<<rounded(vhmass.back()->GetRMS()/Median(vhmass.back()))<<"$ & $ \\\\"<<endl;
@@ -214,7 +214,7 @@ void plot_13_ratio_svfitmem_paper(){
 	      if   ( input.find("M50_") !=std::string::npos   || 
 	             input.find("M125_")  !=std::string::npos ||
 	             input.find("M200_")  !=std::string::npos ||
-	             input.find("M300_")  !=std::string::npos ) {canvas[i]->cd(2); vhmass.back()->Draw("same&hist"); legend3[i]->Draw("same");}
+	             input.find("M300_")  !=std::string::npos ) {vhmass.back()->Rebin(5); canvas[i]->cd(2); vhmass.back()->Draw("same&hist"); legend3[i]->Draw("same");}
 
 	      //table1<< vhmass.back()->GetMean()<<"$ & $"<<vhmass.back()->GetRMS()/vhmass.back()->GetMean()<<"$ & $ \\\\"<<endl;
 	      table1<< Median(vhmass.back())<<"$ & $"<<rounded(vhmass.back()->GetRMS()/Median(vhmass.back()))<<"$ & $ \\\\"<<endl;
@@ -226,7 +226,7 @@ void plot_13_ratio_svfitmem_paper(){
 	      if   ( input.find("M50_") !=std::string::npos   || 
 	             input.find("M125_")  !=std::string::npos ||
 	             input.find("M200_")  !=std::string::npos ||
-	             input.find("M300_")  !=std::string::npos ) {canvas[i]->cd(2); vhmass.back()->Draw("same&hist"); legend3[i]->Draw("same");}
+	             input.find("M300_")  !=std::string::npos ) {vhmass.back()->Rebin(5); canvas[i]->cd(2); vhmass.back()->Draw("same&hist"); legend3[i]->Draw("same");}
 
 	      //table1<< vhmass.back()->GetMean()<<"$ & $"<<vhmass.back()->GetRMS()/vhmass.back()->GetMean()<<"$ & $ \\\\"<<endl;
 	      table1<< Median(vhmass.back())<<"$ & $"<<rounded(vhmass.back()->GetRMS()/Median(vhmass.back()))<<"$ & $ \\\\"<<endl;
@@ -246,12 +246,12 @@ void plot_13_ratio_svfitmem_paper(){
   //save canvas
   for(int i=0; i<ndir; i++){
     if(log) {
-      imagepng = savePath+"/plot_13_log_ratio_"+canvas[i]->GetName()+".png";
-      imageroot = savePath+"/plot_13_log_ratio_"+canvas[i]->GetName()+".root";
+      imagepng = savePath+"/plot_13_log_"+canvas[i]->GetName()+".png";
+      imageroot = savePath+"/plot_13_log_"+canvas[i]->GetName()+".root";
     }
     else {
-      imagepng = savePath+"/plot_13_lin_ratio_"+canvas[i]->GetName()+".png";
-      imageroot = savePath+"/plot_13_lin_ratio_"+canvas[i]->GetName()+".root";
+      imagepng = savePath+"/plot_13_lin_"+canvas[i]->GetName()+".png";
+      imageroot = savePath+"/plot_13_lin_"+canvas[i]->GetName()+".root";
     }
     canvas[i]->Print(imagepng.c_str()); 
     canvas[i]->Print(imageroot.c_str()); 

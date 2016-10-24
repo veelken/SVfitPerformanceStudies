@@ -6,18 +6,18 @@ void plot_6to8_svfitmem_paper_ratio(){
   // plot histogram
   cout<<"plotting hist...\n";
 
-  string inputPath{"/home/lucia/SVfitPerformanceStudiesII/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/SVfitFiles_Output_IV/"};
+  string inputPath{"/home/lucia/SVfitPerformanceStudiesII/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/SVfitFiles_Output_V/"};
   string savePath{"/home/lucia/SVfitPerformanceStudiesII/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/"};
   // root file
   vector<string> vinput {
-    "hist_DYJetsToLLM50_0Jets.root",
-    "hist_GluGluHToTauTauM125_0Jets.root",
-    "hist_DYJetsToLLM50_1JetNotBoosted.root",
-    "hist_GluGluHToTauTauM125_1JetNotBoosted.root",
-    "hist_DYJetsToLLM50_1JetBoosted.root",
-    "hist_GluGluHToTauTauM125_1JetBoosted.root",
-    "hist_DYJetsToLLM50_2Jets.root",
-    "hist_VBFHToTauTauM125_2Jets.root"
+    "hist_smeared_DYJetsToLLM50_0Jets.root",
+    "hist_smeared_GluGluHToTauTauM125_0Jets.root",
+    "hist_smeared_DYJetsToLLM50_1JetNotBoosted.root",
+    "hist_smeared_GluGluHToTauTauM125_1JetNotBoosted.root",
+    "hist_smeared_DYJetsToLLM50_1JetBoosted.root",
+    "hist_smeared_GluGluHToTauTauM125_1JetBoosted.root",
+    "hist_smeared_DYJetsToLLM50_2Jets.root",
+    "hist_smeared_VBFHToTauTauM125_2Jets.root"
   };
 
   vector<string>vsample{
@@ -143,6 +143,7 @@ void plot_6to8_svfitmem_paper_ratio(){
 	if(histname.find("tfk6")!=std::string::npos) continue;
 	if(histname.find("tfk7")!=std::string::npos) continue;
 	if(histname.find("tfk8")!=std::string::npos) continue;
+	if(histname.find("Jet")!=std::string::npos) continue;
 	
         hmass->Scale(1./hmass->Integral());
 	vhmass.push_back((TH1D*)hmass->Clone());
