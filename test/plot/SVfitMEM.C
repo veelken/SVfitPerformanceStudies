@@ -36,7 +36,7 @@ void SVfitMEM::Loop()
       if (ientry < 0) break;
       nb = fChain->GetEntry(jentry);   nbytes += nb;
        
-      if((nentries+1)%1000==0) cout << ">> processing event " << nentries << endl;
+      if(jentry > 0 && (jentry%10000)==0) cout << ">> processing event " << jentry << endl;
  
       passKin=false;
       isEMU=false;
@@ -152,6 +152,12 @@ void SVfitMEM::Loop()
       hResolutionEta[0]->Fill(candVisiblePlusMET.Eta()-genDiTauEta);
       hResolutionPhi[0]->Fill(candVisiblePlusMET.Phi()-genDiTauPhi);
       genDiTauCandidate = GenTauLepton1+GenTauLepton2;
+      std::string category_string;
+      if ( category_2Jets          ) category_string.append("2Jets");
+      if ( category_1JetBoosted    ) category_string.append("1JetBoosted");
+      if ( category_1JetNotBoosted ) category_string.append("1JetNotBoosted");
+      if ( category_0Jets          ) category_string.append("0Jets");
+      //std::cout << "category = " << category_string << ", genDiTauCandidate: pT = " << genDiTauCandidate.Pt() << ", mass = " << genDiTauCandidate.M() << std::endl;
       
       hDiTauPt->Fill(genDiTauCandidate.Pt());
       hTauDPhi->Fill(TMath::ACos(TMath::Cos(GenTauLepton1.Phi()-GenTauLepton2.Phi())));

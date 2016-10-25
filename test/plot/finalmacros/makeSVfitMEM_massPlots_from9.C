@@ -51,12 +51,12 @@ void makePlot(const std::string& inputFilePath, const std::string& canvasName, c
   TVirtualPad* pad = canvas->GetPad(idxPad);
   std::cout << "pad = " << pad << ": ClassName = " << pad->ClassName() << std::endl;
 
-  TCanvas* canvas_new = new TCanvas("canvas_new", "canvas_new", 900,1000);
+  TCanvas* canvas_new = new TCanvas("canvas_new", "canvas_new", 1000, 1000);
   canvas_new->SetFillColor(10);
   canvas_new->SetBorderSize(2);
   canvas_new->SetTopMargin(0.065);
-  canvas_new->SetLeftMargin(0.195);
-  canvas_new->SetBottomMargin(0.149);
+  canvas_new->SetLeftMargin(0.1975);
+  canvas_new->SetBottomMargin(0.1725);
   canvas_new->SetRightMargin(0.010);
   if(histogram == "HiggsDiTauPt" || histogram == "DYJetsDiTauPt" ) canvas_new->SetLogx(true);
   canvas_new->SetLogy(true);
@@ -100,7 +100,7 @@ void makePlot(const std::string& inputFilePath, const std::string& canvasName, c
   int markerStyles[5] = { 1, 1, 21, 24};
   int markerSizes[5]  = { 1, 1, 3, 3};
   int markerColors[4] = { kGreen - 6, 28, kBlue - 7, kBlack };
-  int lineWidths[5]   = { 6, 6, 2 ,2};
+  int lineWidths[5]   = { 6, 6, 3 , 3};
 
   histogram0Jet->SetLineColor(colors[0]);
   histogram0Jet->SetLineStyle(lineStyles[0]);
@@ -127,13 +127,13 @@ void makePlot(const std::string& inputFilePath, const std::string& canvasName, c
   TAxis* xAxis = histogram0Jet->GetXaxis();
   string title = xAxisTitle.data();
   xAxis->SetTitle(xAxisTitle.data());
-  xAxis->SetTitleOffset(0.9);
+  xAxis->SetTitleOffset(1.1);
   xAxis->SetTitleSize(70);
   xAxis->SetTitleFont(43);
-  xAxis->SetLabelOffset(-0.01);
+  //xAxis->SetLabelOffset(-0.01);
   xAxis->SetLabelSize(0.050);
   if(histogram == "HiggsDiTauPt" || histogram == "DYJetsDiTauPt" ){
-	  xAxis->SetRangeUser(0.1,500);
+    xAxis->SetRangeUser(0.1,500);
   }
   xAxis->SetLabelFont(42);
   xAxis->SetTickLength(0.040);
@@ -141,13 +141,13 @@ void makePlot(const std::string& inputFilePath, const std::string& canvasName, c
 
   TAxis* yAxis = histogram0Jet->GetYaxis();
   yAxis->SetTitle(yAxisTitle.data());
-  yAxis->SetTitleOffset(1.2);
+  yAxis->SetTitleOffset(1.30);
   yAxis->SetTitleSize(70);
   yAxis->SetTitleFont(43);
-  if(histogram == "HiggsDiTauPt")  yAxis->SetRangeUser(0.0001,1);
-  if(histogram == "DYJetsDiTauPt") yAxis->SetRangeUser(0.001,1000);
-  if(histogram == "HiggsDPhi")     yAxis->SetRangeUser(0.0001,1);
-  if(histogram == "DYJetsDPhi")    yAxis->SetRangeUser(0.0001,1000);
+  if(histogram == "HiggsDiTauPt")  yAxis->SetRangeUser(0.65e-4, 6.5e-1);
+  if(histogram == "DYJetsDiTauPt") yAxis->SetRangeUser(1.e-3, 1.e+3);
+  if(histogram == "HiggsDPhi")     yAxis->SetRangeUser(0.25e-4, 2.5e-1);
+  if(histogram == "DYJetsDPhi")    yAxis->SetRangeUser(1.e-4, 1.e+3);
   //yAxis->SetLabelOffset(0.010);
   yAxis->SetLabelSize(0.055);
   yAxis->SetLabelFont(42);
@@ -162,7 +162,10 @@ void makePlot(const std::string& inputFilePath, const std::string& canvasName, c
   histogram2Jets->Draw("same");
   histogram0Jet->Draw("axissame");
 
-  TLegend* legend_new = new TLegend(0.45, 0.65, 0.84, 0.92, NULL, "brNDC");
+  histogram1JetBoosted->Draw("same");
+  histogram2Jets->Draw("same");
+  
+  TLegend* legend_new = new TLegend(0.51, 0.62, 0.84, 0.92, NULL, "brNDC");
   legend_new->SetFillColor(10);
   legend_new->SetFillStyle(0);
   legend_new->SetBorderSize(0);
@@ -172,8 +175,8 @@ void makePlot(const std::string& inputFilePath, const std::string& canvasName, c
   legend_new->SetMargin(0.20);
   legend_new->AddEntry(histogram0Jet, "0-jet ", "l");
   legend_new->AddEntry(histogram1JetNotBoosted, "1-jet non-boosted", "l");
-  legend_new->AddEntry(histogram1JetBoosted,    "1-jet boosted", "lp");
-  legend_new->AddEntry(histogram2Jets, "2-jet VBF", "lp");
+  legend_new->AddEntry(histogram1JetBoosted,    "1-jet boosted", "p");
+  legend_new->AddEntry(histogram2Jets, "2-jet VBF", "p");
   legend_new->Draw();
 
   double label_channel_y0;
@@ -184,7 +187,7 @@ void makePlot(const std::string& inputFilePath, const std::string& canvasName, c
 	  std::cerr << "Invalid channel = " << channel << " !!" << std::endl;
 	  assert(0);
   }
-  TPaveText* label_channel = new TPaveText(0.855, label_channel_y0, 0.945, label_channel_y0 + 0.055, "NDC");
+  TPaveText* label_channel = new TPaveText(0.875, label_channel_y0, 0.965, label_channel_y0 + 0.055, "NDC");
   label_channel->SetFillStyle(0);
   label_channel->SetBorderSize(0);
   label_channel->AddText(channel.data());
@@ -246,14 +249,16 @@ void makeSVfitMEM_massPlots_from9()
   yAxisTitles["DYJetsDiTauPt"]  = "dN/dp_{T}^{Z} [1/GeV]";
   yAxisTitles["DYJetsDPhi"]     = "dN/d#Delta#phi_{#tau#tau}";
   
-  std::string inputFilePath = "/home/lucia/SVfitPerformanceStudiesII/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/";
+  //std::string inputFilePath = "/home/lucia/SVfitPerformanceStudiesII/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/";
+  std::string inputFilePath = "/home/veelken/SVfitMEM_paper/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/";
   std::map<std::string, std::string> inputFileNames_muhad; // key = histogram
   inputFileNames_muhad["HiggsDiTauPt"]   = "plot_9_lin_muhad_smeared.root";
   inputFileNames_muhad["HiggsDPhi"]      = "plot_9_lin_muhad_smeared.root";
   inputFileNames_muhad["DYJetsDiTauPt"]  = "plot_9_lin_muhad_smeared.root";
   inputFileNames_muhad["DYJetsDPhi"]     = "plot_9_lin_muhad_smeared.root";
 
-  std::string outputFilePath = "/home/lucia/SVfitPerformanceStudiesII/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/finalplots/";
+  //std::string outputFilePath = "/home/lucia/SVfitPerformanceStudiesII/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/finalplots/";
+  std::string outputFilePath = "/home/veelken/SVfitMEM_paper/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/finalplots/";
   std::map<std::string, std::string> outputFileNames_muhad; // key = histogram
   outputFileNames_muhad["HiggsDiTauPt"]   = "Higgs_pT_muhad.root";
   outputFileNames_muhad["HiggsDPhi"]      = "Higgs_dPhiTauTau_muhad.root";

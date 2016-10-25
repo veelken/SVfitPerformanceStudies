@@ -42,36 +42,36 @@ void makePlot(const std::string& inputFilePath, const std::string inputFileName,
 	}
 
 	TCanvas* canvas_new = new TCanvas("canvas_new", "canvas_new", 800, 1100*3);
-	canvas_new->SetTopMargin(0.00); canvas_new->SetRightMargin(0.00); canvas_new->SetBottomMargin(0.00);  canvas_new->SetLeftMargin(0.00);
+	canvas_new->SetTopMargin(0.00); canvas_new->SetRightMargin(0.00); canvas_new->SetBottomMargin(0.00); canvas_new->SetLeftMargin(0.00);
 
-	TPad* t2 = new TPad("t2","t2", 0.0, 0.975, 1.00, 1.00);  t2->Draw();  canvas_new->cd();
-	t2->SetTopMargin(0.00); t2->SetRightMargin(0.00); t2->SetBottomMargin(0.00);  t2->SetLeftMargin(0.00);
+	TPad* t2 = new TPad("t2","t2", 0.0, 0.975, 1.00, 1.00); t2->Draw(); canvas_new->cd();
+	t2->SetTopMargin(0.00); t2->SetRightMargin(0.00); t2->SetBottomMargin(0.00); t2->SetLeftMargin(0.00);
 	t2->SetFillColor(0);
 
 	TPad* t1 = new TPad("t1","t1", 0.0, 0.0, 1.00, 0.972, 4, 1);  t1->Draw();  t1->cd();
 	t1->SetTopMargin(0.00);
 	t1->SetRightMargin(0.02);
-	t1->SetBottomMargin(0.14);
-	t1->SetLeftMargin(0.145);
+	t1->SetBottomMargin(0.12);
+	t1->SetLeftMargin(0.165);
 	t1->SetFillColor(0);
 	t1->Divide(1,3,0,0);
 
 	canvas_new->Draw();
 	int idxPad[3]={};
-        if(histogram==1) { idxPad[0]=1; idxPad[1]=4; idxPad[2]=7; }
-        if(histogram==2) { idxPad[0]=2; idxPad[1]=5; idxPad[2]=8; }
-        if(histogram==3) { idxPad[0]=3; idxPad[1]=6; idxPad[2]=9; }
+        if ( histogram == 1 ) { idxPad[0] = 1; idxPad[1] = 4; idxPad[2] = 7; }
+        if ( histogram == 2 ) { idxPad[0] = 2; idxPad[1] = 5; idxPad[2] = 8; }
+        if ( histogram == 3 ) { idxPad[0] = 3; idxPad[1] = 6; idxPad[2] = 9; }
 
 	vector<string> letters;
-	if(histogram==1) { letters.push_back("a)"); letters.push_back("d)"); letters.push_back("g)");}
-	if(histogram==2) { letters.push_back("b)"); letters.push_back("e)"); letters.push_back("h)");}
-	if(histogram==3) { letters.push_back("c)"); letters.push_back("f)"); letters.push_back("i)");}
+	if ( histogram == 1 ) { letters.push_back("a)"); letters.push_back("d)"); letters.push_back("g)");}
+	if ( histogram == 2 ) { letters.push_back("b)"); letters.push_back("e)"); letters.push_back("h)");}
+	if ( histogram == 3 ) { letters.push_back("c)"); letters.push_back("f)"); letters.push_back("i)");}
 
 	int nPlots = letters.size();
 
-	for ( int iCat=0; iCat<nPlots; iCat++ ) {
+	for ( int iCat = 0; iCat < nPlots; iCat++ ) {
 
-		if(histogram==1){
+		if ( histogram == 1 || histogram == 2 || histogram == 3 ){
 			t2->cd();
 
 			TPaveText* label_sample = new TPaveText(0.20, 0.00, 0.4600, 0.3375, "NDC");
@@ -130,13 +130,13 @@ void makePlot(const std::string& inputFilePath, const std::string inputFileName,
 		}
 
 		int lineColors[3]   = { kGreen-6,kBlue-7,kBlack };
-		int lineStyles[3]   = { 1,1,1};
-		int lineWidths[3]   = { 4,2,2 };
-		int fillColors[3]   = { 0,0,0 };
-		int fillStyles[3]   = { 0,0,0 };
-		int markerStyle[3]  = { 1,21,24 };
-		int markerColors[3] = { kGreen-6,kBlue-7,kBlack };
-		int markerSize[3]   = { 1,3,3 };
+		int lineStyles[3]   = { 1, 1, 1};
+		int lineWidths[3]   = { 4, 2, 2 };
+		int fillColors[3]   = { 0, 0, 0 };
+		int fillStyles[3]   = { 0, 0, 0 };
+		int markerStyle[3]  = { 1, 21, 24 };
+		int markerColors[3] = { kGreen - 6, kBlue - 7, kBlack };
+		int markerSize[3]   = { 1, 3, 3 };
 
 		histogramH125Vis->SetFillColor(fillColors[0]);
 		histogramH125Vis->SetFillStyle(fillStyles[0]);
@@ -163,24 +163,25 @@ void makePlot(const std::string& inputFilePath, const std::string inputFileName,
 		histogramH125LOkNeq0->SetMarkerColor(markerColors[2]);
 
 		TAxis* xAxis = histogramH125LOkEq0->GetXaxis();
-		if(histogram!=1) xAxis->SetRangeUser(-4,4);
+		if ( histogram != 1 ) xAxis->SetRangeUser(-4, 4);
 		else xAxis->SetRangeUser(-100,130);
-		if(iCat>1) xAxis->SetTitle(xAxisTitle.data());
+		if ( iCat > 1 ) xAxis->SetTitle(xAxisTitle.data());
 		else xAxis->SetTitle("");
 		xAxis->SetTitleOffset(3);
-		xAxis->SetTitleSize(60);
+		xAxis->SetTitleSize(65);
 		xAxis->SetTitleFont(43);
-		if(iCat<2) xAxis->SetLabelOffset(999);
+		if ( iCat < 2 ) xAxis->SetLabelOffset(999);
 		xAxis->SetLabelSize(50);
 		xAxis->SetLabelFont(43);
 		xAxis->SetTickLength(0.040);
 		xAxis->SetNdivisions(505);
 
-		TAxis* yAxis =histogramH125LOkEq0 ->GetYaxis();
+		TAxis* yAxis = histogramH125LOkEq0 ->GetYaxis();
 		yAxis->SetTitle(yAxisTitle.data());
-		if(histogram!=1) yAxis->SetRangeUser(0.006,33000);
-		else yAxis->SetRangeUser(0.0005,33000);
-		yAxis->SetTitleOffset(4);
+		if      ( histogram == 1 ) yAxis->SetRangeUser(1.1e-4, 3.3e+4);
+		else if ( histogram == 2 ) yAxis->SetRangeUser(4.5e-3, 3.3e+4);
+		else if ( histogram == 3 ) yAxis->SetRangeUser(6.e-3, 3.3e+4);
+		yAxis->SetTitleOffset(5);
 		yAxis->SetTitleSize(60);
 		yAxis->SetTitleFont(43);
 		yAxis->SetLabelSize(50);
@@ -194,25 +195,32 @@ void makePlot(const std::string& inputFilePath, const std::string inputFileName,
 		histogramH125LOkNeq0->Draw("same");
 		histogramH125Vis->Draw("histsame");
 		histogramH125LOkEq0->Draw("axissame");
+		
+		histogramH125LOkEq0->Draw("same");
+		histogramH125LOkNeq0->Draw("same");
+		
+		double shifty = 0.;
+		if      ( histogram == 1 ) shifty = -0.02;
+		else if ( histogram == 2 ) shifty = -0.01;
 
-		TPaveText* label_channel  = new TPaveText(0.86308, 0.44346, 0.913929, 0.555111, "NDC");
-		if(iCat==0) label_channel = new TPaveText(0.86308, 0.45346, 0.913929, 0.565111, "NDC");
-		if(iCat==2) label_channel = new TPaveText(0.88308, 0.52346, 0.933929, 0.635111, "NDC");
+		TPaveText* label_channel  = new TPaveText(0.85308, 0.40346 + shifty, 0.903929, 0.515111 + shifty, "NDC");
+		if ( iCat == 0 ) label_channel = new TPaveText(0.85308, 0.41346 + shifty, 0.903929, 0.525111 + shifty, "NDC");
+		if ( iCat == 2 ) label_channel = new TPaveText(0.87308, 0.48346 + shifty, 0.923929, 0.595111 + shifty, "NDC");
 		//if(iCat==0||iCat==3||iCat==6) label_channel = new TPaveText(0.20308, 0.78346, 0.383929, 0.845111, "NDC");
 		//else label_channel = new TPaveText(0.03308, 0.78346, 0.383929, 0.845111, "NDC");
 		label_channel->SetFillStyle(0);
 		label_channel->SetBorderSize(0);
-		if(iCat==0) label_channel->AddText("#tau_{h}#tau_{h}");
-		if(iCat==1) label_channel->AddText("#mu#tau_{h}");
-		if(iCat==2) label_channel->AddText("e#mu");
+		if ( iCat == 0 ) label_channel->AddText("#tau_{h}#tau_{h}");
+		if ( iCat == 1 ) label_channel->AddText("#mu#tau_{h}");
+		if ( iCat == 2 ) label_channel->AddText("e#mu");
 		label_channel->SetTextFont(63); //text font with precision = 3
 		label_channel->SetTextSize(60); //size given in pixel
 		label_channel->SetTextColor(1);
 		label_channel->SetTextAlign(11);
 		label_channel->Draw(); 
 		
-                TPaveText* label_letter = new TPaveText(0.20308, 0.44346, 0.383929, 0.555111, "NDC"); //= new TPaveText(0.03308, 0.82346, 0.383929, 0.935111, "NDC");
-		if(iCat>1) label_letter = new TPaveText(0.20308, 0.51346, 0.383929, 0.625111, "NDC");
+                TPaveText* label_letter = new TPaveText(0.24308, 0.40346 + shifty, 0.413929, 0.515111 + shifty, "NDC"); //= new TPaveText(0.03308, 0.82346, 0.383929, 0.935111, "NDC");
+		if ( iCat > 1 ) label_letter = new TPaveText(0.24308, 0.47346 + shifty, 0.413929, 0.585111 + shifty, "NDC");
 		//else label_letter = new TPaveText(0.03308, 0.84346, 0.383929, 0.955111, "NDC");
 		label_letter->SetFillStyle(0);
 		label_letter->SetBorderSize(0);
@@ -224,22 +232,22 @@ void makePlot(const std::string& inputFilePath, const std::string inputFileName,
 		label_letter->Draw(); 
 
 
-                double medVis   = AlternativeMedian((TH1D*)histogramH125Vis);
-                double medkEq0  = AlternativeMedian((TH1D*)histogramH125LOkEq0);
+                double medVis = AlternativeMedian((TH1D*)histogramH125Vis);
+                double medkEq0 = AlternativeMedian((TH1D*)histogramH125LOkEq0);
                 double medkNeq0 = AlternativeMedian((TH1D*)histogramH125LOkNeq0);
-                double rmsVis    = histogramH125Vis->GetRMS();
-                double rmskEq0   = histogramH125LOkEq0->GetRMS();
-                double rmskNeq0  = histogramH125LOkNeq0->GetRMS();
-		TLegend* legend_new   = new TLegend(0.20, 0.63, 0.68, 0.94);  
-                if(iCat<2) legend_new = new TLegend(0.20, 0.58, 0.68, 0.94);  
+                double rmsVis = histogramH125Vis->GetRMS();
+                double rmskEq0 = histogramH125LOkEq0->GetRMS();
+                double rmskNeq0 = histogramH125LOkNeq0->GetRMS();
+		TLegend* legend_new = new TLegend(0.25, 0.57, 0.73, 0.94);  
+                if ( iCat < 2 ) legend_new = new TLegend(0.25, 0.52, 0.73, 0.94);  
                 legend_new->SetFillColor(10);
                 legend_new->SetFillStyle(0);
                 legend_new->SetBorderSize(0);
                 legend_new->SetTextFont(43);
-                legend_new->SetTextSize(60);
+                legend_new->SetTextSize(57);
                 legend_new->SetTextColor(1);
                 
-                TH1D *hdummy = (TH1D*)histogramH125LOkNeq0->Clone();
+                TH1D* hdummy = (TH1D*)histogramH125LOkNeq0->Clone();
                 hdummy->SetLineColor(0); hdummy->SetMarkerColor(0);
                 legend_new->AddEntry(histogramH125Vis, "p^{vis(1)}+p^{vis(2)}+E^{miss}_{T} ", "l");
 
@@ -247,31 +255,30 @@ void makePlot(const std::string& inputFilePath, const std::string inputFileName,
                 string m1 = Form("%.1f",medkEq0);
                 string m2 = Form("%.1f",medkNeq0);
 
-                if(m0=="-0.00" || m0=="0.00") m0="0";
-                if(m1=="-0.00" || m1=="0.00") m1="0";
-                if(m2=="-0.00" || m2=="0.00") m2="0";
+                if ( m0 == "-0.00" || m0 == "0.00" ) m0 = "0";
+                if ( m1 == "-0.00" || m1 == "0.00" ) m1 = "0";
+                if ( m2 == "-0.00" || m2 == "0.00" ) m2 = "0";
 
                 TLegendEntry* l1;
-                if(histogram>1) l1 = legend_new->AddEntry(hdummy, Form("RMS=%.2f",rmsVis), "p");
-                else l1 = legend_new->AddEntry(hdummy, ("M="+m0+","+Form("RMS=%.1f",rmsVis)).c_str(), "p");
+                if ( histogram > 1 ) l1 = legend_new->AddEntry(hdummy, Form("RMS=%.2f", rmsVis), "p");
+                else l1 = legend_new->AddEntry(hdummy, ("M=" + m0 + "," + Form("RMS=%.1f", rmsVis)).c_str(), "p");
                 //if(histogram>1) l1 = legend_new->AddEntry(hdummy, ("M="+m0+","+Form("RMS=%.2f",rmsVis)).c_str(), "p");
 
 		legend_new->AddEntry(histogramH125LOkEq0, "cSVfit (#kappa=0)", "p");
 		TLegendEntry* l2;
-                if(histogram>1)  l2 = legend_new->AddEntry(hdummy, Form("RMS=%.2f",rmskEq0), "p");
-                else  l2 = legend_new->AddEntry(hdummy, ("M="+m1+","+Form("RMS=%.1f",rmskEq0)).c_str(), "p");
+                if ( histogram > 1 ) l2 = legend_new->AddEntry(hdummy, Form("RMS=%.2f",rmskEq0), "p");
+                else l2 = legend_new->AddEntry(hdummy, ("M="+m1+","+Form("RMS=%.1f",rmskEq0)).c_str(), "p");
 
-		if(iCat==0)         legend_new->AddEntry(histogramH125LOkNeq0, "cSVfit (#kappa=5)", "p");
-		else if(iCat==1)    legend_new->AddEntry(histogramH125LOkNeq0, "cSVfit (#kappa=4)", "p");
-		else                legend_new->AddEntry(histogramH125LOkNeq0, "cSVfit (#kappa=3)", "p");
+		if     ( iCat == 0 ) legend_new->AddEntry(histogramH125LOkNeq0, "cSVfit (#kappa=5)", "p");
+		else if( iCat == 1 ) legend_new->AddEntry(histogramH125LOkNeq0, "cSVfit (#kappa=4)", "p");
+		else                 legend_new->AddEntry(histogramH125LOkNeq0, "cSVfit (#kappa=3)", "p");
 		
 		TLegendEntry* l3;
-                if(histogram>1) l3 = legend_new->AddEntry(hdummy, Form("RMS=%.2f",rmskNeq0), "p");
-                else  l3 = legend_new->AddEntry(hdummy, ("M="+m2+","+Form("RMS=%.1f",rmskNeq0)).c_str(), "p");
+                if ( histogram > 1 ) l3 = legend_new->AddEntry(hdummy, Form("RMS=%.2f" ,rmskNeq0), "p");
+                else l3 = legend_new->AddEntry(hdummy, ("M=" + m2 + "," + Form("RMS=%.1f", rmskNeq0)).c_str(), "p");
  
                 legend_new->Draw();
                
-
 		canvas_new->Update();
 	}
 	std::string outputFileName_full = Form("%s%s", outputFilePath.data(), outputFileName.data());
@@ -299,23 +306,25 @@ void makeSVfitMEM_massPlots_from14()
         histograms.push_back(3);
 
 	std::map<int, std::string> xAxisTitles; // key=histograms
-	xAxisTitles[1]  = "#Delta p_{T} [GeV]";
-	xAxisTitles[2]  = "#Delta #eta";
-	xAxisTitles[3]  = "#Delta #phi";
+	xAxisTitles[1] = "#Delta p_{T} [GeV]";
+	xAxisTitles[2] = "#Delta #eta";
+	xAxisTitles[3] = "#Delta #phi";
 	
         std::map<int, std::string> yAxisTitles; // key=histograms
-	yAxisTitles[1]   = "dN/d#Delta p_{T} [1/GeV]";
-	yAxisTitles[2]  = "dN/d#Delta #eta";
-	yAxisTitles[3]  = "dN/d#Delta #phi";
+	yAxisTitles[1] = "dN/d#Delta p_{T} [1/GeV]";
+	yAxisTitles[2] = "dN/d#Delta #eta";
+	yAxisTitles[3] = "dN/d#Delta #phi";
 
-	std::string inputFilePath   = "/home/lucia/SVfitPerformanceStudiesII/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/";
-	std::string outputFilePath  = "/home/lucia/SVfitPerformanceStudiesII/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/finalplots/";
+	//std::string inputFilePath = "/home/lucia/SVfitPerformanceStudiesII/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/";
+	std::string inputFilePath = "/home/veelken/SVfitMEM_paper/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/";
+	//std::string outputFilePath  = "/home/lucia/SVfitPerformanceStudiesII/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/finalplots/";
+	std::string outputFilePath = "/home/veelken/SVfitMEM_paper/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/finalplots/";
 
-	std::string inputFileName   = "plot_14_lin.root";
+	std::string inputFileName = "plot_14_lin.root";
 	std::map<int, std::string> outputFileNames;  // key = histograms
-	outputFileNames[1]  = "Higgs_resolutions_pT.pdf";
-	outputFileNames[2]  = "Higgs_resolutions_eta.pdf";
-	outputFileNames[3]  = "Higgs_resolutions_phi.pdf";
+	outputFileNames[1] = "Higgs_resolutions_pT.pdf";
+	outputFileNames[2] = "Higgs_resolutions_eta.pdf";
+	outputFileNames[3] = "Higgs_resolutions_phi.pdf";
 
         for ( std::vector<int>::const_iterator histo = histograms.begin();
         histo != histograms.end(); ++histo ) {

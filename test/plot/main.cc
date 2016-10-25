@@ -14,8 +14,11 @@ int main ( int argc, char * argv[]) {
 
     // root file
         string inputdir  = "/hdfs/local/lucia/SVfitFiles/";
-        string outputdir  = "/home/lucia/SVfitPerformanceStudiesII/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/SVfitFiles_Output_V/";
-	vector<string> vinput {"hist_smeared_ZprimeToTauTauM2500_inclusive",
+        //string outputdir  = "/home/lucia/SVfitPerformanceStudiesII/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/SVfitFiles_Output_V/";
+        string outputdir  = "/home/veelken/SVfitMEM_paper/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/SVfitFiles_Output_V/";
+	vector<string> vinput {
+/*
+                "hist_smeared_ZprimeToTauTauM2500_inclusive",
                 "hist_smeared_SUSYGluGluToHToTauTauM1200_inclusive",
 		"hist_smeared_SUSYGluGluToHToTauTauM1800_inclusive",
 		"hist_smeared_SUSYGluGluToHToTauTauM200_inclusive",
@@ -33,14 +36,19 @@ int main ( int argc, char * argv[]) {
 		"hist_smeared_DYJetsToLLM50_1JetNotBoosted",
 		"hist_smeared_GluGluHToTauTauM125_1JetNotBoosted",
 		"hist_smeared_VBFHToTauTauM125_1JetNotBoosted",
+ */
 		"hist_smeared_DYJetsToLLM50_1JetBoosted",
+/*
 		"hist_smeared_GluGluHToTauTauM125_1JetBoosted",
 		"hist_smeared_VBFHToTauTauM125_1JetBoosted",
 		"hist_smeared_DYJetsToLLM50_2Jets",
 		"hist_smeared_GluGluHToTauTauM125_2Jets",
 		"hist_smeared_VBFHToTauTauM125_2Jets"
+ */
         }; 
-	vector<string>vsample{"ZprimeToTauTauM2500",
+	vector<string>vsample{
+/*
+	        "ZprimeToTauTauM2500",
                 "SUSYGluGluToHToTauTauM1200",
 		"SUSYGluGluToHToTauTauM1800_inclusive",
 		"SUSYGluGluToHToTauTauM200_inclusive",
@@ -58,12 +66,15 @@ int main ( int argc, char * argv[]) {
 		"DYJetsToLLM50",
 		"GluGluHToTauTauM125",
 		"VBFHToTauTauM125",
+ */
 		"DYJetsToLLM50",
+/*
 		"GluGluHToTauTauM125",
 		"VBFHToTauTauM125",
 		"DYJetsToLLM50",
 		"GluGluHToTauTauM125",
 		"VBFHToTauTauM125"
+ */
 	};
 
 	// directories

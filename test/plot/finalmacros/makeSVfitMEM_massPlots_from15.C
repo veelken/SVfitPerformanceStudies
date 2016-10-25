@@ -51,8 +51,8 @@ void makePlot(const std::string& inputFilePath, const std::string inputFileName,
 	TPad* t1 = new TPad("t1","t1", 0.0, 0.0, 1.00, 0.972, 4, 1);  t1->Draw();  t1->cd();
 	t1->SetTopMargin(0.00);
 	t1->SetRightMargin(0.02);
-	t1->SetBottomMargin(0.14);
-	t1->SetLeftMargin(0.145);
+	t1->SetBottomMargin(0.15);
+	t1->SetLeftMargin(0.155);
 	t1->SetFillColor(0);
 	t1->Divide(2,3,0,0);
 
@@ -69,16 +69,18 @@ void makePlot(const std::string& inputFilePath, const std::string inputFileName,
 
 	int nPlots = letters.size();
 
-	for ( int iCat=0; iCat<nPlots; iCat++ ) {
-		if(iCat<2){
+	for ( int iCat=0; iCat < nPlots; iCat++ ) {
+		if ( iCat < 2 ){
 			t2->cd(idxPad[iCat]);
-			TPaveText* label_sample = new TPaveText(0.20, 0.00, 0.4600, 0.3375, "NDC");
+			TPaveText* label_sample = 0;
+			if ( iCat == 0 ) label_sample = new TPaveText(0.22, 0.00, 0.4600, 0.3375, "NDC");
+			else label_sample = new TPaveText(0.10, 0.00, 0.3700, 0.3375, "NDC");
 			label_sample->SetFillStyle(0);
 			label_sample->SetBorderSize(0);
-			if(iCat==0) label_sample->AddText("Z/#gamma* #rightarrow #tau#tau"); 
+			if ( iCat == 0 ) label_sample->AddText("Z/#gamma* #rightarrow #tau#tau"); 
                         else label_sample->AddText("H(125 GeV) #rightarrow #tau#tau");
 			label_sample->SetTextFont(43);
-			label_sample->SetTextSize(50);
+			label_sample->SetTextSize(60);
 			label_sample->SetTextColor(1);
 			label_sample->SetTextAlign(11);
 			label_sample->Draw();
@@ -108,11 +110,11 @@ void makePlot(const std::string& inputFilePath, const std::string inputFileName,
 
 			TH1* tmpHistogram = dynamic_cast<TH1*>(obj);
 			if ( tmpHistogram ) {
-				if ( tmpHistogram->GetLineColor() ==   1 ) histogramSVfit          = tmpHistogram;
-				if ( tmpHistogram->GetLineColor() ==   2 ) histogramSVfitMEMkEq0   = tmpHistogram;
-				if ( tmpHistogram->GetLineColor() ==   3 ) histogramcSVfitkEq0     = tmpHistogram;
-				if ( tmpHistogram->GetLineColor() ==   4 ) histogramSVfitMEMkNeq0  = tmpHistogram;
-				if ( tmpHistogram->GetLineColor() ==   5 ) histogramcSVfitkNeq0    = tmpHistogram;
+				if ( tmpHistogram->GetLineColor() == 1 ) histogramSVfit          = tmpHistogram;
+				if ( tmpHistogram->GetLineColor() == 2 ) histogramSVfitMEMkEq0   = tmpHistogram;
+				if ( tmpHistogram->GetLineColor() == 3 ) histogramcSVfitkEq0     = tmpHistogram;
+				if ( tmpHistogram->GetLineColor() == 4 ) histogramSVfitMEMkNeq0  = tmpHistogram;
+				if ( tmpHistogram->GetLineColor() == 5 ) histogramcSVfitkNeq0    = tmpHistogram;
 			}
 		}
 
@@ -170,28 +172,28 @@ void makePlot(const std::string& inputFilePath, const std::string inputFileName,
 		if(iCat>3) xAxis->SetTitle("t [s]");
 		else xAxis->SetTitle("");
 		xAxis->SetRangeUser(0.13,200);
-		xAxis->SetTitleOffset(3);
-		xAxis->SetTitleSize(60);
+		xAxis->SetTitleOffset(3.1);
+		xAxis->SetTitleSize(90);
 		xAxis->SetTitleFont(43);
 		if(iCat<4) xAxis->SetLabelOffset(999);
-		xAxis->SetLabelSize(50);
+		xAxis->SetLabelSize(70);
 		xAxis->SetLabelFont(43);
 		xAxis->SetTickLength(0.040);
 		xAxis->SetNdivisions(505);
 
-		TAxis* yAxis =histogramcSVfitkEq0 ->GetYaxis();
+		TAxis* yAxis =histogramcSVfitkEq0->GetYaxis();
 		if(iCat==0||iCat==2||iCat==4) yAxis->SetTitle("dN/dt [1/s]");
 		else yAxis->SetTitle("");
-		yAxis->SetRangeUser(0.000005,3300);
-		yAxis->SetTitleOffset(4);
-		yAxis->SetTitleSize(60);
+		yAxis->SetRangeUser(5.e-4,5.5e+1);
+		yAxis->SetTitleOffset(3.3);
+		yAxis->SetTitleSize(90);
 		yAxis->SetTitleFont(43);
 		if(iCat!=0 && iCat!=2 && iCat!=4) 
 			yAxis->SetLabelOffset(999);
-		yAxis->SetLabelSize(50);
+		yAxis->SetLabelSize(70);
 		yAxis->SetLabelFont(43);
 		yAxis->SetTickLength(0.040);  
-		//yAxis->SetNdivisions(505);
+		yAxis->SetNdivisions(505);
 
 		histogramcSVfitkEq0->SetTitle("");
 		histogramcSVfitkEq0->SetStats(false);
@@ -203,24 +205,29 @@ void makePlot(const std::string& inputFilePath, const std::string inputFileName,
 		histogramSVfit->Draw("histsame");
 		histogramcSVfitkEq0->Draw("histsame");
 
-		TPaveText* label_channel;
+		histogramcSVfitkNeq0->Draw("same");
+		histogramSVfitMEMkNeq0->Draw("same");
+
+		TPaveText* label_channel = 0;
 		//if(iCat==0||iCat==3||iCat==6) 
-                label_channel = new TPaveText(0.20308, 0.78346, 0.383929, 0.845111, "NDC");
-		if(idxPad[iCat]%2==0) label_channel = new TPaveText(0.03308, 0.78346, 0.383929, 0.845111, "NDC");
+                //label_channel = new TPaveText(0.20308, 0.78346, 0.383929, 0.845111, "NDC");
+		//if(idxPad[iCat]%2==0) label_channel = new TPaveText(0.03308, 0.78346, 0.383929, 0.845111, "NDC");
+		if ( (idxPad[iCat] % 2) != 0 ) label_channel = new TPaveText(0.40308, 0.85846, 0.583929, 0.950111, "NDC");
+		else label_channel = new TPaveText(0.24308, 0.85846, 0.423929, 0.950111, "NDC");
 		label_channel->SetFillStyle(0);
 		label_channel->SetBorderSize(0);
-		if(iCat<2) label_channel->AddText("#tau_{h}#tau_{h}");
-		if(iCat==2||iCat==3) label_channel->AddText("#mu#tau_{h}");
-		if(iCat==4||iCat==5) label_channel->AddText("e#mu");
+		if ( iCat < 2 ) label_channel->AddText("#tau_{h}#tau_{h}");
+		if ( iCat == 2 || iCat == 3 ) label_channel->AddText("#mu#tau_{h}");
+		if ( iCat == 4 || iCat == 5 ) label_channel->AddText("e#mu");
 		label_channel->SetTextFont(63); //text font with precision = 3
-		label_channel->SetTextSize(60); //size given in pixel
+		label_channel->SetTextSize(75); //size given in pixel
 		label_channel->SetTextColor(1);
 		label_channel->SetTextAlign(11);
 		label_channel->Draw(); 
 		
-		TPaveText* label_letter; //= new TPaveText(0.03308, 0.82346, 0.383929, 0.935111, "NDC");
-		if(idxPad[iCat]%2!=0) label_letter = new TPaveText(0.20308, 0.82346, 0.383929, 0.935111, "NDC");
-		else label_letter = new TPaveText(0.03308, 0.82346, 0.383929, 0.935111, "NDC");
+		TPaveText* label_letter = 0; //= new TPaveText(0.03308, 0.82346, 0.383929, 0.935111, "NDC");
+		if ( (idxPad[iCat] % 2) != 0 ) label_letter = new TPaveText(0.21308, 0.84346, 0.393929, 0.955111, "NDC");
+		else label_letter = new TPaveText(0.04308, 0.84346, 0.223929, 0.955111, "NDC");
 		label_letter->SetFillStyle(0);
 		label_letter->SetBorderSize(0);
 		label_letter->AddText(letters[iCat].c_str());
@@ -229,8 +236,6 @@ void makePlot(const std::string& inputFilePath, const std::string inputFileName,
 		label_letter->SetTextColor(1);
 		label_letter->SetTextAlign(11);
 		label_letter->Draw();
-
-
 
                 double meanSVfit         = histogramSVfit->GetMean();
                 double meancSVfitkEq0    = histogramcSVfitkEq0->GetMean();
@@ -243,15 +248,15 @@ void makePlot(const std::string& inputFilePath, const std::string inputFileName,
                 double rmsSVfitMEMkEq0   = histogramSVfitMEMkEq0->GetRMS();
                 double rmsSVfitMEMkNeq0  = histogramSVfitMEMkNeq0->GetRMS();
 
-                TLegend* legend_new  = new TLegend(0.62, 0.65, 0.83, 0.95); //good for iCat==4 
-                if(iCat==0||iCat==2) legend_new = new TLegend(0.62, 0.60, 0.83, 0.95);
-                if(iCat==5) legend_new = new TLegend(0.53, 0.65, 0.83, 0.95);
-                if(iCat==1||iCat==3) legend_new = new TLegend(0.53, 0.60, 0.83, 0.95); // 
+                TLegend* legend_new  = new TLegend(0.57, 0.60, 0.83, 0.95); //good for iCat==4 
+                if(iCat==0||iCat==2) legend_new = new TLegend(0.57, 0.55, 0.83, 0.95);
+                if(iCat==5) legend_new = new TLegend(0.48, 0.60, 0.83, 0.95);
+                if(iCat==1||iCat==3) legend_new = new TLegend(0.48, 0.55, 0.83, 0.95); // 
                 legend_new->SetFillColor(10);
                 legend_new->SetFillStyle(0);
                 legend_new->SetBorderSize(0);
                 legend_new->SetTextFont(43);
-                legend_new->SetTextSize(60);
+                legend_new->SetTextSize(65);
                 legend_new->SetTextColor(1);
                 //legend_new->SetNColumns(2);
                 
@@ -315,9 +320,10 @@ void makeSVfitMEM_massPlots_from15()
 
 	TH1::AddDirectory(false);
 
-
-	std::string inputFilePath = "/home/lucia/SVfitPerformanceStudiesII/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/";
-	std::string outputFilePath = "/home/lucia/SVfitPerformanceStudiesII/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/finalplots/";
+	//std::string inputFilePath = "/home/lucia/SVfitPerformanceStudiesII/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/";
+	std::string inputFilePath = "/home/veelken/SVfitMEM_paper/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/";
+	//std::string outputFilePath = "/home/lucia/SVfitPerformanceStudiesII/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/finalplots/";
+	std::string outputFilePath = "/home/veelken/SVfitMEM_paper/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/finalplots/";
 
 	std::string inputFileName   = "plot_15_log.root";
 	std::string outputFileName  = "Higgs_DYJets_CPU_time.root";
