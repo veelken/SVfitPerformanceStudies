@@ -1,70 +1,61 @@
-\begin{table}
 \begin{center}
-\begin{tabular}{|l|ccc|ccc|}
+\begin{tabular}{|l|C{1.5cm}C{1.5cm}|C{1.5cm}C{1.5cm}|}
 \hline
-\multicolumn{7}{|c|}{$\tauh\tauh$ decay channel} \\
-\hline
-\hline
-\multirow{2}{17mm}{Sample} & \multicolumn{3}{c|}{$m_{\vis}$} & \multicolumn{3}{c|}{SVfitSA} \\
-\cline{2-7}
-& $\textrm{M}$~[\GeV\unskip] & $\sigma/\textrm{M}$ & $S/\sqrt{B}$ & $\textrm{M}$~[\GeV\unskip] & $\sigma/\textrm{M}$ & $S/\sqrt{B}$ \\
-\hline
-$\PHiggsps \to \Pgt\Pgt$: & & & & & & \\ 
-$\quad m_{\PHiggsps} = 200$~\GeV   &  $146.463$ & $ 0.174$ & $ 99.551\pm0.036 $ &  $188.954$ & $ 0.139$ & $ 99.748\pm0.027$  \\
-$\quad m_{\PHiggsps} = 300$~\GeV   &  $199.4$ & $ 0.223$ & $ 98.669\pm0.063 $ &  $273.44$ & $ 0.169$ & $ 99.161\pm0.05$  \\
-$\quad m_{\PHiggsps} = 500$~\GeV   &  $310.121$ & $ 0.267$ & $ 96.463\pm0.103 $ &  $444.985$ & $ 0.194$ & $ 98.212\pm0.073$  \\
-$\quad m_{\PHiggsps} = 800$~\GeV   &  $473.221$ & $ 0.298$ & $ 91.121\pm0.164 $ &  $713.014$ & $ 0.199$ & $ 96.205\pm0.106$  \\
-$\quad m_{\PHiggsps} = 1200$~\GeV  &  $699.95$ & $ 0.31$ & $ 80.047\pm0.239 $ &  $1065.41$ & $ 0.201$ & $ 90.937\pm0.165$  \\
-$\quad m_{\PHiggsps} = 1800$~\GeV  &  $1030.9$ & $ 0.322$ & $ 63.054\pm0.283 $ &  $1603.85$ & $ 0.203$ & $ 75.801\pm0.253$  \\
-$\quad m_{\PHiggsps} = 2600$~\GeV  &  $1475$ & $ 0.331$ & $ 51.183\pm0.281 $ &  $2311.82$ & $ 0.203$ & $ 52.7\pm0.282$  \\
-$\PZ' \to \Pgt\Pgt$: & & & & & & \\ 
-$\quad m_{\PZ'} = 2500$~\GeV       &  $1369.42$ & $ 0.379$ & $  -  $ &  $2060.57$ & $ 0.286$ & $  - $  \\
-\hline
-\end{tabular}
-
-\begin{tabular}{|l|ccc|ccc|}
-\hline
-\multicolumn{7}{|c|}{$\tauh\tauh$ decay channel} \\
+\multicolumn{5}{|c|}{$\tauh\tauh$ decay channel} \\
 \hline
 \hline
-\multirow{2}{17mm}{Sample} & \multicolumn{3}{c|}{$cSVfit, $\kappa=0$$} & \multicolumn{3}{c|}{cSVfit, $\kappa=5$} \\
-\cline{2-7}
-& $\textrm{M}$~[\GeV\unskip] & $\sigma/\textrm{M}$ & $S/\sqrt{B}$ & $\textrm{M}$~[\GeV\unskip] & $\sigma/\textrm{M}$ & $S/\sqrt{B}$ \\
+\multirow{2}{17mm}{Sample} & \multicolumn{2}{c|}{cSVfit, $\kappa=0$} & \multicolumn{2}{c|}{cSVfit, $\kappa=5$} \\
+\cline{2-5}
+ & $\textrm{M}$~[\GeV\unskip] & $\sigma/\textrm{M}$ & $\textrm{M}$~[\GeV\unskip] & $\sigma/\textrm{M}$ \\
 \hline
-$\PHiggsps \to \Pgt\Pgt$: & & & & & & \\ 
-$\quad m_{\PHiggsps} = 200$~\GeV   &  $204.934$ & $ 0.263$ & $ 99.808\pm0.024 $ &  $186.659$ & $ 0.137$ & $ 99.743\pm0.027$  \\
-$\quad m_{\PHiggsps} = 300$~\GeV   &  $299.724$ & $ 0.268$ & $ 99.334\pm0.044 $ &  $271.068$ & $ 0.167$ & $ 99.217\pm0.048$  \\
-$\quad m_{\PHiggsps} = 500$~\GeV   &  $488.484$ & $ 0.255$ & $ 98.664\pm0.063 $ &  $443.305$ & $ 0.189$ & $ 98.267\pm0.072$  \\
-$\quad m_{\PHiggsps} = 800$~\GeV   &  $773.146$ & $ 0.223$ & $ 97.345\pm0.089 $ &  $712.716$ & $ 0.193$ & $ 96.375\pm0.104$  \\
-$\quad m_{\PHiggsps} = 1200$~\GeV  &  $1151.68$ & $ 0.222$ & $ 94.228\pm0.131 $ &  $1066.62$ & $ 0.195$ & $ 91.483\pm0.16$  \\
-$\quad m_{\PHiggsps} = 1800$~\GeV  &  $1717.59$ & $ 0.215$ & $ 81.576\pm0.226 $ &  $1601.75$ & $ 0.197$ & $ 76.747\pm0.249$  \\
-$\quad m_{\PHiggsps} = 2600$~\GeV  &  $2471.18$ & $ 0.205$ & $ 54.291\pm0.283 $ &  $2312.33$ & $ 0.199$ & $ 52.421\pm0.282$  \\
-$\PZ' \to \Pgt\Pgt$: & & & & & & \\ 
-$\quad m_{\PZ'} = 2500$~\GeV       &  $2322.4$ & $ 0.3$ & $  -  $ &  $2084.1$ & $ 0.278$ & $  - $  \\
+$\PHiggsps \to \Pgt\Pgt$: & & & & \\ 
+$\quad m_{\PHiggsps} = 200$~\GeV  & $147.9$ & $ 0.171 $ & $190.7$ & $ 0.134$ \\
+$\quad m_{\PHiggsps} = 300$~\GeV  & $202.4$ & $ 0.216 $ & $277.5$ & $ 0.160$ \\
+$\quad m_{\PHiggsps} = 500$~\GeV  & $318.3$ & $ 0.257 $ & $455.0$ & $ 0.181$ \\
+$\quad m_{\PHiggsps} = 800$~\GeV  & $487.5$ & $ 0.286 $ & $732.8$ & $ 0.182$ \\
+$\quad m_{\PHiggsps} = 1200$~\GeV & $723.9$ & $ 0.298 $ & $1100.7$ & $ 0.183$ \\
+$\quad m_{\PHiggsps} = 1800$~\GeV & $1077.6$ & $ 0.305 $ & $1661.6$ & $ 0.180$ \\
+$\quad m_{\PHiggsps} = 2600$~\GeV & $1553.0$ & $ 0.310 $ & $2414.2$ & $ 0.177$ \\
+$\PZ' \to \Pgt\Pgt$: & & & & \\ 
+$\quad m_{\PZ'} = 2500$~\GeV      & $1485.9$ & $ 0.316 $ & $2195.5$ & $ 0.213$ \\
 \hline
 \end{tabular}
 
-\begin{tabular}{|l|ccc|ccc|}
+\begin{tabular}{|l|C{1.5cm}C{1.5cm}|C{1.5cm}C{1.5cm}|}
 \hline
-\multicolumn{7}{|c|}{$\tauh\tauh$ decay channel} \\
+\multirow{2}{17mm}{Sample} & \multicolumn{2}{c|}{cSVfit, $\kappa=0$} & \multicolumn{2}{c|}{cSVfit, $\kappa=5$} \\
+\cline{2-5}
+ & $\textrm{M}$~[\GeV\unskip] & $\sigma/\textrm{M}$ & $\textrm{M}$~[\GeV\unskip] & $\sigma/\textrm{M}$ \\
 \hline
-\hline
-\multirow{2}{17mm}{Sample} & \multicolumn{3}{c|}{$SVfitMEM, $\kappa=0$$} & \multicolumn{3}{c|}{SVfitMEM, $\kappa=5$} \\
-\cline{2-7}
-& $\textrm{M}$~[\GeV\unskip] & $\sigma/\textrm{M}$ & $S/\sqrt{B}$ & $\textrm{M}$~[\GeV\unskip] & $\sigma/\textrm{M}$ & $S/\sqrt{B}$ \\
-\hline
-$\PHiggsps \to \Pgt\Pgt$: & & & & & & \\ 
-$\quad m_{\PHiggsps} = 200$~\GeV   &  $201.989$ & $ 1.455$ & $ 99.752\pm0.027 $ &  $186.112$ & $ 0.137$ & $ 99.74\pm0.027$  \\
-$\quad m_{\PHiggsps} = 300$~\GeV   &  $294.925$ & $ 1.126$ & $ 99.315\pm0.045 $ &  $268.981$ & $ 0.168$ & $ 99.173\pm0.049$  \\
-$\quad m_{\PHiggsps} = 500$~\GeV   &  $486.447$ & $ 1.595$ & $ 98.16\pm0.074 $ &  $440.721$ & $ 0.191$ & $ 98.241\pm0.072$  \\
-$\quad m_{\PHiggsps} = 800$~\GeV   &  $775.327$ & $ 1.426$ & $ 94.696\pm0.126 $ &  $704.641$ & $ 0.194$ & $ 96.222\pm0.106$  \\
-$\quad m_{\PHiggsps} = 1200$~\GeV  &  $1139.55$ & $ 0.717$ & $ 91.883\pm0.156 $ &  $1054.59$ & $ 0.196$ & $ 91.281\pm0.162$  \\
-$\quad m_{\PHiggsps} = 1800$~\GeV  &  $1628.17$ & $ 0.207$ & $ 76.461\pm0.25 $ &  $1557.84$ & $ 0.194$ & $ 74.8\pm0.256$  \\
-$\quad m_{\PHiggsps} = 2600$~\GeV  &  $2293.66$ & $ 0.186$ & $ 52.376\pm0.282 $ &  $2216.67$ & $ 0.201$ & $ 52.044\pm0.282$  \\
-$\PZ' \to \Pgt\Pgt$: & & & & & & \\ 
-$\quad m_{\PZ'} = 2500$~\GeV       &  $2081.5$ & $ 0.265$ & $  -  $ &  $1991.8$ & $ 0.277$ & $  - $  \\
+$\PHiggsps \to \Pgt\Pgt$: & & & & \\ 
+$\quad m_{\PHiggsps} = 200$~\GeV  & $206.7$ & $ 0.217$ & $ 188.3 $ & $0.131$ \\
+$\quad m_{\PHiggsps} = 300$~\GeV  & $303.2$ & $ 0.263$ & $ 275.5 $ & $0.157$ \\
+$\quad m_{\PHiggsps} = 500$~\GeV  & $497.2$ & $ 0.227 $ & $452.6 $ & $0.177$  \\
+$\quad m_{\PHiggsps} = 800$~\GeV  & $788.4$ & $ 0.211 $ & $731.2$ & $ 0.176$ \\
+$\quad m_{\PHiggsps} = 1200$~\GeV & $1179.3$ & $ 0.211 $ & $1101.1$ & $ 0.176$ \\
+$\quad m_{\PHiggsps} = 1800$~\GeV & $1769.2$ & $ 0.219 $ & $1661.3$ & $ 0.173$ \\
+$\quad m_{\PHiggsps} = 2600$~\GeV & $2560.2$ & $ 0.202 $ & $2412.6$ & $ 0.173$ \\
+$\PZ' \to \Pgt\Pgt$: & & & & \\ 
+$\quad m_{\PZ'} = 2500$~\GeV      & $2445.3$ & $ 0.291 $ & $2218.9$ & $ 0.203$ \\
 \hline
 \end{tabular}
 
-\end{table}
-
+\begin{tabular}{|l|C{1.5cm}C{1.5cm}|C{1.5cm}C{1.5cm}|}
+\hline
+\multirow{2}{17mm}{Sample} & \multicolumn{2}{c|}{SVfitMEM, $\kappa=0$} & \multicolumn{2}{c|}{SVfitMEM, $\kappa=5$} \\
+\cline{2-5}
+ & $\textrm{M}$~[\GeV\unskip] & $\sigma/\textrm{M}$ & $\textrm{M}$~[\GeV\unskip] & $\sigma/\textrm{M}$ \\
+\hline
+$\PHiggsps \to \Pgt\Pgt$: & & & & \\ 
+$\quad m_{\PHiggsps} = 200$~\GeV  & $203.2$ & $ 0.613$ & $ 187.9$ & $ 0.131$ \\
+$\quad m_{\PHiggsps} = 300$~\GeV  & $298.3$ & $ 0.847 $ & $273.4$ & $ 0.158$ \\
+$\quad m_{\PHiggsps} = 500$~\GeV  & $494.8$ & $ 1.410$ & $ 450.6$ & $ 0.179$ \\
+$\quad m_{\PHiggsps} = 800$~\GeV  & $790.7$ & $ 1.547$ & $ 723.4$ & $ 0.178$ \\
+$\quad m_{\PHiggsps} = 1200$~\GeV & $1165.8$ & $ 0.816$ & $ 1087.9$ & $ 0.177$ \\
+$\quad m_{\PHiggsps} = 1800$~\GeV & $1684.4$ & $ 0.258$ & $ 1619.5$ & $ 0.172$ \\
+$\quad m_{\PHiggsps} = 2600$~\GeV & $2399.0$ & $ 0.187$ & $ 2325.0$ & $ 0.175$ \\
+$\PZ' \to \Pgt\Pgt$: & & & & \\ 
+$\quad m_{\PZ'} = 2500$~\GeV      & $2222.0$ & $ 0.401$ & $ 2130.6$ & $ 0.203$ \\
+\hline
+\end{tabular}
+\end{center}

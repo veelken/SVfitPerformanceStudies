@@ -1405,6 +1405,7 @@ public :
    TH1D *hmasslog[21],       *hmasslog_0Jets[21], *hmasslog_1JetNotBoosted[21], *hmasslog_1JetBoosted[21], *hmasslog_2Jets[21];
    TH1D *hmasslin_ratio[21], *hmasslin_ratio_0Jets[21], *hmasslin_ratio_1JetNotBoosted[21], *hmasslin_ratio_1JetBoosted[21], *hmasslin_ratio_2Jets[21];
    TH1D *hmasslog_ratio[21], *hmasslog_ratio_0Jets[21], *hmasslog_ratio_1JetNotBoosted[21], *hmasslog_ratio_1JetBoosted[21], *hmasslog_ratio_2Jets[21];
+   TH1D *hmass_ratio[21], *hmass_ratio_0Jets[21], *hmass_ratio_1JetNotBoosted[21], *hmass_ratio_1JetBoosted[21], *hmass_ratio_2Jets[21];  //fine binning
    TH1D *hCPUtime_log[19];  
    TH1D *hResolutionPt[10];
    TH1D *hResolutionEta[10];
@@ -1512,31 +1513,36 @@ SVfitMEM::SVfitMEM(TTree *tree, std::string dir, std::string sample, double mass
 		TH1D *tmp_hlog = new TH1D((dir+"_"+vplotToInclude[iplot]+"_LOG").c_str(),(vplotToInclude[iplot]+"_LOG").c_str(),numbin, getLogBinning(xMax[mass]-numbin, xMax[mass], numbin).GetArray());
 		TH1D *tmp_hlin = new TH1D((dir+"_"+vplotToInclude[iplot]+"_LIN").c_str(),(vplotToInclude[iplot]+"_LIN").c_str(),numbin, xMax[mass]-numbin, xMax[mass]);
 		TH1D *tmp_hlog_ratio = new TH1D((dir+"_"+vplotToInclude[iplot]+"_ratio_LOG").c_str(),(vplotToInclude[iplot]+"_ratio_LOG").c_str(), 25, getLogBinning(0.1, 10.0, 25).GetArray() );
-		TH1D *tmp_hlin_ratio = new TH1D((dir+"_"+vplotToInclude[iplot]+"_ratio_LIN").c_str(),(vplotToInclude[iplot]+"_ratio_LIN").c_str(),100,0.01,10);
+		TH1D *tmp_hlin_ratio = new TH1D((dir+"_"+vplotToInclude[iplot]+"_ratio_LIN").c_str(),(vplotToInclude[iplot]+"_ratio_LIN").c_str(),100,0,10);
+		TH1D *tmp_h_ratio = new TH1D((dir+"_"+vplotToInclude[iplot]+"_ratio_fine_bin").c_str(),(vplotToInclude[iplot]+"_ratio_fine_bin").c_str(),10000,0,10);
 		
                 TH1D *tmp_h_0 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_fine_bin_0Jets").c_str(),(vplotToInclude[iplot]+"_fine_bin_0Jets").c_str(), 12000,0,6000);
 		TH1D *tmp_hlog_0 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_LOG_0Jets").c_str(),(vplotToInclude[iplot]+"_LOG_0Jets").c_str(),numbin, getLogBinning(xMax[mass]-numbin, xMax[mass], numbin).GetArray());
 		TH1D *tmp_hlin_0 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_LIN_0Jets").c_str(),(vplotToInclude[iplot]+"_LIN_0Jets").c_str(),numbin, xMax[mass]-numbin, xMax[mass]);
 		TH1D *tmp_hlog_ratio_0 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_ratio_LOG_0Jets").c_str(),(vplotToInclude[iplot]+"_ratio_LOG_0Jets").c_str(), 25, getLogBinning(0.1, 10.0, 25).GetArray() );
-		TH1D *tmp_hlin_ratio_0 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_ratio_LIN_0Jets").c_str(),(vplotToInclude[iplot]+"_ratio_LIN_0Jets").c_str(),100,0.01,10);
+		TH1D *tmp_hlin_ratio_0 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_ratio_LIN_0Jets").c_str(),(vplotToInclude[iplot]+"_ratio_LIN_0Jets").c_str(),100,0,10);
+		TH1D *tmp_h_ratio_0 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_ratio_fine_bin_0Jets").c_str(),(vplotToInclude[iplot]+"_ratio_fine_bin_0Jets").c_str(),10000,0,10);
                 
                 TH1D *tmp_h_10 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_fine_bin_1JetNotBoosted").c_str(),(vplotToInclude[iplot]+"_fine_bin_1JetNotBoosted").c_str(), 12000,0,6000);
 		TH1D *tmp_hlog_10 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_LOG_1JetNotBoosted").c_str(),(vplotToInclude[iplot]+"_LOG_1JetNotBoosted").c_str(),numbin, getLogBinning(xMax[mass]-numbin, xMax[mass], numbin).GetArray());
 		TH1D *tmp_hlin_10 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_LIN_1JetNotBoosted").c_str(),(vplotToInclude[iplot]+"_LIN_1JetNotBoosted").c_str(),numbin, xMax[mass]-numbin, xMax[mass]);
 		TH1D *tmp_hlog_ratio_10 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_ratio_LOG_1JetNotBoosted").c_str(),(vplotToInclude[iplot]+"_ratio_LOG_1JetNotBoosted").c_str(), 25, getLogBinning(0.1, 10.0, 25).GetArray() );
-		TH1D *tmp_hlin_ratio_10 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_ratio_LIN_1JetNotBoosted").c_str(),(vplotToInclude[iplot]+"_ratio_LIN_1JetNotBoosted").c_str(),100,0.01,10);
-                
+		TH1D *tmp_hlin_ratio_10 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_ratio_LIN_1JetNotBoosted").c_str(),(vplotToInclude[iplot]+"_ratio_LIN_1JetNotBoosted").c_str(),100,0,10);
+                TH1D *tmp_h_ratio_10 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_ratio_fine_bin_1JetNotBoosted").c_str(),(vplotToInclude[iplot]+"_ratio_fine_bin_1JetNotBoosted").c_str(),10000,0,10);
+
                 TH1D *tmp_h_11 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_fine_bin_1JetBoosted").c_str(),(vplotToInclude[iplot]+"_fine_bin_1JetBoosted").c_str(), 12000,0,6000);
 		TH1D *tmp_hlog_11 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_LOG_1JetBoosted").c_str(),(vplotToInclude[iplot]+"_LOG_1JetBoosted").c_str(),numbin, getLogBinning(xMax[mass]-numbin, xMax[mass], numbin).GetArray());
 		TH1D *tmp_hlin_11 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_LIN_1JetBoosted").c_str(),(vplotToInclude[iplot]+"_LIN_1JetBoosted").c_str(),numbin, xMax[mass]-numbin, xMax[mass]);
 		TH1D *tmp_hlog_ratio_11 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_ratio_LOG_1JetBoosted").c_str(),(vplotToInclude[iplot]+"_ratio_LOG_1JetBoosted").c_str(), 25, getLogBinning(0.1, 10.0, 25).GetArray() );
-		TH1D *tmp_hlin_ratio_11 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_ratio_LIN_1JetBoosted").c_str(),(vplotToInclude[iplot]+"_ratio_LIN_1JetBoosted").c_str(),100,0.01,10);
+		TH1D *tmp_hlin_ratio_11 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_ratio_LIN_1JetBoosted").c_str(),(vplotToInclude[iplot]+"_ratio_LIN_1JetBoosted").c_str(),100,0,10);
+		TH1D *tmp_h_ratio_11 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_ratio_fine_bin_1JetBoosted").c_str(),(vplotToInclude[iplot]+"_ratio_fine_bin_1JetBoosted").c_str(),10000,0,10);
                 
                 TH1D *tmp_h_2 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_fine_bin_2Jets").c_str(),(vplotToInclude[iplot]+"_fine_bin_2Jets").c_str(), 12000,0,6000);
 		TH1D *tmp_hlog_2 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_LOG_2Jets").c_str(),(vplotToInclude[iplot]+"_LOG_2Jets").c_str(),numbin, getLogBinning(xMax[mass]-numbin, xMax[mass], numbin).GetArray());
 		TH1D *tmp_hlin_2 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_LIN_2Jets").c_str(),(vplotToInclude[iplot]+"_LIN_2Jets").c_str(),numbin, xMax[mass]-numbin, xMax[mass]);
 		TH1D *tmp_hlog_ratio_2 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_ratio_LOG_2Jets").c_str(),(vplotToInclude[iplot]+"_ratio_LOG_2Jets").c_str(), 25, getLogBinning(0.1, 10.0, 25).GetArray() );
-		TH1D *tmp_hlin_ratio_2 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_ratio_LIN_2Jets").c_str(),(vplotToInclude[iplot]+"_ratio_LIN_2Jets").c_str(),100,0.01,10);
+		TH1D *tmp_hlin_ratio_2 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_ratio_LIN_2Jets").c_str(),(vplotToInclude[iplot]+"_ratio_LIN_2Jets").c_str(),100,0,10);
+		TH1D *tmp_h_ratio_2 = new TH1D((dir+"_"+vplotToInclude[iplot]+"_ratio_fine_bin_2Jets").c_str(),(vplotToInclude[iplot]+"_ratio_fine_bin_2Jets").c_str(),10000,0,10);
 		
                 hmass[iplot]                = (TH1D*)tmp_h->Clone();
                 hmass_0Jets[iplot]          = (TH1D*)tmp_h_0->Clone();
@@ -1567,6 +1573,12 @@ SVfitMEM::SVfitMEM(TTree *tree, std::string dir, std::string sample, double mass
                 hmasslin_ratio_1JetNotBoosted[iplot] = (TH1D*)tmp_hlin_ratio_10->Clone();
                 hmasslin_ratio_1JetBoosted[iplot]    = (TH1D*)tmp_hlin_ratio_11->Clone();
                 hmasslin_ratio_2Jets[iplot]          = (TH1D*)tmp_hlin_ratio_2->Clone();
+
+		hmass_ratio[iplot]                = (TH1D*)tmp_h_ratio->Clone();
+                hmass_ratio_0Jets[iplot]          = (TH1D*)tmp_h_ratio_0->Clone();
+                hmass_ratio_1JetNotBoosted[iplot] = (TH1D*)tmp_h_ratio_10->Clone();
+                hmass_ratio_1JetBoosted[iplot]    = (TH1D*)tmp_h_ratio_11->Clone();
+                hmass_ratio_2Jets[iplot]          = (TH1D*)tmp_h_ratio_2->Clone();
 	}
 
 	for(int iplot=0; iplot<nplotToIncludeForCPU; iplot++) {

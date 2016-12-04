@@ -76,18 +76,12 @@ vector<double> Quantile68(const TH1D * h1){
    return xrange;
 }
 
-double rounded(double val)
+std::string rounded_1digit(double val)
 {
-  double decimal;
-  double resultat;
+  return Form("%1.1f", val);
+}
 
-  val*=1000;
-
-  decimal=val-floor(val);
-  if (decimal< 0.5) resultat=floor(val);
-  else resultat=ceil(val);
-
-  resultat/=1000;
-
-  return resultat;
+std::string rounded_3digits(double val)
+{
+  return Form("%1.3f", val);
 }

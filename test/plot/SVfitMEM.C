@@ -209,10 +209,27 @@ void SVfitMEM::Loop()
       
       hmasslin_ratio[0]->Fill(visMass/genDiTauMass);
       hmasslog_ratio[0]->Fill(visMass/genDiTauMass);
-      if(category_0Jets)          {hmasslin_ratio_0Jets[0]->Fill(visMass/genDiTauMass); hmasslog_ratio_0Jets[0]->Fill(visMass/genDiTauMass);}
-      if(category_1JetNotBoosted) {hmasslin_ratio_1JetNotBoosted[0]->Fill(visMass/genDiTauMass); hmasslog_ratio_1JetNotBoosted[0]->Fill(visMass/genDiTauMass);}
-      if(category_1JetBoosted)    {hmasslin_ratio_1JetBoosted[0]->Fill(visMass/genDiTauMass); hmasslog_ratio_1JetBoosted[0]->Fill(visMass/genDiTauMass);}
-      if(category_2Jets)          {hmasslin_ratio_2Jets[0]->Fill(visMass/genDiTauMass); hmasslog_ratio_2Jets[0]->Fill(visMass/genDiTauMass);}
+      hmass_ratio[0]->Fill(visMass/genDiTauMass);
+      if(category_0Jets){
+	hmasslin_ratio_0Jets[0]->Fill(visMass/genDiTauMass); 
+	hmasslog_ratio_0Jets[0]->Fill(visMass/genDiTauMass);
+	hmass_ratio_0Jets[0]->Fill(visMass/genDiTauMass);
+      }
+      if(category_1JetNotBoosted){
+	hmasslin_ratio_1JetNotBoosted[0]->Fill(visMass/genDiTauMass); 
+	hmasslog_ratio_1JetNotBoosted[0]->Fill(visMass/genDiTauMass);
+	hmass_ratio_1JetNotBoosted[0]->Fill(visMass/genDiTauMass); 
+      }
+      if(category_1JetBoosted){
+	hmasslin_ratio_1JetBoosted[0]->Fill(visMass/genDiTauMass); 
+	hmasslog_ratio_1JetBoosted[0]->Fill(visMass/genDiTauMass);
+	hmass_ratio_1JetBoosted[0]->Fill(visMass/genDiTauMass);
+      }
+      if(category_2Jets){
+	hmasslin_ratio_2Jets[0]->Fill(visMass/genDiTauMass); 
+	hmasslog_ratio_2Jets[0]->Fill(visMass/genDiTauMass);
+	hmass_ratio_2Jets[0]->Fill(visMass/genDiTauMass);
+      }
 
       if(caMass_isValid){ 
 	      hmass[1]->Fill(caMass); 
@@ -228,10 +245,27 @@ void SVfitMEM::Loop()
 	      if(category_2Jets)          {hmasslin_2Jets[1]->Fill(caMass); hmasslog_2Jets[1]->Fill(caMass);}
 	      hmasslin_ratio[1]->Fill(caMass/genDiTauMass); 
 	      hmasslog_ratio[1]->Fill(caMass/genDiTauMass); 
-	      if(category_0Jets)          {hmasslin_ratio_0Jets[1]->Fill(caMass/genDiTauMass); hmasslog_ratio_0Jets[1]->Fill(caMass/genDiTauMass);}
-	      if(category_1JetNotBoosted) {hmasslin_ratio_1JetNotBoosted[1]->Fill(caMass/genDiTauMass); hmasslog_ratio_1JetNotBoosted[1]->Fill(caMass/genDiTauMass);}
-	      if(category_1JetBoosted)    {hmasslin_ratio_1JetBoosted[1]->Fill(caMass/genDiTauMass); hmasslog_ratio_1JetBoosted[1]->Fill(caMass/genDiTauMass);}
-	      if(category_2Jets)          {hmasslin_ratio_2Jets[1]->Fill(caMass/genDiTauMass); hmasslog_ratio_2Jets[1]->Fill(caMass/genDiTauMass);}
+	      hmass_ratio[1]->Fill(caMass/genDiTauMass); 
+	      if(category_0Jets){
+		hmasslin_ratio_0Jets[1]->Fill(caMass/genDiTauMass); 
+		hmasslog_ratio_0Jets[1]->Fill(caMass/genDiTauMass);
+		hmass_ratio_0Jets[1]->Fill(caMass/genDiTauMass);
+	      }
+	      if(category_1JetNotBoosted){
+		hmasslin_ratio_1JetNotBoosted[1]->Fill(caMass/genDiTauMass); 
+		hmasslog_ratio_1JetNotBoosted[1]->Fill(caMass/genDiTauMass);
+		hmass_ratio_1JetNotBoosted[1]->Fill(caMass/genDiTauMass); 
+	      }
+	      if(category_1JetBoosted){
+		hmasslin_ratio_1JetBoosted[1]->Fill(caMass/genDiTauMass); 
+		hmasslog_ratio_1JetBoosted[1]->Fill(caMass/genDiTauMass);
+		hmass_ratio_1JetBoosted[1]->Fill(caMass/genDiTauMass); 
+	      }
+	      if(category_2Jets){
+		hmasslin_ratio_2Jets[1]->Fill(caMass/genDiTauMass); 
+		hmasslog_ratio_2Jets[1]->Fill(caMass/genDiTauMass);
+		hmass_ratio_2Jets[1]->Fill(caMass/genDiTauMass); 
+	      }
       }
       if(svfitMass_isValid){
 	      hmass[2]->Fill(svfitMass); 
@@ -247,10 +281,27 @@ void SVfitMEM::Loop()
 	      if(category_2Jets)          {hmasslin_2Jets[2]->Fill(svfitMass); hmasslog_2Jets[2]->Fill(svfitMass);}
 	      hmasslin_ratio[2]->Fill(svfitMass/genDiTauMass); 
 	      hmasslog_ratio[2]->Fill(svfitMass/genDiTauMass); 
-	      if(category_0Jets)          {hmasslin_ratio_0Jets[2]->Fill(svfitMass/genDiTauMass); hmasslog_ratio_0Jets[2]->Fill(svfitMass/genDiTauMass);}
-	      if(category_1JetNotBoosted) {hmasslin_ratio_1JetNotBoosted[2]->Fill(svfitMass/genDiTauMass); hmasslog_ratio_1JetNotBoosted[2]->Fill(svfitMass/genDiTauMass);}
-	      if(category_1JetBoosted)    {hmasslin_ratio_1JetBoosted[2]->Fill(svfitMass/genDiTauMass); hmasslog_ratio_1JetBoosted[2]->Fill(svfitMass/genDiTauMass);}
-	      if(category_2Jets)          {hmasslin_ratio_2Jets[2]->Fill(svfitMass/genDiTauMass); hmasslog_ratio_2Jets[2]->Fill(svfitMass/genDiTauMass);}
+	      hmass_ratio[2]->Fill(svfitMass/genDiTauMass);
+	      if(category_0Jets){
+		hmasslin_ratio_0Jets[2]->Fill(svfitMass/genDiTauMass); 
+		hmasslog_ratio_0Jets[2]->Fill(svfitMass/genDiTauMass);
+		hmass_ratio_0Jets[2]->Fill(svfitMass/genDiTauMass); 
+	      }
+	      if(category_1JetNotBoosted){
+		hmasslin_ratio_1JetNotBoosted[2]->Fill(svfitMass/genDiTauMass); 
+		hmasslog_ratio_1JetNotBoosted[2]->Fill(svfitMass/genDiTauMass);
+		hmass_ratio_1JetNotBoosted[2]->Fill(svfitMass/genDiTauMass); 
+	      }
+	      if(category_1JetBoosted){
+		hmasslin_ratio_1JetBoosted[2]->Fill(svfitMass/genDiTauMass); 
+		hmasslog_ratio_1JetBoosted[2]->Fill(svfitMass/genDiTauMass);
+		hmass_ratio_1JetBoosted[2]->Fill(svfitMass/genDiTauMass); 
+	      }
+	      if(category_2Jets){
+		hmasslin_ratio_2Jets[2]->Fill(svfitMass/genDiTauMass); 
+		hmasslog_ratio_2Jets[2]->Fill(svfitMass/genDiTauMass);
+		hmass_ratio_2Jets[2]->Fill(svfitMass/genDiTauMass); 
+	      }
               hCPUtime_log[0]->Fill(svfitComputingTime_cpu);
       }
 
@@ -374,10 +425,27 @@ void SVfitMEM::Loop()
 		      if(category_2Jets)          {hmasslin_2Jets[itfk+3]->Fill(vtfk[itfk]); hmasslog_2Jets[itfk+3]->Fill(vtfk[itfk]);}
 		      hmasslin_ratio[itfk+3]->Fill(vtfk[itfk]/genDiTauMass); 
 		      hmasslog_ratio[itfk+3]->Fill(vtfk[itfk]/genDiTauMass); 
-		      if(category_0Jets)          {hmasslin_ratio_0Jets[itfk+3]->Fill(vtfk[itfk]/genDiTauMass); hmasslog_ratio_0Jets[itfk+3]->Fill(vtfk[itfk]/genDiTauMass);}
-		      if(category_1JetNotBoosted) {hmasslin_ratio_1JetNotBoosted[itfk+3]->Fill(vtfk[itfk]/genDiTauMass); hmasslog_ratio_1JetNotBoosted[itfk+3]->Fill(vtfk[itfk]/genDiTauMass);}
-		      if(category_1JetBoosted)    {hmasslin_ratio_1JetBoosted[itfk+3]->Fill(vtfk[itfk]/genDiTauMass); hmasslog_ratio_1JetBoosted[itfk+3]->Fill(vtfk[itfk]/genDiTauMass);}
-		      if(category_2Jets)          {hmasslin_ratio_2Jets[itfk+3]->Fill(vtfk[itfk]/genDiTauMass); hmasslog_ratio_2Jets[itfk+3]->Fill(vtfk[itfk]/genDiTauMass);}
+		      hmass_ratio[itfk+3]->Fill(vtfk[itfk]/genDiTauMass); 
+		      if(category_0Jets){
+			hmasslin_ratio_0Jets[itfk+3]->Fill(vtfk[itfk]/genDiTauMass); 
+			hmasslog_ratio_0Jets[itfk+3]->Fill(vtfk[itfk]/genDiTauMass);
+			hmass_ratio_0Jets[itfk+3]->Fill(vtfk[itfk]/genDiTauMass); 
+		      }
+		      if(category_1JetNotBoosted){
+			hmasslin_ratio_1JetNotBoosted[itfk+3]->Fill(vtfk[itfk]/genDiTauMass); 
+			hmasslog_ratio_1JetNotBoosted[itfk+3]->Fill(vtfk[itfk]/genDiTauMass);
+			hmass_ratio_1JetNotBoosted[itfk+3]->Fill(vtfk[itfk]/genDiTauMass); 
+		      }
+		      if(category_1JetBoosted){
+			hmasslin_ratio_1JetBoosted[itfk+3]->Fill(vtfk[itfk]/genDiTauMass); 
+			hmasslog_ratio_1JetBoosted[itfk+3]->Fill(vtfk[itfk]/genDiTauMass);
+			hmass_ratio_1JetBoosted[itfk+3]->Fill(vtfk[itfk]/genDiTauMass); 
+		      }
+		      if(category_2Jets){
+			hmasslin_ratio_2Jets[itfk+3]->Fill(vtfk[itfk]/genDiTauMass); 
+			hmasslog_ratio_2Jets[itfk+3]->Fill(vtfk[itfk]/genDiTauMass);
+			hmass_ratio_2Jets[itfk+3]->Fill(vtfk[itfk]/genDiTauMass); 
+		      }
 	      }
       }
       for(size_t itfk=0; itfk<vctfk.size(); itfk++){
@@ -400,10 +468,27 @@ void SVfitMEM::Loop()
 		      if(category_2Jets)          {hmasslin_2Jets[itfk+12]->Fill(vctfk[itfk]); hmasslog_2Jets[itfk+12]->Fill(vctfk[itfk]);}
 		      hmasslin_ratio[itfk+12]->Fill(vctfk[itfk]/genDiTauMass); 
 		      hmasslog_ratio[itfk+12]->Fill(vctfk[itfk]/genDiTauMass); 
-		      if(category_0Jets)          {hmasslin_ratio_0Jets[itfk+12]->Fill(vctfk[itfk]/genDiTauMass); hmasslog_ratio_0Jets[itfk+12]->Fill(vctfk[itfk]/genDiTauMass);}
-		      if(category_1JetNotBoosted) {hmasslin_ratio_1JetNotBoosted[itfk+12]->Fill(vctfk[itfk]/genDiTauMass); hmasslog_ratio_1JetNotBoosted[itfk+12]->Fill(vctfk[itfk]/genDiTauMass);}
-		      if(category_1JetBoosted)    {hmasslin_ratio_1JetBoosted[itfk+12]->Fill(vctfk[itfk]/genDiTauMass); hmasslog_ratio_1JetBoosted[itfk+12]->Fill(vctfk[itfk]/genDiTauMass);}
-		      if(category_2Jets)          {hmasslin_ratio_2Jets[itfk+12]->Fill(vctfk[itfk]/genDiTauMass); hmasslog_ratio_2Jets[itfk+12]->Fill(vctfk[itfk]/genDiTauMass);}
+		      hmass_ratio[itfk+12]->Fill(vctfk[itfk]/genDiTauMass); 
+		      if(category_0Jets){
+			hmasslin_ratio_0Jets[itfk+12]->Fill(vctfk[itfk]/genDiTauMass); 
+			hmasslog_ratio_0Jets[itfk+12]->Fill(vctfk[itfk]/genDiTauMass);
+			hmass_ratio_0Jets[itfk+12]->Fill(vctfk[itfk]/genDiTauMass);
+		      }
+		      if(category_1JetNotBoosted){
+			hmasslin_ratio_1JetNotBoosted[itfk+12]->Fill(vctfk[itfk]/genDiTauMass); 
+			hmasslog_ratio_1JetNotBoosted[itfk+12]->Fill(vctfk[itfk]/genDiTauMass);
+			hmass_ratio_1JetNotBoosted[itfk+12]->Fill(vctfk[itfk]/genDiTauMass); 
+		      }
+		      if(category_1JetBoosted){
+			hmasslin_ratio_1JetBoosted[itfk+12]->Fill(vctfk[itfk]/genDiTauMass); 
+			hmasslog_ratio_1JetBoosted[itfk+12]->Fill(vctfk[itfk]/genDiTauMass);
+			hmass_ratio_1JetBoosted[itfk+12]->Fill(vctfk[itfk]/genDiTauMass); 
+		      }
+		      if(category_2Jets){
+			hmasslin_ratio_2Jets[itfk+12]->Fill(vctfk[itfk]/genDiTauMass); 
+			hmasslog_ratio_2Jets[itfk+12]->Fill(vctfk[itfk]/genDiTauMass);
+			hmass_ratio_2Jets[itfk+12]->Fill(vctfk[itfk]/genDiTauMass); 
+		      }
 		      
                       hResolutionPt[itfk+1]->Fill(vctfkPt[itfk]-genDiTauPt);
 		      hResolutionEta[itfk+1]->Fill(vctfkEta[itfk]-genDiTauEta);
@@ -473,6 +558,12 @@ void SVfitMEM::Loop()
            hmasslog_ratio_1JetNotBoosted[iplot]->Scale(1/hmasslog_ratio_1JetNotBoosted[iplot]->Integral()); hmasslog_ratio_1JetNotBoosted[iplot]->Write(); 
            hmasslog_ratio_1JetBoosted[iplot]->Scale(1/hmasslog_ratio_1JetBoosted[iplot]->Integral()); hmasslog_ratio_1JetBoosted[iplot]->Write(); 
            hmasslog_ratio_2Jets[iplot]->Scale(1/hmasslog_ratio_2Jets[iplot]->Integral()); hmasslog_ratio_2Jets[iplot]->Write(); 
+
+	   hmass_ratio[iplot]->Scale(1/hmass_ratio[iplot]->Integral()); hmass_ratio[iplot]->Write(); 
+           hmass_ratio_0Jets[iplot]->Scale(1/hmass_ratio_0Jets[iplot]->Integral()); hmass_ratio_0Jets[iplot]->Write(); 
+           hmass_ratio_1JetNotBoosted[iplot]->Scale(1/hmass_ratio_1JetNotBoosted[iplot]->Integral()); hmass_ratio_1JetNotBoosted[iplot]->Write(); 
+           hmass_ratio_1JetBoosted[iplot]->Scale(1/hmass_ratio_1JetBoosted[iplot]->Integral()); hmass_ratio_1JetBoosted[iplot]->Write(); 
+           hmass_ratio_2Jets[iplot]->Scale(1/hmass_ratio_2Jets[iplot]->Integral()); hmass_ratio_2Jets[iplot]->Write(); 
 
 	   cout<<endl;
    }
