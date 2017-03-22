@@ -3,12 +3,8 @@
 #include <vector>
 #include <math.h>
 
-double AlternativeMedian(const TH1D * h1);
-std::string rounded_1digit(double val);
-std::string rounded_3digits(double val);
-
-void table5_muhad(){
-
+void table5_muhad()
+{
   gROOT->SetBatch(true);
 
   TH1::AddDirectory(false);
@@ -21,25 +17,25 @@ void table5_muhad(){
 
   // root file
   vector<string> vinput {
-          "hist_smeared_SUSYGluGluToHToTauTauM200_inclusive.root",
-          "hist_smeared_SUSYGluGluToHToTauTauM300_inclusive.root",
-          "hist_smeared_SUSYGluGluToHToTauTauM500_inclusive.root",
-          "hist_smeared_SUSYGluGluToHToTauTauM800_inclusive.root",
-          "hist_smeared_SUSYGluGluToHToTauTauM1200_inclusive.root",
-          "hist_smeared_SUSYGluGluToHToTauTauM1800_inclusive.root",
-	  "hist_smeared_SUSYGluGluToHToTauTauM2600_inclusive.root",
-          "hist_smeared_ZprimeToTauTauM2500_inclusive.root"
+    "hist_smeared_SUSYGluGluToHToTauTauM200_inclusive.root",
+    "hist_smeared_SUSYGluGluToHToTauTauM300_inclusive.root",
+    "hist_smeared_SUSYGluGluToHToTauTauM500_inclusive.root",
+    "hist_smeared_SUSYGluGluToHToTauTauM800_inclusive.root",
+    "hist_smeared_SUSYGluGluToHToTauTauM1200_inclusive.root",
+    "hist_smeared_SUSYGluGluToHToTauTauM1800_inclusive.root",
+    "hist_smeared_SUSYGluGluToHToTauTauM2600_inclusive.root",
+    "hist_smeared_ZprimeToTauTauM2500_inclusive.root"
   };
 
   vector<string>vsample{
-          "SUSYGluGluToHToTauTauM200",
-          "SUSYGluGluToHToTauTauM300",
-          "SUSYGluGluToHToTauTauM500",
-          "SUSYGluGluToHToTauTauM800",
-          "SUSYGluGluToHToTauTauM1200",
-          "SUSYGluGluToHToTauTauM1800",
-          "SUSYGluGluToHToTauTauM2600",
-          "ZprimeToTauTauM2500"
+    "SUSYGluGluToHToTauTauM200",
+    "SUSYGluGluToHToTauTauM300",
+    "SUSYGluGluToHToTauTauM500",
+    "SUSYGluGluToHToTauTauM800",
+    "SUSYGluGluToHToTauTauM1200",
+    "SUSYGluGluToHToTauTauM1800",
+    "SUSYGluGluToHToTauTauM2600",
+    "ZprimeToTauTauM2500"
   };
 
   assert(vinput.size() == vsample.size());
@@ -54,35 +50,35 @@ void table5_muhad(){
   vector<TH1D*> vh_SVfitCLAk;
     
   // loop over input files
-  for (int in=0; in<vinput.size(); in++){ 
-	  string input{inputPath+"/"+vinput[in]};
-	  TFile *file = new TFile(input.c_str(), "READ");
+  for ( int in = 0; in < vinput.size(); ++in ){ 
+    string input{inputPath + "/" + vinput[in]};
+    TFile* file = new TFile(input.c_str(), "READ");
 
-	  string sample = vsample[in];
-	  std::cout << "sample = " << sample << std::endl;
+    string sample = vsample[in];
+    std::cout << "sample = " << sample << std::endl;
 
-	  string mass_string = std::string(sample, sample.find_last_of("M")+1);
-	  double mass = atof(mass_string.data());
-	  std::cout << "mass = " << mass << std::endl;
+    string mass_string = std::string(sample, sample.find_last_of("M")+1);
+    double mass = atof(mass_string.data());
+    std::cout << "mass = " << mass << std::endl;
 
-	  // loop over hist
-	  TIter nextHist(file->GetListOfKeys());
-	  TKey* histKey(0);
-	  while ((histKey=(TKey*)nextHist())) {
-		  if (strcmp(histKey->GetClassName(),"TH1D")!=0) continue;
-		  TH1D* hmass = (TH1D*)histKey->ReadObj();
-		  TH1D* hmass_cloned = (TH1D*)hmass->Clone();
-		  //TAxis* xAxis = hmass_cloned->GetXaxis();
-		  //xAxis->SetRangeUser(0., 5.);
-		  string histname(hmass->GetName());
-		  // hist name match directory name
-		  if(histname == "muhad_smeared_vismass_ratio_fine_bin")         vh_mvis.push_back(hmass_cloned);
-		  if(histname == "muhad_smeared_svFit_ratio_fine_bin")           vh_SVfitSA.push_back(hmass_cloned);
-		  if(histname == "muhad_smeared_svfitmemtfk0_ratio_fine_bin")    vh_SVfitMEMk0.push_back(hmass_cloned);
-		  if(histname == "muhad_smeared_svfitclatfk0_ratio_fine_bin")    vh_SVfitCLAk0.push_back(hmass_cloned);
-		  if(histname == "muhad_smeared_svfitmemtfk4_ratio_fine_bin")    vh_SVfitMEMk.push_back(hmass_cloned);
-		  if(histname == "muhad_smeared_svfitclatfk4_ratio_fine_bin")    vh_SVfitCLAk.push_back(hmass_cloned);
-	  }
+    // loop over hist
+    TIter nextHist(file->GetListOfKeys());
+    TKey* histKey(0);
+    while ( (histKey = (TKey*)nextHist()) ) {
+      if ( strcmp(histKey->GetClassName(),"TH1D") != 0 ) continue;
+      TH1D* hmass = (TH1D*)histKey->ReadObj();
+      TH1D* hmass_cloned = (TH1D*)hmass->Clone();
+      //TAxis* xAxis = hmass_cloned->GetXaxis();
+      //xAxis->SetRangeUser(0., 5.);
+      string histname(hmass->GetName());
+      // hist name match directory name
+      if ( histname == "muhad_smeared_vismass_ratio_fine_bin"      ) vh_mvis.push_back(hmass_cloned);
+      if ( histname == "muhad_smeared_svFit_ratio_fine_bin"        ) vh_SVfitSA.push_back(hmass_cloned);
+      if ( histname == "muhad_smeared_svfitmemtfk0_ratio_fine_bin" ) vh_SVfitMEMk0.push_back(hmass_cloned);
+      if ( histname == "muhad_smeared_svfitclatfk0_ratio_fine_bin" ) vh_SVfitCLAk0.push_back(hmass_cloned);
+      if ( histname == "muhad_smeared_svfitmemtfk4_ratio_fine_bin" ) vh_SVfitMEMk.push_back(hmass_cloned);
+      if ( histname == "muhad_smeared_svfitclatfk4_ratio_fine_bin" ) vh_SVfitCLAk.push_back(hmass_cloned);
+    }
   }
   
   assert(vh_mvis.size() == vsample.size());
@@ -95,173 +91,133 @@ void table5_muhad(){
   ofstream table5;
   table5.open("table5_muhad.txt");
 
-  //table5 << "\\begin{table}" << endl;
+  table5 << "\\begin{table}" << endl;
   table5 << "\\begin{center}" << endl;
 
-    ///////////////////// latex table //////////////////
-    table5 << "\\begin{tabular}{|l|C{1.5cm}C{1.5cm}|C{1.5cm}C{1.5cm}|}" << endl;
-    table5 << "\\hline" << endl;
-    table5 << "\\multicolumn{5}{|c|}{$\\Pgm\\tauh$ decay channel} \\\\" << endl;
-    table5 << "\\hline" << endl;
-    table5 << "\\hline" << endl;
-    table5 << "\\multirow{2}{17mm}{Sample} & \\multicolumn{2}{c|}{$m_{\\vis}$} & \\multicolumn{2}{c|}{SVfitSA} \\\\" << endl;
-    table5 << "\\cline{2-5}" << endl;
-    table5 << " & $\\textrm{M}$~[\\GeV\\unskip] & $\\sigma/\\textrm{M}$ & $\\textrm{M}$~[\\GeV\\unskip] & $\\sigma/\\textrm{M}$ \\\\" << endl;
-    table5 << "\\hline" << endl;
+  //-----------------------------------------------------------------------------
+  // mVis and SVfitSA
+  table5 << "\\begin{tabular}{|l|ccc|ccc|}" << endl;
+  //table5 << "\\begin{tabular}{|l|C{1.2cm}C{1.2cm}C{1.2cm}|C{1.2cm}C{1.2cm}C{1.2cm}|}" << endl;
+  table5 << "\\hline" << endl;
+  table5 << "\\multicolumn{7}{|c|}{$\\Pgm\\tauh$ decay channel} \\\\" << endl;
+  table5 << "\\hline" << endl;
+  table5 << "\\hline" << endl;
+  table5 << "\\multirow{2}{17mm}{Sample} & \\multicolumn{3}{c|}{$m_{\\vis}$} & \\multicolumn{3}{c|}{SVfitSA} \\\\" << endl;
+  table5 << "\\cline{2-7}" << endl;
+  table5 << " & " 
+	 << "$\\textrm{M}$~[\\GeV\\unskip] & "
+	 << "$\\sigma_{l}/\\textrm{M}$ & $\\sigma_{h}/\\textrm{M}$ & " 
+	 << "$\\textrm{M}$~[\\GeV\\unskip] & " 
+	 << "$\\sigma_{l}/\\textrm{M}$ & $\\sigma_{h}/\\textrm{M}$ \\\\" << endl;
+  table5 << "\\hline" << endl;
     
-    table5 << "$\\PHiggsps \\to \\Pgt\\Pgt$: & & & & \\\\ "<<endl; 
-    table5 << "$\\quad m_{\\PHiggsps} = 200$~\\GeV  & $" 
-	   << rounded_1digit(200.*AlternativeMedian(vh_mvis.at(0))) << "$ & $ "
-	   << rounded_3digits(vh_mvis.at(0)->GetRMS()/AlternativeMedian(vh_mvis.at(0))) << " $ & $" 
-	   << rounded_1digit(200.*AlternativeMedian(vh_SVfitSA.at(0))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitSA.at(0)->GetRMS()/AlternativeMedian(vh_SVfitSA.at(0))) << "$ \\\\" << endl;
-    table5 << "$\\quad m_{\\PHiggsps} = 300$~\\GeV  & $"
-	   << rounded_1digit(300.*AlternativeMedian(vh_mvis.at(1))) << "$ & $ "
-	   << rounded_3digits(vh_mvis.at(1)->GetRMS()/AlternativeMedian(vh_mvis.at(1))) << " $ & $" 
-	   << rounded_1digit(300.*AlternativeMedian(vh_SVfitSA.at(1))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitSA.at(1)->GetRMS()/AlternativeMedian(vh_SVfitSA.at(1))) << "$ \\\\" << endl;
-    table5 << "$\\quad m_{\\PHiggsps} = 500$~\\GeV  & $"
-	   << rounded_1digit(500.*AlternativeMedian(vh_mvis.at(2))) << "$ & $ "
-	   << rounded_3digits(vh_mvis.at(2)->GetRMS()/AlternativeMedian(vh_mvis.at(2))) << " $ & $" 
-	   << rounded_1digit(500.*AlternativeMedian(vh_SVfitSA.at(2))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitSA.at(2)->GetRMS()/AlternativeMedian(vh_SVfitSA.at(2))) << "$ \\\\" << endl;
-    table5 << "$\\quad m_{\\PHiggsps} = 800$~\\GeV  & $"
-	   << rounded_1digit(800.*AlternativeMedian(vh_mvis.at(3))) << "$ & $ "
-	   << rounded_3digits(vh_mvis.at(3)->GetRMS()/AlternativeMedian(vh_mvis.at(3))) << " $ & $" 
-	   << rounded_1digit(800.*AlternativeMedian(vh_SVfitSA.at(3))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitSA.at(3)->GetRMS()/AlternativeMedian(vh_SVfitSA.at(3))) << "$ \\\\" << endl;
-    table5 << "$\\quad m_{\\PHiggsps} = 1200$~\\GeV & $"
-	   << rounded_1digit(1200.*AlternativeMedian(vh_mvis.at(4))) << "$ & $ "
-	   << rounded_3digits(vh_mvis.at(4)->GetRMS()/AlternativeMedian(vh_mvis.at(4))) << " $ & $" 
-	   << rounded_1digit(1200.*AlternativeMedian(vh_SVfitSA.at(4))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitSA.at(4)->GetRMS()/AlternativeMedian(vh_SVfitSA.at(4))) << "$ \\\\" << endl;
-    table5 << "$\\quad m_{\\PHiggsps} = 1800$~\\GeV & $"
-	   << rounded_1digit(1800.*AlternativeMedian(vh_mvis.at(5))) << "$ & $ "
-	   << rounded_3digits(vh_mvis.at(5)->GetRMS()/AlternativeMedian(vh_mvis.at(5))) << " $ & $" 
-	   << rounded_1digit(1800.*AlternativeMedian(vh_SVfitSA.at(5))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitSA.at(5)->GetRMS()/AlternativeMedian(vh_SVfitSA.at(5))) << "$ \\\\" << endl;
-    table5 << "$\\quad m_{\\PHiggsps} = 2600$~\\GeV & $"
-	   << rounded_1digit(2600.*AlternativeMedian(vh_mvis.at(6))) << "$ & $ "
-	   << rounded_3digits(vh_mvis.at(6)->GetRMS()/AlternativeMedian(vh_mvis.at(6))) << " $ & $" 
-	   << rounded_1digit(2600.*AlternativeMedian(vh_SVfitSA.at(6))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitSA.at(6)->GetRMS()/AlternativeMedian(vh_SVfitSA.at(6))) << "$ \\\\" << endl;
-    table5 << "$\\PZ' \\to \\Pgt\\Pgt$: & & & & \\\\ " << endl;
-    table5 << "$\\quad m_{\\PZ'} = 2500$~\\GeV      & $"
-	   << rounded_1digit(2500.*AlternativeMedian(vh_mvis.at(7))) << "$ & $ "
-	   << rounded_3digits(vh_mvis.at(7)->GetRMS()/AlternativeMedian(vh_mvis.at(7))) << " $ & $" 
-	   << rounded_1digit(2500.*AlternativeMedian(vh_SVfitSA.at(7))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitSA.at(7)->GetRMS()/AlternativeMedian(vh_SVfitSA.at(7))) << "$ \\\\" << endl;
+  // MSSM Higgs->tautau			    
+  table5 << "$\\PHiggsps \\to \\Pgt\\Pgt$: & & & & & & \\\\ "<<endl; 
+  addRow_woSoB_mssm(table5, "$m_{\\PHiggsps} = 200$~\\GeV", 200.,
+    vh_mvis.at(0), vh_SVfitSA.at(0));
+  addRow_woSoB_mssm(table5, "$m_{\\PHiggsps} = 300$~\\GeV", 300.,
+    vh_mvis.at(1), vh_SVfitSA.at(1));
+  addRow_woSoB_mssm(table5, "$m_{\\PHiggsps} = 500$~\\GeV", 500.,
+    vh_mvis.at(2), vh_SVfitSA.at(2));
+  addRow_woSoB_mssm(table5, "$m_{\\PHiggsps} = 800$~\\GeV", 800.,
+    vh_mvis.at(3), vh_SVfitSA.at(3));
+  addRow_woSoB_mssm(table5, "$m_{\\PHiggsps} = 1200$~\\GeV", 1200.,
+    vh_mvis.at(4), vh_SVfitSA.at(4));
+  addRow_woSoB_mssm(table5, "$m_{\\PHiggsps} = 1800$~\\GeV", 1800.,
+    vh_mvis.at(5), vh_SVfitSA.at(5));
+  addRow_woSoB_mssm(table5, "$m_{\\PHiggsps} = 2600$~\\GeV", 2600.,
+    vh_mvis.at(6), vh_SVfitSA.at(6));
+
+  // Z'->tautau	
+  table5 << "$\\PZ' \\to \\Pgt\\Pgt$: & & & & & & \\\\ " << endl;
+  addRow_woSoB_mssm(table5, "$m_{\\PZ'} = 2500$~\\GeV", 2500.,
+    vh_mvis.at(7), vh_SVfitSA.at(7));
+  
+  table5 << "\\hline" << endl;
+  table5 << "\\end{tabular}\n" << endl;
+  //-----------------------------------------------------------------------------
+  
+  //-----------------------------------------------------------------------------
+  // cSVfit (zero and non-zero kappa)
+  table5 << "\\begin{tabular}{|l|ccc|ccc|}" << endl;
+  //table5 << "\\begin{tabular}{|l|C{1.2cm}C{1.2cm}C{1.2cm}|C{1.2cm}C{1.2cm}C{1.2cm}|}" << endl;
+  table5 << "\\hline" << endl;
+  table5 << "\\multirow{2}{17mm}{Sample} & \\multicolumn{3}{c|}{cSVfit, $\\kappa=0$} & \\multicolumn{3}{c|}{cSVfit, $\\kappa=4$} \\\\" << endl;
+  table5 << "\\cline{2-7}" << endl;
+  table5 << " & " 
+	 << "$\\textrm{M}$~[\\GeV\\unskip] & "
+	 << "$\\sigma_{l}/\\textrm{M}$ & $\\sigma_{h}/\\textrm{M}$ & " 
+	 << "$\\textrm{M}$~[\\GeV\\unskip] & " 
+	 << "$\\sigma_{l}/\\textrm{M}$ & $\\sigma_{h}/\\textrm{M}$ \\\\" << endl;
+  table5 << "\\hline" << endl;
     
-    table5 << "\\hline" << endl;
-    table5 << "\\end{tabular}" << endl;
-    table5 << endl;
-    table5 << "\\begin{tabular}{|l|C{1.5cm}C{1.5cm}|C{1.5cm}C{1.5cm}|}" << endl;
-    table5 << "\\hline" << endl;
-    table5 << "\\multirow{2}{17mm}{Sample} & \\multicolumn{2}{c|}{cSVfit, $\\kappa=0$} & \\multicolumn{2}{c|}{cSVfit, $\\kappa=4$} \\\\" << endl;
-    table5 << "\\cline{2-5}" << endl;
-    table5 << " & $\\textrm{M}$~[\\GeV\\unskip] & $\\sigma/\\textrm{M}$ & $\\textrm{M}$~[\\GeV\\unskip] & $\\sigma/\\textrm{M}$ \\\\" << endl;
-    table5 << "\\hline" << endl;
+  // MSSM Higgs->tautau			    
+  table5 << "$\\PHiggsps \\to \\Pgt\\Pgt$: & & & & & & \\\\ "<<endl; 
+  addRow_woSoB_mssm(table5, "$m_{\\PHiggsps} = 200$~\\GeV", 200.,
+    vh_SVfitCLAk0.at(0), vh_SVfitCLAk.at(0));
+  addRow_woSoB_mssm(table5, "$m_{\\PHiggsps} = 300$~\\GeV", 300.,
+    vh_SVfitCLAk0.at(1), vh_SVfitCLAk.at(1));
+  addRow_woSoB_mssm(table5, "$m_{\\PHiggsps} = 500$~\\GeV", 500.,
+    vh_SVfitCLAk0.at(2), vh_SVfitCLAk.at(2));
+  addRow_woSoB_mssm(table5, "$m_{\\PHiggsps} = 800$~\\GeV", 800.,
+    vh_SVfitCLAk0.at(3), vh_SVfitCLAk.at(3));
+  addRow_woSoB_mssm(table5, "$m_{\\PHiggsps} = 1200$~\\GeV", 1200.,
+    vh_SVfitCLAk0.at(4), vh_SVfitCLAk.at(4));
+  addRow_woSoB_mssm(table5, "$m_{\\PHiggsps} = 1800$~\\GeV", 1800.,
+    vh_SVfitCLAk0.at(5), vh_SVfitCLAk.at(5));
+  addRow_woSoB_mssm(table5, "$m_{\\PHiggsps} = 2600$~\\GeV", 2600.,
+    vh_SVfitCLAk0.at(6), vh_SVfitCLAk.at(6));
+  
+  // Z'->tautau	
+  table5 << "$\\PZ' \\to \\Pgt\\Pgt$: & & & & & & \\\\ " << endl;
+  addRow_woSoB_mssm(table5, "$m_{\\PZ'} = 2500$~\\GeV", 2500.,
+    vh_SVfitCLAk0.at(7), vh_SVfitCLAk.at(7));
+  
+  table5 << "\\hline" << endl;
+  table5 << "\\end{tabular}\n" << endl;
+  //-----------------------------------------------------------------------------
 
-    table5 << "$\\PHiggsps \\to \\Pgt\\Pgt$: & & & & \\\\ " << endl; 
-    table5 << "$\\quad m_{\\PHiggsps} = 200$~\\GeV  & $"
-	   << rounded_1digit(200.*AlternativeMedian(vh_SVfitCLAk0.at(0))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitCLAk0.at(0)->GetRMS()/AlternativeMedian(vh_SVfitCLAk0.at(0))) << "$ & $ "
-	   << rounded_1digit(200.*AlternativeMedian(vh_SVfitCLAk.at(0))) << " $ & $" 
-	   << rounded_3digits(vh_SVfitCLAk.at(0)->GetRMS()/AlternativeMedian(vh_SVfitCLAk.at(0))) << "$ \\\\" << endl;
-    table5 << "$\\quad m_{\\PHiggsps} = 300$~\\GeV  & $"
-	   << rounded_1digit(300.*AlternativeMedian(vh_SVfitCLAk0.at(1))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitCLAk0.at(1)->GetRMS()/AlternativeMedian(vh_SVfitCLAk0.at(1))) << "$ & $ "
-	   << rounded_1digit(300.*AlternativeMedian(vh_SVfitCLAk.at(1))) << " $ & $" 
-	   << rounded_3digits(vh_SVfitCLAk.at(1)->GetRMS()/AlternativeMedian(vh_SVfitCLAk.at(1))) << "$ \\\\" << endl;
-    table5 << "$\\quad m_{\\PHiggsps} = 500$~\\GeV  & $"
-	   << rounded_1digit(500.*AlternativeMedian(vh_SVfitCLAk0.at(2))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitCLAk0.at(2)->GetRMS()/AlternativeMedian(vh_SVfitCLAk0.at(2))) << " $ & $" 
-	   << rounded_1digit(500.*AlternativeMedian(vh_SVfitCLAk.at(2))) << " $ & $" 
-	   << rounded_3digits(vh_SVfitCLAk.at(2)->GetRMS()/AlternativeMedian(vh_SVfitCLAk.at(2))) << "$  \\\\" << endl;
-    table5 << "$\\quad m_{\\PHiggsps} = 800$~\\GeV  & $" 
-	   << rounded_1digit(800.*AlternativeMedian(vh_SVfitCLAk0.at(3))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitCLAk0.at(3)->GetRMS()/AlternativeMedian(vh_SVfitCLAk0.at(3))) << " $ & $" 
-	   << rounded_1digit(800.*AlternativeMedian(vh_SVfitCLAk.at(3))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitCLAk.at(3)->GetRMS()/AlternativeMedian(vh_SVfitCLAk.at(3))) << "$ \\\\" << endl;
-    table5 << "$\\quad m_{\\PHiggsps} = 1200$~\\GeV & $"
-	   << rounded_1digit(1200.*AlternativeMedian(vh_SVfitCLAk0.at(4))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitCLAk0.at(4)->GetRMS()/AlternativeMedian(vh_SVfitCLAk0.at(4))) << " $ & $" 
-	   << rounded_1digit(1200.*AlternativeMedian(vh_SVfitCLAk.at(4))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitCLAk.at(4)->GetRMS()/AlternativeMedian(vh_SVfitCLAk.at(4))) << "$ \\\\" << endl;
-    table5 << "$\\quad m_{\\PHiggsps} = 1800$~\\GeV & $"
-	   << rounded_1digit(1800.*AlternativeMedian(vh_SVfitCLAk0.at(5))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitCLAk0.at(5)->GetRMS()/AlternativeMedian(vh_SVfitCLAk0.at(5))) << " $ & $" 
-	   << rounded_1digit(1800.*AlternativeMedian(vh_SVfitCLAk.at(5))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitCLAk.at(5)->GetRMS()/AlternativeMedian(vh_SVfitCLAk.at(5))) << "$ \\\\" << endl;
-    table5 << "$\\quad m_{\\PHiggsps} = 2600$~\\GeV & $"
-	   << rounded_1digit(2600.*AlternativeMedian(vh_SVfitCLAk0.at(6))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitCLAk0.at(6)->GetRMS()/AlternativeMedian(vh_SVfitCLAk0.at(6))) << " $ & $" 
-	   << rounded_1digit(2600.*AlternativeMedian(vh_SVfitCLAk.at(6))) << "$ & $ " 
-	   << rounded_3digits(vh_SVfitCLAk.at(6)->GetRMS()/AlternativeMedian(vh_SVfitCLAk.at(6))) << "$ \\\\" << endl;
-    table5 << "$\\PZ' \\to \\Pgt\\Pgt$: & & & & \\\\ " << endl;
-    table5 << "$\\quad m_{\\PZ'} = 2500$~\\GeV      & $"
-	   << rounded_1digit(2500.*AlternativeMedian(vh_SVfitCLAk0.at(7))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitCLAk0.at(7)->GetRMS()/AlternativeMedian(vh_SVfitCLAk0.at(7))) << " $ & $" 
-	   << rounded_1digit(2500.*AlternativeMedian(vh_SVfitCLAk.at(7))) << "$ & $ " 
-	   << rounded_3digits(vh_SVfitCLAk.at(7)->GetRMS()/AlternativeMedian(vh_SVfitCLAk.at(7))) << "$ \\\\" << endl;
+  //-----------------------------------------------------------------------------
+  // SVfitMEM (zero and non-zero kappa)
+  table5 << "\\begin{tabular}{|l|ccc|ccc|}" << endl;
+  //table5 << "\\begin{tabular}{|l|C{1.2cm}C{1.2cm}C{1.2cm}|C{1.2cm}C{1.2cm}C{1.2cm}|}" << endl;
+  table5 << "\\hline" << endl;
+  table5 << "\\multirow{2}{17mm}{Sample} & \\multicolumn{3}{c|}{SVfitMEM, $\\kappa=0$} & \\multicolumn{3}{c|}{SVfitMEM, $\\kappa=4$} \\\\" << endl;
+  table5 << "\\cline{2-7}" << endl;
+  table5 << " & " 
+	 << "$\\textrm{M}$~[\\GeV\\unskip] & "
+	 << "$\\sigma_{l}/\\textrm{M}$ & $\\sigma_{h}/\\textrm{M}$ & " 
+	 << "$\\textrm{M}$~[\\GeV\\unskip] & " 
+	 << "$\\sigma_{l}/\\textrm{M}$ & $\\sigma_{h}/\\textrm{M}$ \\\\" << endl;
+  table5 << "\\hline" << endl;
 
-    table5 << "\\hline" << endl;
-    table5 << "\\end{tabular}" << endl;
-    table5 << endl;
-    table5 << "\\begin{tabular}{|l|C{1.5cm}C{1.5cm}|C{1.5cm}C{1.5cm}|}" << endl;
-    table5 << "\\hline" << endl;
-    table5 << "\\multirow{2}{17mm}{Sample} & \\multicolumn{2}{c|}{SVfitMEM, $\\kappa=0$} & \\multicolumn{2}{c|}{SVfitMEM, $\\kappa=4$} \\\\" << endl;
-    table5 << "\\cline{2-5}" << endl;
-    table5 << " & $\\textrm{M}$~[\\GeV\\unskip] & $\\sigma/\\textrm{M}$ & $\\textrm{M}$~[\\GeV\\unskip] & $\\sigma/\\textrm{M}$ \\\\" << endl;
-    table5 << "\\hline" << endl;
-    
-    table5 << "$\\PHiggsps \\to \\Pgt\\Pgt$: & & & & \\\\ "<<endl; 
-    table5 << "$\\quad m_{\\PHiggsps} = 200$~\\GeV  & $"
-	   << rounded_1digit(200.*AlternativeMedian(vh_SVfitMEMk0.at(0))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitMEMk0.at(0)->GetRMS()/AlternativeMedian(vh_SVfitMEMk0.at(0))) << "$ & $ " 
-	   << rounded_1digit(200.*AlternativeMedian(vh_SVfitMEMk.at(0))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitMEMk.at(0)->GetRMS()/AlternativeMedian(vh_SVfitMEMk.at(0))) << "$ \\\\" << endl;
-    table5 << "$\\quad m_{\\PHiggsps} = 300$~\\GeV  & $"
-	   << rounded_1digit(300.*AlternativeMedian(vh_SVfitMEMk0.at(1))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitMEMk0.at(1)->GetRMS()/AlternativeMedian(vh_SVfitMEMk0.at(1))) << " $ & $" 
-	   << rounded_1digit(300.*AlternativeMedian(vh_SVfitMEMk.at(1))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitMEMk.at(1)->GetRMS()/AlternativeMedian(vh_SVfitMEMk.at(1))) << "$ \\\\" << endl;
-    table5 << "$\\quad m_{\\PHiggsps} = 500$~\\GeV  & $"
-	   << rounded_1digit(500.*AlternativeMedian(vh_SVfitMEMk0.at(2))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitMEMk0.at(2)->GetRMS()/AlternativeMedian(vh_SVfitMEMk0.at(2))) << "$ & $ "
-	   << rounded_1digit(500.*AlternativeMedian(vh_SVfitMEMk.at(2))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitMEMk.at(2)->GetRMS()/AlternativeMedian(vh_SVfitMEMk.at(2))) << "$ \\\\" << endl;
-    table5 << "$\\quad m_{\\PHiggsps} = 800$~\\GeV  & $"
-	   << rounded_1digit(800.*AlternativeMedian(vh_SVfitMEMk0.at(3))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitMEMk0.at(3)->GetRMS()/AlternativeMedian(vh_SVfitMEMk0.at(3))) << "$ & $ " 
-	   << rounded_1digit(800.*AlternativeMedian(vh_SVfitMEMk.at(3))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitMEMk.at(3)->GetRMS()/AlternativeMedian(vh_SVfitMEMk.at(3))) << "$ \\\\" << endl;
-    table5 << "$\\quad m_{\\PHiggsps} = 1200$~\\GeV & $"
-	   << rounded_1digit(1200.*AlternativeMedian(vh_SVfitMEMk0.at(4))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitMEMk0.at(4)->GetRMS()/AlternativeMedian(vh_SVfitMEMk0.at(4))) << "$ & $ " 
-	   << rounded_1digit(1200.*AlternativeMedian(vh_SVfitMEMk.at(4))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitMEMk.at(4)->GetRMS()/AlternativeMedian(vh_SVfitMEMk.at(4))) << "$ \\\\" << endl;
-    table5 << "$\\quad m_{\\PHiggsps} = 1800$~\\GeV & $"
-	   << rounded_1digit(1800.*AlternativeMedian(vh_SVfitMEMk0.at(5))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitMEMk0.at(5)->GetRMS()/AlternativeMedian(vh_SVfitMEMk0.at(5))) << "$ & $ " 
-	   << rounded_1digit(1800.*AlternativeMedian(vh_SVfitMEMk.at(5))) << "$ & $ " 
-	   << rounded_3digits(vh_SVfitMEMk.at(5)->GetRMS()/AlternativeMedian(vh_SVfitMEMk.at(5))) << "$ \\\\" << endl;
-    table5 << "$\\quad m_{\\PHiggsps} = 2600$~\\GeV & $"
-	   << rounded_1digit(2600.*AlternativeMedian(vh_SVfitMEMk0.at(6))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitMEMk0.at(6)->GetRMS()/AlternativeMedian(vh_SVfitMEMk0.at(6))) << "$ & $ " 
-	   << rounded_1digit(2600.*AlternativeMedian(vh_SVfitMEMk.at(6))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitMEMk.at(6)->GetRMS()/AlternativeMedian(vh_SVfitMEMk.at(6))) << "$ \\\\" << endl;
-    table5 << "$\\PZ' \\to \\Pgt\\Pgt$: & & & & \\\\ " << endl;
-    table5 << "$\\quad m_{\\PZ'} = 2500$~\\GeV      & $"
-	   << rounded_1digit(2500.*AlternativeMedian(vh_SVfitMEMk0.at(7))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitMEMk0.at(7)->GetRMS()/AlternativeMedian(vh_SVfitMEMk0.at(7))) << "$ & $ " 
-	   << rounded_1digit(2500.*AlternativeMedian(vh_SVfitMEMk.at(7))) << "$ & $ "
-	   << rounded_3digits(vh_SVfitMEMk.at(7)->GetRMS()/AlternativeMedian(vh_SVfitMEMk.at(7))) << "$ \\\\" << endl;
+  // MSSM Higgs->tautau			    
+  table5 << "$\\PHiggsps \\to \\Pgt\\Pgt$: & & & & & & \\\\ "<<endl; 
+  addRow_woSoB_mssm(table5, "$m_{\\PHiggsps} = 200$~\\GeV", 200.,
+    vh_SVfitMEMk0.at(0), vh_SVfitMEMk.at(0));
+  addRow_woSoB_mssm(table5, "$m_{\\PHiggsps} = 300$~\\GeV", 300.,
+    vh_SVfitMEMk0.at(1), vh_SVfitMEMk.at(1));
+  addRow_woSoB_mssm(table5, "$m_{\\PHiggsps} = 500$~\\GeV", 500.,
+    vh_SVfitMEMk0.at(2), vh_SVfitMEMk.at(2));
+  addRow_woSoB_mssm(table5, "$m_{\\PHiggsps} = 800$~\\GeV", 800.,
+    vh_SVfitMEMk0.at(3), vh_SVfitMEMk.at(3));
+  addRow_woSoB_mssm(table5, "$m_{\\PHiggsps} = 1200$~\\GeV", 1200.,
+    vh_SVfitMEMk0.at(4), vh_SVfitMEMk.at(4));
+  addRow_woSoB_mssm(table5, "$m_{\\PHiggsps} = 1800$~\\GeV", 1800.,
+    vh_SVfitMEMk0.at(5), vh_SVfitMEMk.at(5));
+  addRow_woSoB_mssm(table5, "$m_{\\PHiggsps} = 2600$~\\GeV", 2600.,
+    vh_SVfitMEMk0.at(6), vh_SVfitMEMk.at(6));
 
-    table5 << "\\hline" << endl;
-    table5 << "\\end{tabular}" << endl;
-    table5 << "\\end{center}" << endl;
-    //table5 << "\\end{table}" << endl;
+  // Z'->tautau	
+  table5 << "$\\PZ' \\to \\Pgt\\Pgt$: & & & & & & \\\\ " << endl;
+  addRow_woSoB_mssm(table5, "$m_{\\PZ'} = 2500$~\\GeV", 2500.,
+    vh_SVfitMEMk0.at(7), vh_SVfitMEMk.at(7));
+  
+  table5 << "\\hline" << endl;
+  table5 << "\\end{tabular}\n" << endl;
+  //-----------------------------------------------------------------------------
+
+  table5 << "\\end{table}\n" << endl;
 
   table5.close();
 
