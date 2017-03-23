@@ -99,9 +99,9 @@ void makePlot(const std::string& inputFilePath, const std::string& canvasName, c
   canvas_new->SetFillColor(10);
   canvas_new->SetBorderSize(2);
   canvas_new->SetTopMargin(0.065);
-  canvas_new->SetLeftMargin(0.17);
+  canvas_new->SetLeftMargin(0.18);
   canvas_new->SetBottomMargin(0.165);
-  canvas_new->SetRightMargin(0.025); //before was 0.015
+  canvas_new->SetRightMargin(0.015); //before was 0.025
   canvas_new->SetLogx(true);
   canvas_new->SetLogy(true);
   canvas_new->Draw();
@@ -240,6 +240,7 @@ void makePlot(const std::string& inputFilePath, const std::string& canvasName, c
   TAxis* yAxis = histogramCA->GetYaxis();
   yAxis->SetTitle("dN/d(m_{#tau#tau}/m^{true}_{#tau#tau})");
   yAxis->SetRangeUser(0.002,9);
+  yAxis->SetTitleOffset(1.1);
   yAxis->SetTitleSize(60);
   yAxis->SetTitleFont(43);
   //yAxis->SetLabelOffset(0.010);
@@ -271,8 +272,13 @@ void makePlot(const std::string& inputFilePath, const std::string& canvasName, c
   histogramSVfitCLAkNeq0->Draw("epsame");
   histogramCA->Draw("axissame");
 
+  histogramSVfitMEMkEq0->Draw("epsame");
+  histogramSVfitCLAkEq0->Draw("epsame");
+  histogramSVfitMEMkNeq0->Draw("epsame");
+  histogramSVfitCLAkNeq0->Draw("epsame");
+
   //TPaveText* label_sample = new TPaveText(0.21, 0.86, 0.46, 0.94, "NDC");
-  TPaveText* label_sample = new TPaveText(0.1700, 0.9475, 0.4600, 1.0375, "NDC");
+  TPaveText* label_sample = new TPaveText(0.1800, 0.9475, 0.4700, 1.0375, "NDC");
   label_sample->SetFillStyle(0);
   label_sample->SetBorderSize(0);
   label_sample->AddText(sample.data());
@@ -358,13 +364,14 @@ void makeSVfitMEM_massPlots_from10to12_ratio()
   massPoints.push_back(1200);
   
   std::map<int, std::string> samples; // key = massPoint
-  samples[200]  = "H(200 GeV) #rightarrow #tau#tau";
-  samples[300]  = "H(300 GeV) #rightarrow #tau#tau";
-  samples[500]  = "H(500 GeV) #rightarrow #tau#tau";
-  samples[800]  = "H(800 GeV) #rightarrow #tau#tau";
-  samples[1200] = "H(1200 GeV) #rightarrow #tau#tau";
+  samples[200]  = "A(200 GeV) #rightarrow #tau#tau";
+  samples[300]  = "A(300 GeV) #rightarrow #tau#tau";
+  samples[500]  = "A(500 GeV) #rightarrow #tau#tau";
+  samples[800]  = "A(800 GeV) #rightarrow #tau#tau";
+  samples[1200] = "A(1200 GeV) #rightarrow #tau#tau";
   
   std::string inputFilePath = "/home/lucia/SVfitPerformanceStudiesII/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/";
+  //std::string inputFilePath = "/home/veelken/SVfitMEM_paper/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/";
   std::map<int, std::string> inputFileNames_emu; // key = massPoint
   inputFileNames_emu[200]     = "plot_10to12_log_ratio_emu_smeared.root";
   inputFileNames_emu[300]     = "plot_10to12_log_ratio_emu_smeared.root";
@@ -384,7 +391,8 @@ void makeSVfitMEM_massPlots_from10to12_ratio()
   inputFileNames_hadhad[800]  = "plot_10to12_log_ratio_hadhad_smeared.root";
   inputFileNames_hadhad[1200] = "plot_10to12_log_ratio_hadhad_smeared.root";
 
-  std::string outputFilePath = "/home/lucia/SVfitPerformanceStudiesII/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/finalplots/";
+  //std::string outputFilePath = "/home/lucia/SVfitPerformanceStudiesII/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/finalplots/";
+  std::string outputFilePath = "/home/veelken/SVfitMEM_paper/CMSSW_7_6_3/src/TauAnalysis/SVfitPerformanceStudies/test/plot/finalplots/";
   std::map<int, std::string> outputFileNames_emu; // key = massPoint
   outputFileNames_emu[200]     = "makeSVfitMEM_PerformancePlots_HiggsSUSYGluGlu200_emu_log_ratio.pdf";
   outputFileNames_emu[300]     = "makeSVfitMEM_PerformancePlots_HiggsSUSYGluGlu300_emu_log_ratio.pdf";
